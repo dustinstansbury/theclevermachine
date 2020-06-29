@@ -2,6 +2,7 @@
 layout: post
 title:  Testing, 1, 2, 3
 date:   2020-06-28 13:32:57 -0700
+tags: ["tag1", "tag 2"]
 permalink: /testing-1-2-3
 ---
 
@@ -62,7 +63,16 @@ ORDER BY 2 DESC
 ```
 
 ### Rich Media
-Here's a random static image (480 pix):
+Here's a static local image (480 pix)
+
+
+
+<img align="center" width="480" src="assets/images/boltzmann_machine.png">
+
+
+
+
+Here's a random static image from the internet (480 pix):
 
 ![image](https://picsum.photos/480)
 
