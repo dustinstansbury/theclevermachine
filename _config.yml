@@ -23,7 +23,7 @@ subtitle: Musings on data and science
 email: "[first_name][dot][last_name][at][google email][dotcom]"
 description: Musings on data and science
 baseurl: "/theclevermachine" # the subpath of your site, e.g. /blog
-url: "https://dustinstansbury.github.io/theclevermachine" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://dustinstansbury.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: corrcoef
 github_username:  dustinstansbury
 
