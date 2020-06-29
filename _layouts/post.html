@@ -35,11 +35,6 @@ layout: default
     {{ content }}
   </div>
 
-  {%- if page.tags -%}
-    <span itemprop="tags">Tags: {{ page.tags | sort | join: ", " }} </span>
-  {%- endif -%}
-
-
   {%- if site.disqus.shortname -%}
     {%- include disqus_comments.html -%}
   {%- endif -%}
