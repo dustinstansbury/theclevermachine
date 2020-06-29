@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="https://dustinstansbury.github.io/theclevermachine/feed.xml" rel="self" type="application/atom+xml" /><link href="https://dustinstansbury.github.io/theclevermachine/" rel="alternate" type="text/html" /><updated>2020-06-28T22:28:17-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/feed.xml</id><title type="html">The Clever Machine</title><subtitle>Musings on data and science</subtitle><author><name>Dustin Stansbury, PhD</name></author><entry><title type="html">Testing, 1, 2, 3</title><link href="https://dustinstansbury.github.io/theclevermachine/testing-1-2-3" rel="alternate" type="text/html" title="Testing, 1, 2, 3" /><published>2020-06-28T13:32:57-07:00</published><updated>2020-06-28T13:32:57-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/welcome-to-jekyll</id><content type="html" xml:base="https://dustinstansbury.github.io/theclevermachine/testing-1-2-3">&lt;p&gt;Just a sample post to test that all of my local configurations work on github pages&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>The Clever Machine - development</title>
+    <link href="/theclevermachine" rel="self"/>
+    <link href="/theclevermachinedevelopment.html"/>
+    <updated>2020-06-28T22:28:17-07:00</updated>
+    <id>/theclevermachinedevelopment.html</id>
+
+    <author>
+        <name>Dustin Stansbury</name>
+    </author>
+
+    
+        <entry>
+            <title>Testing, 1, 2, 3</title>
+            <link href="/theclevermachine/testing-1-2-3"/>
+            <updated>2020-06-28T13:32:57-07:00</updated>
+            <id>/theclevermachine/welcome-to-jekyll</id>
+            <content type="html">&lt;p&gt;Just a sample post to test that all of my local configurations work on github pages&lt;/p&gt;
 
 &lt;h3 id=&quot;table&quot;&gt;Table&lt;/h3&gt;
 
@@ -83,4 +101,8 @@ x &amp;= \frac{1}{2} \\
 
 &lt;p&gt;Here’s a link to a youtube video:&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=8idr1WZ1A7Q&quot; title=&quot;Random video&quot;&gt;&lt;img src=&quot;https://picsum.photos/480&quot; alt=&quot;Audi R8&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>Dustin Stansbury</name></author><category term="testing" /><category term="development" /><summary type="html">Just a sample post to test that all of my local configurations work on github pages</summary></entry></feed>
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=8idr1WZ1A7Q&quot; title=&quot;Random video&quot;&gt;&lt;img src=&quot;https://picsum.photos/480&quot; alt=&quot;Audi R8&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+</content>
+        </entry>
+    
+</feed>

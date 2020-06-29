@@ -2,7 +2,8 @@
 layout: post
 title:  Testing, 1, 2, 3
 date:   2020-06-28 13:32:57 -0700
-tags: ["tag1", "tag 2"]
+tags: testing development
+author: "Dustin Stansbury"
 permalink: /testing-1-2-3
 ---
 

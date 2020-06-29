@@ -19,6 +19,9 @@
 # in the templates via {{ site.myvariable }}.
 
 title: The Clever Machine
+author: Dustin Stansbury, PhD
+
+tagline: Musings on data and science
 subtitle: Musings on data and science
 email: "[first_name][dot][last_name][at][google email][dotcom]"
 description: Musings on data and science
@@ -29,15 +32,26 @@ github_username:  dustinstansbury
 
 # Build settings
 theme: minima
-
 plugins:
   - jekyll-feed
   - jekyll-sitemap
-
+  - jekyll-tagging
 
 # Markdown settings
 kramdown:
   math_engine: mathjax
+
+
+# tags
+tag_page_layout: tag_page
+tag_page_dir: tags
+
+tag_feed_layout: tag_feed
+tag_feed_dir: tags
+
+# ignored_tags:
+#   -
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
