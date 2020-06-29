@@ -84,4 +84,4 @@ Heres a GIF (480 pix):
 
 Here's a link to a youtube video:
 
-[![Audi R8](https://picsum.photos/480)](https://www.youtube.com/watch?v=8idr1WZ1A7Q "Random video")
+[![Random Pic](https://picsum.photos/480)](https://www.youtube.com/watch?v=8idr1WZ1A7Q "Random video")

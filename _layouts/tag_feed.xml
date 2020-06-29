@@ -5,7 +5,7 @@ layout: nil
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>The Clever Machine - {{ page.tag }}</title>
     <link href="{{ site.baseurl | append: post.url }}" rel="self"/>
-    <link href="{{ site.baseurl | append: tags | append: page.tag }}.html"/>
+    <link href="{{ site.tag_page_dir | append: page.tag }}.html"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>
     <id>{{ site.baseurl | append: tags | append: page.tag}}.html</id>
 
