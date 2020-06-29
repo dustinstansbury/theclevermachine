@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>The Clever Machine - tags</title>
+    <link href="/theclevermachine" rel="self"/>
+    <link href="/theclevermachinetags.html"/>
+    <updated>2020-06-28T22:42:47-07:00</updated>
+    <id>/theclevermachinetags.html</id>
+
+    <author>
+        <name>Dustin Stansbury</name>
+    </author>
+
+    
+        <entry>
+            <title>Tags Test</title>
+            <link href="/theclevermachine/tags-test"/>
+            <updated>2020-06-28T00:00:00-07:00</updated>
+            <id>/theclevermachine/tags-test</id>
+            <content type="html">&lt;p&gt;Just a sample post to test that all of my local configurations work on github pages&lt;/p&gt;
+</content>
+        </entry>
+    
+</feed>

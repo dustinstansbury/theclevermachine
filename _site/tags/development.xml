@@ -3,7 +3,7 @@
     <title>The Clever Machine - development</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="/theclevermachinedevelopment.html"/>
-    <updated>2020-06-28T22:28:17-07:00</updated>
+    <updated>2020-06-28T22:42:47-07:00</updated>
     <id>/theclevermachinedevelopment.html</id>
 
     <author>
@@ -102,6 +102,15 @@ x &amp;= \frac{1}{2} \\
 &lt;p&gt;Here’s a link to a youtube video:&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=8idr1WZ1A7Q&quot; title=&quot;Random video&quot;&gt;&lt;img src=&quot;https://picsum.photos/480&quot; alt=&quot;Audi R8&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+</content>
+        </entry>
+    
+        <entry>
+            <title>Tags Test</title>
+            <link href="/theclevermachine/tags-test"/>
+            <updated>2020-06-28T00:00:00-07:00</updated>
+            <id>/theclevermachine/tags-test</id>
+            <content type="html">&lt;p&gt;Just a sample post to test that all of my local configurations work on github pages&lt;/p&gt;
 </content>
         </entry>
     
