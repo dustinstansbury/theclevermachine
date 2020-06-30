@@ -9,14 +9,16 @@
   <script type="text/javascript" async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
   </script>
- 
-  {%- seo -%}
+  
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+
+  {%- seo -%}
+
   {%- feed_meta -%}
+
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
   {%- endif -%}
-
 
   {% if site.tags == "" %}
     {% include collecttags.html %}

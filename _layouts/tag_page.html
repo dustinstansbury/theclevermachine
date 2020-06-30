@@ -12,7 +12,6 @@ layout: default
   <li>
   {% endif %}
     <a href="{{ site.baseurl }}/{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
-    <!-- <a href="{{ site.baseurl }}/{{ post.url }}"> {{ post.title }} ({{post.date | date_to_string}})  </a> - Tags: {{ post | tags }} <br> -->
     {{ post.description }}
   </li>
 {% endfor %}

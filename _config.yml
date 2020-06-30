@@ -50,7 +50,7 @@ tag_feed_layout: tag_feed
 tag_feed_dir: tags
 
 header_pages:
-- /about.md
+- about.md
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -60,14 +60,17 @@ header_pages:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - generate_tag_pages
+  - serve_site
+  - build_site
