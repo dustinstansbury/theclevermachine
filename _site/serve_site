@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./generate_tag_pages && bundle exec jekyll serve --livereload

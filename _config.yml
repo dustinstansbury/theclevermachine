@@ -35,7 +35,6 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap
-  - jekyll-tagging
 
 # Markdown settings
 kramdown:
@@ -43,17 +42,15 @@ kramdown:
 
 
 # tags
+index_tags_page: true
 tag_page_layout: tag_page
 tag_page_dir: tags
 
 tag_feed_layout: tag_feed
 tag_feed_dir: tags
 
-# ignored_tags:
-#   -
-
-whitelist:
-  - jekyll-tagging
+header_pages:
+- /about.md
 
 # Exclude from processing.
 # The following items will not be processed, by default.

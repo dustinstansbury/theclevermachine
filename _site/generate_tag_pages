@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+'''
+generate_tag_pages.py
+
+Adapted from `generate_tags` https://longqian.me/2017/02/09/github-jekyll-tag/
+'''
+
+import glob
+import os
+import yaml
+import logging
+
+def extract_post_tags(post_file, all_tags):
+    with open(post_file, 'r', encoding='utf8') as f:
+        crawl = False
+        for line in f:
+            if crawl:
+                current_tags = line.strip().split()
+                if current_tags[0] == 'tags:':
+                    all_tags.extend(current_tags[1:])
+                    crawl = False
+                    break
+            if line.strip() == '---':
+                if not crawl:
+                    crawl = True
+                else:
+                    crawl = False
+                    break
+    return all_tags
+
+
+INDEX_TAGS_PAGE_CONFIG = "index_tags_page"
+DEFAULT_INDEX_TAGS_PAGE = False
+
+TAG_PAGE_DIR_CONFIG = "tag_page_dir"
+DEFAULT_TAGS_DIR = "tags"
+
+with open("_config.yml") as f:
+    config = yaml.safe_load(f)
+
+TAGS_DIR = config.get(TAG_PAGE_DIR_CONFIG, DEFAULT_TAGS_DIR)
+INDEX_TAGS_PAGE = config.get(INDEX_TAGS_PAGE_CONFIG, DEFAULT_INDEX_TAGS_PAGE)
+ROBOTS_FRONTMATTER = "robots: noindex" if INDEX_TAGS_PAGE else ""
+
+if not os.path.exists(TAGS_DIR):
+    os.makedirs(TAGS_DIR)
+
+post_files = glob.glob("_posts/*md")
+
+# extract tags from posts
+all_tags = []
+for post_file in post_files:
+    all_tags = extract_post_tags(post_file, all_tags)
+
+all_tags = set(all_tags)
+
+# regenerate tag pages
+print('Generating tag pages for {} tags...'.format(all_tags.__len__()))
+current_tag_files = glob.glob(os.path.join(TAGS_DIR, '*.md'))
+for tag_file in current_tag_files:
+    os.remove(tag_file)
+
+for tag in all_tags:
+    tag_filename = os.path.join(TAGS_DIR, tag + '.md')
+    with open(tag_filename, 'a') as f:
+        tag_page_frontmatter = '---\nlayout: tag_page\ntitle: \"Tag: ' + tag + '\"\ntag: ' + tag + '\nrobots: noindex\n---\n'
+        f.write(tag_page_frontmatter)
