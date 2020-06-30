@@ -11,6 +11,12 @@ import os
 import yaml
 import logging
 
+INDEX_TAGS_PAGE_CONFIG = "index_tags_page"
+DEFAULT_INDEX_TAGS_PAGE = False
+
+TAG_PAGE_DIR_CONFIG = "tag_page_dir"
+DEFAULT_TAGS_DIR = "tags"
+
 def extract_post_tags(post_file, all_tags):
     with open(post_file, 'r', encoding='utf8') as f:
         crawl = False
@@ -29,12 +35,6 @@ def extract_post_tags(post_file, all_tags):
                     break
     return all_tags
 
-
-INDEX_TAGS_PAGE_CONFIG = "index_tags_page"
-DEFAULT_INDEX_TAGS_PAGE = False
-
-TAG_PAGE_DIR_CONFIG = "tag_page_dir"
-DEFAULT_TAGS_DIR = "tags"
 
 with open("_config.yml") as f:
     config = yaml.safe_load(f)
