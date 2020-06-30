@@ -11,8 +11,8 @@ layout: default
   {% else %}
   <li>
   {% endif %}
-    <!-- <a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br> -->
-    <a href="{{ site.baseurl | append: post.url }}"> {{ post.title }} ({{post.date | date_to_string}})  </a> - Tags: {{ post | tags }} <br>
+    <a href="{{ site.baseurl }}/{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+    <!-- <a href="{{ site.baseurl }}/{{ post.url }}"> {{ post.title }} ({{post.date | date_to_string}})  </a> - Tags: {{ post | tags }} <br> -->
     {{ post.description }}
   </li>
 {% endfor %}
