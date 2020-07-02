@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="https://dustinstansbury.github.io/theclevermachine/feed.xml" rel="self" type="application/atom+xml" /><link href="https://dustinstansbury.github.io/theclevermachine/" rel="alternate" type="text/html" /><updated>2020-07-02T00:56:59-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/feed.xml</id><title type="html">The Clever Machine</title><subtitle>Musings on data and science</subtitle><author><name>Dustin Stansbury, PhD</name></author><entry><title type="html">A Gentle Introduction to Artificial Neural Networks</title><link href="https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks" rel="alternate" type="text/html" title="A Gentle Introduction to Artificial Neural Networks" /><published>2020-06-30T00:00:00-07:00</published><updated>2020-06-30T00:00:00-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks</id><content type="html" xml:base="https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>The Clever Machine - classification</title>
+    <link href="/theclevermachine" rel="self"/>
+    <link href="tagsclassification.html"/>
+    <updated>2020-07-02T00:56:59-07:00</updated>
+    <id>/theclevermachineclassification.html</id>
+
+    <author>
+        <name>Dustin Stansbury</name>
+    </author>
+
+    
+        <entry>
+            <title>A Gentle Introduction to Artificial Neural Networks</title>
+            <link href="/theclevermachine/a-gentle-introduction-to-neural-networks"/>
+            <updated>2020-06-30T00:00:00-07:00</updated>
+            <id>/theclevermachine/a-gentle-introduction-to-neural-networks</id>
+            <content type="html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.&lt;/p&gt;
 
@@ -109,89 +127,8 @@
       &lt;p&gt;This property is not reserved for ANNs; kernel methods are also considered “universal approximators”; however, it turns out that neural networks with multiple layers are more efficient at approximating arbitrary functions than other methods. I refer the interested reader to &lt;a href=&quot;http://yann.lecun.com/exdb/publis/pdf/bengio-lecun-07.pdf&quot;&gt;an in-depth discussion&lt;/a&gt; on the topic.) &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Dustin Stansbury</name></author><category term="neural-networks" /><category term="gradient-descent" /><category term="classification" /><category term="backpropagation" /><summary type="html">Introduction</summary></entry><entry><title type="html">Testing, 1, 2, 3</title><link href="https://dustinstansbury.github.io/theclevermachine/testing-1-2-3" rel="alternate" type="text/html" title="Testing, 1, 2, 3" /><published>2020-06-28T13:32:57-07:00</published><updated>2020-06-28T13:32:57-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/welcome-to-jekyll</id><content type="html" xml:base="https://dustinstansbury.github.io/theclevermachine/testing-1-2-3">&lt;p&gt;Just a sample post to test that all of my local configurations work on github pages&lt;/p&gt;
-
-&lt;h3 id=&quot;table&quot;&gt;Table&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Table&lt;/th&gt;
-      &lt;th&gt;Left&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Center&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Right&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;A&lt;/td&gt;
-      &lt;td&gt;B&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;C&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;D&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;3&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;4&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;mathjax&quot;&gt;Mathjax&lt;/h3&gt;
-&lt;p&gt;This should be an inline &lt;script type=&quot;math/tex&quot;&gt;x=2&lt;/script&gt; equation&lt;/p&gt;
-
-&lt;p&gt;This should be a block&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\lambda = 23&lt;/script&gt;
-
-&lt;p&gt;This should be an aligned block:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-
-x &amp;= \frac{1}{2} \\
-&amp;= y
-
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h3 id=&quot;code&quot;&gt;Code&lt;/h3&gt;
-
-&lt;p&gt;This should be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inline code&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;variable&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;This is a bash code block&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;VARIABLE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'blah'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;…and a python code block&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'blah'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;…and some SQL&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;True&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;GROUP&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DESC&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;rich-media&quot;&gt;Rich Media&lt;/h3&gt;
-&lt;p&gt;Here’s a static local image (480 pix)&lt;/p&gt;
-
-&lt;p&gt;&lt;img align=&quot;center&quot; width=&quot;480&quot; src=&quot;assets/images/boltzmann_machine.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here’s a random static image from the internet (480 pix):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://picsum.photos/480&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Heres a GIF (480 pix):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/4xpB3eE00FfBm/giphy.gif&quot; alt=&quot;gif&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here’s a link to a youtube video:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=8idr1WZ1A7Q&quot; title=&quot;Random video&quot;&gt;&lt;img src=&quot;https://picsum.photos/480&quot; alt=&quot;Random Pic&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>Dustin Stansbury</name></author><category term="testing" /><category term="development" /><category term="other-stuff" /><summary type="html">Just a sample post to test that all of my local configurations work on github pages</summary></entry><entry><title type="html">Tags Test</title><link href="https://dustinstansbury.github.io/theclevermachine/tags-test" rel="alternate" type="text/html" title="Tags Test" /><published>2020-06-28T00:00:00-07:00</published><updated>2020-06-28T00:00:00-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/tags-test</id><content type="html" xml:base="https://dustinstansbury.github.io/theclevermachine/tags-test">&lt;p&gt;Just a sample post to test that all of my local configurations work on github pages&lt;/p&gt;</content><author><name>Dustin Stansbury</name></author><category term="testing" /><category term="development" /><category term="tags" /><summary type="html">Just a sample post to test that all of my local configurations work on github pages</summary></entry></feed>
+&lt;/div&gt;
+</content>
+        </entry>
+    
+</feed>

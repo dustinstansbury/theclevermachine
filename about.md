@@ -5,7 +5,7 @@ permalink: /about/
 include_in_header: true
 ---
 
-This blog is essentially an attempt to distill some of the knowledge I’ve gained through my experiences as a former computational neursocientist and current data scientist.
+This blog is an attempt to distill some of the knowledge I’ve gained through my experiences as a former computational neursocientist and current data scientist.
 
 The content of the blog will be posts about statistics, machine learning, analysis techniques, algorithms, theory--basically stuff that I find cool,  exciting, or helpful. 
 

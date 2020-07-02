@@ -9,13 +9,10 @@ Adapted from `generate_tags` https://longqian.me/2017/02/09/github-jekyll-tag/
 import glob
 import os
 import yaml
-import logging
-
-INDEX_TAGS_PAGE_CONFIG = "index_tags_page"
-DEFAULT_INDEX_TAGS_PAGE = False
 
 TAG_PAGE_DIR_CONFIG = "tag_page_dir"
 DEFAULT_TAGS_DIR = "tags"
+
 
 def extract_post_tags(post_file, all_tags):
     with open(post_file, 'r', encoding='utf8') as f:
@@ -40,8 +37,6 @@ with open("_config.yml") as f:
     config = yaml.safe_load(f)
 
 TAGS_DIR = config.get(TAG_PAGE_DIR_CONFIG, DEFAULT_TAGS_DIR)
-INDEX_TAGS_PAGE = config.get(INDEX_TAGS_PAGE_CONFIG, DEFAULT_INDEX_TAGS_PAGE)
-ROBOTS_FRONTMATTER = "robots: noindex" if INDEX_TAGS_PAGE else ""
 
 if not os.path.exists(TAGS_DIR):
     os.makedirs(TAGS_DIR)

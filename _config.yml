@@ -32,6 +32,9 @@ github_username:  dustinstansbury
 
 # Build settings
 theme: minima
+minima:
+  skin: dark
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap
@@ -39,10 +42,9 @@ plugins:
 # Markdown settings
 kramdown:
   math_engine: mathjax
+  parse_block_html: true
 
-
-# tags
-index_tags_page: true
+# Tags
 tag_page_layout: tag_page
 tag_page_dir: tags
 
@@ -50,6 +52,7 @@ tag_feed_layout: tag_feed
 tag_feed_dir: tags
 
 header_pages:
+- home.md
 - about.md
 
 # Exclude from processing.
@@ -59,7 +62,6 @@ header_pages:
 #
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
-#
 exclude:
   - .sass-cache/
   - .jekyll-cache/
