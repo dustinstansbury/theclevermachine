@@ -1,4 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="https://dustinstansbury.github.io/theclevermachine/feed.xml" rel="self" type="application/atom+xml" /><link href="https://dustinstansbury.github.io/theclevermachine/" rel="alternate" type="text/html" /><updated>2020-07-02T22:44:29-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/feed.xml</id><title type="html">The Clever Machine</title><subtitle>Musings on data and science</subtitle><author><name>Dustin Stansbury, PhD</name></author><entry><title type="html">Derivation: Derivatives for Common Neural Network Activation Functions</title><link href="https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions" rel="alternate" type="text/html" title="Derivation: Derivatives for Common Neural Network Activation Functions" /><published>2020-06-29T00:00:00-07:00</published><updated>2020-06-29T00:00:00-07:00</updated><id>https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions</id><content type="html" xml:base="https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>The Clever Machine - derivation</title>
+    <link href="/theclevermachine" rel="self"/>
+    <link href="tagsderivation.html"/>
+    <updated>2020-07-02T22:44:29-07:00</updated>
+    <id>/theclevermachinederivation.html</id>
+
+    <author>
+        <name>Dustin Stansbury</name>
+    </author>
+
+    
+        <entry>
+            <title>Derivation: Derivatives for Common Neural Network Activation Functions</title>
+            <link href="/theclevermachine/derivation-common-neural-network-activation-functions"/>
+            <updated>2020-06-29T00:00:00-07:00</updated>
+            <id>/theclevermachine/derivation-common-neural-network-activation-functions</id>
+            <content type="html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.&lt;/p&gt;
 
@@ -57,4 +75,8 @@
 
 &lt;h2 id=&quot;wrapping-up&quot;&gt;Wrapping up&lt;/h2&gt;
 
-&lt;p&gt;In this post we reviewed a few commonly-used activation functions in neural network literature and their derivative calculations. These activation functions are motivated by biology and/or provide some handy implementation tricks like calculating derivatives using cached feed-forward activation values. Note that there are also many other options for activation functions not covered here: e.g. rectification, soft rectification, polynomial kernels, etc. Indeed, finding and evaluating novel activation functions is an active subfield of machine learning research. However, the three basic activations covered here can be used to solve a majority of the machine learning problems one will likely face.&lt;/p&gt;</content><author><name>Dustin Stansbury</name></author><category term="neural-networks" /><category term="gradient-descent" /><category term="derivation" /><summary type="html">Introduction</summary></entry></feed>
+&lt;p&gt;In this post we reviewed a few commonly-used activation functions in neural network literature and their derivative calculations. These activation functions are motivated by biology and/or provide some handy implementation tricks like calculating derivatives using cached feed-forward activation values. Note that there are also many other options for activation functions not covered here: e.g. rectification, soft rectification, polynomial kernels, etc. Indeed, finding and evaluating novel activation functions is an active subfield of machine learning research. However, the three basic activations covered here can be used to solve a majority of the machine learning problems one will likely face.&lt;/p&gt;
+</content>
+        </entry>
+    
+</feed>

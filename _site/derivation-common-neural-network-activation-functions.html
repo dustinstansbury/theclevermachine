@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Derivation: Derivatives for Common Neural Network Activation Functions | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Derivation: Derivatives for Common Neural Network Activation Functions" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-29T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/derivation-common-neural-network-activation-functions","description":"Introduction","@type":"BlogPosting","headline":"Derivation: Derivatives for Common Neural Network Activation Functions","dateModified":"2020-06-29T00:00:00-07:00","datePublished":"2020-06-29T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" />
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Derivation: Derivatives for Common Neural Network Activation Functions</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-06-29T00:00:00-07:00" itemprop="datePublished">Jun 29, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/neural-networks.html">neural-networks</a>
+              , 
+          
+              <a href="/theclevermachine/tags/gradient-descent.html">gradient-descent</a>
+              , 
+          
+              <a href="/theclevermachine/tags/derivation.html">derivation</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/a-gentle-introduction-to-neural-networks/common_activation_functions.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1:</em></strong> Common activation functions functions used in artificial neural, along with their derivatives</p>
+
+<hr />
+
+<p>In the remainder of this post, we derive the derivatives/gradients for each of these common activation functions.</p>
+
+<h1 id="the-identity-activation-function">The Identity Activation Function</h1>
+
+<p>The simplest activation function, one that is commonly used for the output layer activation function in regression problems,  is the identity/linear activation function (<strong><em>Figure 1</em></strong>, red curves):</p>
+
+<script type="math/tex; mode=display">g_{linear}(z) = z</script>
+
+<p>This activation function simply maps the pre-activation to itself and can output values that range <script type="math/tex">(-\infty, \infty)</script>. Why would one want to do use an identity activation function? After all, a multi-layered network with linear activations at each layer can be equally-formulated as a single-layered linear network. It turns out that the identity activation function is surprisingly useful. For example, a multi-layer network that has nonlinear activation functions amongst the hidden units and an output layer that uses the identity activation function implements a powerful form of nonlinear regression. Specifically, the network can predict continuous target values using a linear combination of signals that arise from one or more layers of nonlinear transformations of the input.</p>
+
+<p>The derivative of <script type="math/tex">g_{\text{linear}}</script> ,  <script type="math/tex">g'_{\text{linear}}</script>,  is simply 1, in the case of 1D inputs. For vector inputs of length D the gradient is <script type="math/tex">\vec{1}^{1 \times D}</script>, a vector of ones of length D.</p>
+
+<h1 id="the-logistic-sigmoid-activation-function">The Logistic Sigmoid Activation Function</h1>
+
+<p>Another function that is often used as the output activation function for binary classification problems (i.e. outputs values that range (0, 1)), is the logistic sigmoid (<strong><em>Figure 1</em></strong>, blue curves). The logistic sigmoid has the following form:</p>
+
+<script type="math/tex; mode=display">\begin{array}{rcl} g_{\text{logistic}}(z) = \frac{1}{1 + e^{-z}}\end{array}</script>
+
+<p>and outputs values that range (0, 1). The logistic sigmoid is motivated somewhat by biological neurons and can be interpreted as the probability of an artificial neuron “firing” given its inputs. (It turns out that the logistic sigmoid can also be derived as the maximum likelihood solution to for logistic regression in statistics). Calculating the derivative of the logistic sigmoid function makes use of the quotient rule and a clever trick that both adds and subtracts a one from the numerator:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{rcl} g'_{\text{logistic}}(z) &=& \frac{\partial}{\partial z} \left ( \frac{1}{1 + e^{-z}}\right ) \\  &=& \frac{e^{-z}}{(1 + e^{-z})^2} \text{(by chain rule)} \\  &=& \frac{1 + e^{-z} - 1}{(1 + e^{-z})^2} \\  &=& \frac{1 + e^{-z}}{(1 + e^{-z})^2} - \left ( \frac{1}{1+e^{-z}} \right )^2 \\  &=& \frac{1}{(1 + e^{-z})} - \left ( \frac{1}{1+e^{-z}} \right )^2 \\  &=& g_{\text{logistic}}(z)- g_{\text{logistic}}(z)^2 \\  &=& g_{\text{logistic}}(z)(1 - g_{\text{logistic}}(z)) \end{array} %]]></script>
+
+<p>Here we see that <script type="math/tex">g'_{logistic}(z)</script> evaluated at <script type="math/tex">z</script> is simply <script type="math/tex">g_{logistic}(z)</script> weighted by <script type="math/tex">(1-g_{logistic}(z))</script>. This turns out to be a convenient form for efficiently calculating gradients used in neural networks: if one keeps in memory the feed-forward activations of the logistic function for a given layer, the gradients for that layer can be evaluated using simple multiplication and subtraction rather than performing any re-evaluating the sigmoid function, which requires extra exponentiation.</p>
+
+<h1 id="the-hyperbolic-tangent-activation-function">The Hyperbolic Tangent Activation Function</h1>
+
+<p>Though the logistic sigmoid has a nice biological interpretation, it turns out that the logistic sigmoid can cause a neural network to get “stuck” during training. This is due in part to the fact that if a strongly-negative input is provided to the logistic sigmoid, it outputs values very near zero. Since neural networks use the feed-forward activations to calculate parameter gradients (again, see this <a href="https://theclevermachine.wordpress.com/2014/09/06/derivation-error-backpropagation-gradient-descent-for-neural-networks/">this post</a> for details), this can result in model parameters that are updated less regularly than we would like, and are thus “stuck” in their current state.</p>
+
+<p>An alternative to the logistic sigmoid is the hyperbolic tangent, or <script type="math/tex">\text{tanh}</script> function (<strong><em>Figure 1</em></strong>, green curves):</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{rcl} g_{\text{tanh}}(z) &=& \frac{\text{sinh}(z)}{\text{cosh}(z)} \\  &=& \frac{\mathrm{e}^z - \mathrm{e}^{-z}}{\mathrm{e}^z + \mathrm{e}^{-z}}\end{array} %]]></script>
+
+<p>Like the logistic sigmoid, the tanh function is also sigmoidal (“s”-shaped), but instead outputs values that range <script type="math/tex">(-1, 1)</script>. Thus strongly negative inputs to the tanh will map to negative outputs. Additionally, only zero-valued inputs are mapped to near-zero outputs. These properties make the network less likely to get “stuck” during training. Calculating the gradient for the tanh function also uses the quotient rule:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{rcl} g'_{\text{tanh}}(z) &=& \frac{\partial}{\partial z} \frac{\text{sinh}(z)}{\text{cosh}(z)} \\  &=& \frac{\frac{\partial}{\partial z} \text{sinh}(z) \times \text{cosh}(z) - \frac{\partial}{\partial z} \text{cosh}(z) \times \text{sinh}(z)}{\text{cosh}^2(z)} \\  &=& \frac{\text{cosh}^2(z) - \text{sinh}^2(z)}{\text{cosh}^2(z)} \\  &=& 1 - \frac{\text{sinh}^2(z)}{\text{cosh}^2(z)} \\  &=& 1 - \text{tanh}^2(z)\end{array} %]]></script>
+
+<p>Similar to the derivative for the logistic sigmoid, the derivative of <script type="math/tex">g_{\text{tanh}}(z)</script> is a function of feed-forward activation evaluated at z, namely <script type="math/tex">(1-g_{\text{tanh}}(z)^2)</script>. Thus the same caching trick can be used for layers that implement <script type="math/tex">\text{tanh}</script> activation functions.</p>
+
+<h2 id="wrapping-up">Wrapping up</h2>
+
+<p>In this post we reviewed a few commonly-used activation functions in neural network literature and their derivative calculations. These activation functions are motivated by biology and/or provide some handy implementation tricks like calculating derivatives using cached feed-forward activation values. Note that there are also many other options for activation functions not covered here: e.g. rectification, soft rectification, polynomial kernels, etc. Indeed, finding and evaluating novel activation functions is an active subfield of machine learning research. However, the three basic activations covered here can be used to solve a majority of the machine learning problems one will likely face.</p>
+
+  </div><a class="u-url" href="/theclevermachine/derivation-common-neural-network-activation-functions" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

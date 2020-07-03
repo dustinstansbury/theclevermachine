@@ -52,7 +52,7 @@ which outputs values $$a_{logistic} \in (0,1)$$. When the network outputs use th
 <center>
     <br>
     <div id="container">
-        <img width="680" src="assets/images/a-gentle-introduction-to-neural-networks/activation_functions.png">
+        <img width="800" src="assets/images/a-gentle-introduction-to-neural-networks/common_activation_functions.png">
     </div>
 </center>
 
@@ -63,51 +63,49 @@ which outputs values $$a_{logistic} \in (0,1)$$. When the network outputs use th
 <details >
 
 ```python
-# % DEFINE A FEW COMMON ACTIVATION FUNCTIONS
-# gLinear = inline('z','z');
-# gSigmoid = inline('1./(1+exp(-z))','z');
-# gTanh = inline('tanh(z)','z');
+import numpy as np
+from matplotlib import pyplot as plt
+from collections import OrderedDict
 
+# Define a few ommon activation functions
 g_linear = lambda z: z
 g_sigmoid = lambda z: 1./(1. + np.exp(-z))
 g_tanh = lambda z: np.tanh(z)
-
- 
-# % ...DEFINE THEIR DERIVATIVES
-# gPrimeLinear = inline('ones(size(z))','z');
-# gPrimeSigmoid = inline('1./(1+exp(-z)).*(1-1./(1+exp(-z)))','z');
-# gPrimeTanh = inline('1-tanh(z).^2','z');
-
+   
+# ...and their analytic derivatives    
 g_prime_linear = lambda z: np.ones(len(z))
 g_prime_sigmoid = lambda z: 1./(1 + np.exp(-z)) * (1 - 1./(1 + np.exp(-z)))
 g_prime_tanh = lambda z: 1 - np.tanh(z) ** 2
- 
-# % VISUALIZE EACH g(z)
-# z = linspace(-4,4,100);
-# figure
-# set(gcf,'Position',[100,100,960,420])
-# subplot(121);  hold on;
-# h(1) = plot(z,gLinear(z),'r','Linewidth',2);
-# h(2) = plot(z,gSigmoid(z),'b','Linewidth',2);
-# h(3) = plot(z,gTanh(z),'g','Linewidth',2);
-# set(gca,'fontsize',16)
-# xlabel('z')
-# legend(h,{'g_{linear}(z)','g_{logistic}(z)','g_{tanh}(z)'},'Location','Southeast')
-# title('Some Common Activation Functions')
-# hold off, axis square, grid
-# ylim([-1.1 1.1])
- 
-# % VISUALIZE EACH g'(z)
-# subplot(122); hold on
-# h(1) = plot(z,gPrimeLinear(z),'r','Linewidth',2);
-# h(2) = plot(z,gPrimeSigmoid(z),'b','Linewidth',2);
-# h(3) = plot(z,gPrimeTanh(z),'g','Linewidth',2);
-# set(gca,'fontsize',16)
-# xlabel('z')
-# legend(h,{'g''_{linear}(z)','g''_{logistic}(z)','g''_{tanh}(z)'},'Location','South')
-# title('Activation Function Derivatives')
-# hold off, axis square, grid
-# ylim([-.5 1.1])
+
+# Visualize each g_*(z) 
+activation_functions = OrderedDict(
+    [
+        ("linear", (g_linear, g_prime_linear, 'red')),
+        ("sigmoid", (g_sigmoid, g_prime_sigmoid, 'blue')),
+        ("tanh", (g_tanh, g_prime_tanh, 'green')),
+    ]
+)
+
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+xs = np.linspace(-5, 5, 100)
+for name, params in activation_functions.items():
+    # Activation functions
+    plt.sca(axs[0])
+    plt.plot(xs, params[0](xs), color=params[2], label=f"$g_{name}(z)$")
+    plt.ylim([-1.1, 1.1])
+    plt.grid()
+    plt.legend(fontsize=14)
+    plt.title('Activation Functions')
+    
+    # Derivatives
+    plt.sca(axs[1])
+    plt.plot(xs, params[1](xs), color=params[2], label=f"$g_{name}(z)$")
+    plt.ylim([-.5, 1.1])
+    plt.grid()
+    plt.legend(fontsize=14)
+    plt.title('Derivatives')
+plt.suptitle("Some Common Activation Functions & Their Derivatives\n", fontsize=18);
+
 ```
 </details> 
 
