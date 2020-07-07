@@ -144,26 +144,36 @@ By using a hidden layer, we form a *multi-layered ANN*. Though there are many di
 ---
 <b>
 
-Multi-layer neural networks form compositional functions that map the inputs nonlinearly to outputs. If we associate index i with the input layer, index $$j$$ with the hidden layer, and index $$k$$ with the output layer, then an output unit in the network diagrammed in ***Figure 3*** computes an output value $$a_k$$ given and input $$a_i$$ via the following compositional function:
+Multi-layer neural networks form compositional functions that map the inputs nonlinearly to outputs. If we associate index $$i$$ with the input layer, index $$j$$ with the hidden layer, and index $$k$$ with the output layer, then an output unit in the network diagrammed in ***Figure 3*** computes an output value $$a_k$$ given and input $$a_i$$ via the following compositional function:
 
 $$
 \begin{array}{rcl}a_{\text{out}} = a_k = g_k(b_k + \sum_jg_j(b_j + \sum_i a_i w_{ij})w_{jk}\end{array}
 $$
 
-Here $$z_l$$ is the  is the pre-activation values for units for layer $$l$$, $$g_l()$$ is the activation function for units  in that layer (assuming they are the same), and $$a_l = g_l(z_l)$$ is the output activation for units in that layer. The weight $$w_{l-1, l}$$ links the outputs of units feeding into layer l to the activation function of units for that layer. The term $$b_l$$ is the bias for units in layer $$l$$.
+A breakdown of this function is as follows:
+- $$z_l$$ is the pre-activation values for the units in layer $$l$$
+- $$g_l()$$ is the activation function for units in layer $$l$$ (assuming the same function for all units)
+- $$a_l = g_l(z_l)$$ is the output activation for units in layer $$l$$. 
+- $$w_{l-1, l}$$ are the parameters that weight the output messages of units feeding into layer $$l$$ to the activation function of units for that layer.
+- The $$b_l$$ term is the bias/DC offset for units in layer $$l$$.
 
 As with the single-layered ANN, the choice of activation function for the output layer will depend on the task that we would like the network to perform (i.e. categorization or regression), and follows similar rules outlined above. However, it is generally desirable for the hidden units to have nonlinear activation functions (e.g. logistic sigmoid or tanh). This is because multiple layers of linear computations can be equally formulated as a single layer of linear computations. Thus using linear activations for the hidden layers doesn’t buy us much. However, as we’ll see shortly, using linear activations for the output unit activation function (in conjunction with nonlinear activations for the hidden units) allows the network to perform nonlinear regression.
 
 # Training neural networks & gradient descent
 
-Training neural networks involves determining the network parameters that minimize the errors that the network makes. This first requires that we have a way of quantifying error. A standard way of quantifying error is to take the squared difference between the network output and the target value:
+Training neural networks involves determining the model parameters (the $$w_l$$ and $$b_l$$) that minimize the errors the network makes. This first requires that we have a way of quantifying error. A standard way of quantifying error is to take the squared difference between the network output and the target value [^2]:
 
 $$\begin{array}{rcl}E = \frac{1}{2}(\text{output} - \text{target})^2\end{array}$$
 
-(Note that the squared error is not chosen arbitrarily, but has a number of theoretical benefits and considerations. For more detail, see the [following post](/theclevermachine/cutting-your-losses)) With an error function in hand, we then aim to find the setting of parameters that minimizes this error function. This concept can be interpreted spatially by imagining a “parameter space” whose dimensions are the values of each of the model parameters, and for which the error function will form a surface of varying height depending on its value for each parameter. Model training is thus equivalent to finding point in parameter space that makes the height of the error surface small.
+With an error function in hand, we then aim to find the setting of parameters that minimizes this error function. This concept can be interpreted spatially by imagining a “parameter space” whose dimensions are the values of each of the model parameters, and for which the error function will form a surface of varying height depending on its value for each parameter. Model training is thus equivalent to finding point in parameter space that makes the height of the error surface small.
 
 ---
 ---
-*NOTE This post is a refactor of content with the same title originally posted on [The Clever Machine](https://theclevermachine.wordpress.com/2014/09/11/a-gentle-introduction-to-artificial-neural-networks/) wordpress blog.*
+
+# Notes
+
+*This post is a refactor of content with the same title originally posted on [The Clever Machine](https://theclevermachine.wordpress.com/2014/09/11/a-gentle-introduction-to-artificial-neural-networks/) wordpress blog.*
 
 [^1]: This property is not reserved for ANNs; kernel methods are also considered “universal approximators”; however, it turns out that neural networks with multiple layers are more efficient at approximating arbitrary functions than other methods. I refer the interested reader to [an in-depth discussion](http://yann.lecun.com/exdb/publis/pdf/bengio-lecun-07.pdf) on the topic.)
+
+[^2]: Note that the squared error is not chosen arbitrarily, but has a number of theoretical benefits and considerations. For more detail, see the [this post on the matter](/theclevermachine/cutting-your-losses)
