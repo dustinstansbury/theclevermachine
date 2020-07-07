@@ -33,11 +33,16 @@ github_username:  dustinstansbury
 # Build settings
 theme: minima
 minima:
-  skin: dark
+  # skin: dark
 
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
+# show_excerpts: true
+
+disqus:
+  shortname: the-clever-machine
 
 # Markdown settings
 kramdown:
@@ -52,7 +57,6 @@ tag_feed_layout: tag_feed
 tag_feed_dir: tags
 
 header_pages:
-- home.md
 - about.md
 
 # Exclude from processing.
