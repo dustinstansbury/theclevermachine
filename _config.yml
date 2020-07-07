@@ -60,6 +60,8 @@ tag_feed_dir: tags
 header_pages:
 - about.md
 
+google_analytics: UA-171913050-1
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
