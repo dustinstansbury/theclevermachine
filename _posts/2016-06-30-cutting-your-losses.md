@@ -402,6 +402,8 @@ Though not covered in this post, there are many other motivations for using the 
 The SSE loss does have a number of downfalls as well. For instance, because each error is squared, any outliers in the dataset can dominate the parameter estimation process. For this reason, the LSS loss is said to lack robustness. Therefore preprocessing of the the dataset (i.e. removing or thresholding outlier values) may be necessary when using the LSS loss.
 
 ---
+---
+# Notes
 
 [^1]: Note too that the value of  R$$^2$$ can take negative values, in the case when the RSS is larger than the TSS, indicating a _very_ poor model.
 

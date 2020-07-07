@@ -3,7 +3,7 @@
     <title>The Clever Machine - neural-networks</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsneural-networks.html"/>
-    <updated>2020-07-06T10:44:51-07:00</updated>
+    <updated>2020-07-07T10:07:35-07:00</updated>
     <id>/theclevermachineneural-networks.html</id>
 
     <author>
@@ -76,6 +76,9 @@
 &lt;h2 id=&quot;wrapping-up&quot;&gt;Wrapping up&lt;/h2&gt;
 
 &lt;p&gt;In this post we reviewed a few commonly-used activation functions in neural network literature and their derivative calculations. These activation functions are motivated by biology and/or provide some handy implementation tricks like calculating derivatives using cached feed-forward activation values. Note that there are also many other options for activation functions not covered here: e.g. rectification, soft rectification, polynomial kernels, etc. Indeed, finding and evaluating novel activation functions is an active subfield of machine learning research. However, the three basic activations covered here can be used to solve a majority of the machine learning problems one will likely face.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;hr /&gt;
 </content>
         </entry>
     

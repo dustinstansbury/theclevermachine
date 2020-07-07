@@ -3,7 +3,7 @@
     <title>The Clever Machine - ordinary-least-squares</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsordinary-least-squares.html"/>
-    <updated>2020-07-06T10:44:51-07:00</updated>
+    <updated>2020-07-07T10:07:35-07:00</updated>
     <id>/theclevermachineordinary-least-squares.html</id>
 
     <author>
@@ -48,6 +48,9 @@ X^TX \hat \beta   &amp;=&amp; X^Ty
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{array}{rcl} \hat \beta &amp;=&amp; (X^TX)^{-1}X^Ty \end{array} %]]&gt;&lt;/script&gt;
+
+&lt;hr /&gt;
+&lt;hr /&gt;
 </content>
         </entry>
     

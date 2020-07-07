@@ -40,3 +40,6 @@ due to the identity $$\frac{\partial \mathbf{a}^T \mathbf{b}}{\partial \mathbf{a
 $$
 \begin{array}{rcl} \hat \beta &=& (X^TX)^{-1}X^Ty \end{array}
 $$
+
+---
+---

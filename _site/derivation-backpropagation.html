@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Musings on data and science" />
+<meta property="og:description" content="Musings on data and science" />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/derivation-backpropagation" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/derivation-backpropagation" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-29T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/derivation-backpropagation"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/derivation-backpropagation","description":"Musings on data and science","@type":"BlogPosting","headline":"Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks","dateModified":"2020-06-29T00:00:00-07:00","datePublished":"2020-06-29T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" />
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-06-29T00:00:00-07:00" itemprop="datePublished">Jun 29, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/neural-networks gradient-descent derivation.html">neural-networks gradient-descent derivation</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see <strong><em>Figure 1</em></strong>). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+
+<h1 id="some-background-and-notation">Some Background and Notation</h1>
+
+<p>An ANN consists of an input layer, an output layer, and any number (including zero) of hidden layers situated between the input and output layers. <strong><em>Figure 1</em></strong> diagrams an ANN with a single hidden layer. The feed-forward computations performed by the ANN are as follows:</p>
+
+<ol>
+  <li>The signals from the input layer <script type="math/tex">a_i</script> are multiplied by a set of <script type="math/tex">w_{ij}</script> connecting each input to a node in the hidden layer.</li>
+  <li>These weighted signals are then summed (indicated by <script type="math/tex">\sum</script> in <strong><em>Figure 1</em></strong>) and combined with a bias <script type="math/tex">b_i</script> (not displayed in <strong><em>Figure 1</em></strong>). This calculation forms the pre-activation signal <script type="math/tex">z_j = b_j + \sum_i a_i w_{ij}</script> for the hidden layer.</li>
+  <li>The pre-activation signal is then transformed by the hidden layer activation function <script type="math/tex">g_j</script> to form the feed-forward activation signals <script type="math/tex">a_j</script> leaving leaving the hidden layer.</li>
+  <li>In a similar fashion, the hidden layer activation signals <script type="math/tex">a_j</script> are multiplied by the weights connecting the hidden layer to the output layer <script type="math/tex">w_{jk}</script>, summed, and a bias <script type="math/tex">b_k</script> is added.</li>
+  <li>The resulting output layer pre-activation <script type="math/tex">z_k</script> is transformed by the output activation function <script type="math/tex">g_k</script> to form the network output <script type="math/tex">a_k</script>.</li>
+  <li>The computed output <script type="math/tex">a_k</script> is then compared to a desired target value <script type="math/tex">t_k</script> and the error between <script type="math/tex">a_k</script> and <script type="math/tex">t_k</script> is calculated. This error is used to determine how to update model parameters, as we’ll discuss in the remainder of the post</li>
+</ol>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="500" src="assets/images/a-gentle-introduction-to-neural-networks/multi-layer-perceptron.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1</em></strong>: <em>Diagram of an artificial neural network with a single hidden layer (bias units not shown)</em></p>
+
+<hr />
+<p><b></b></p>
+
+<p>Training a neural network involves determining the set of parameters <script type="math/tex">\mathbf{\theta} = \{\mathbf{W},\mathbf{b}\}</script> that reduces the amount errors that the network makes. Often the choice for the error function is the <a href="/theclevermachine/cutting-your-losses">sum of the squared errors</a> between the target values <script type="math/tex">t_k</script> and the network output <script type="math/tex">a_k</script>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align} E &= \frac{1}{2} \sum_{k=1}^K(a_k - t_k)^2 \tag{1} \end{align} %]]></script>
+
+<p>Where <script type="math/tex">K</script> is the dimensionality of the target/output for a single observation. This parameter optimization problem can be solved using gradient descent, which requires determining <script type="math/tex">\frac{\partial E}{\partial \theta}</script> for all <script type="math/tex">\theta</script> in the model.</p>
+
+<p>Before we begin, let’s define the notation that will be used in remainder of the derivation. Please refer to <strong><em>Figure 1</em></strong> for any clarifications.</p>
+
+<ul>
+  <li><script type="math/tex">{z_j}</script>: input to node <script type="math/tex">j</script> in layer <script type="math/tex">l</script></li>
+  <li><script type="math/tex">{g_j}</script>: activation function for node <script type="math/tex">j</script> in layer <script type="math/tex">l</script> (applied to <script type="math/tex">{z_j}</script>)</li>
+  <li><script type="math/tex">a_j=g_j(z_j)</script>: the output/activation of node <script type="math/tex">j</script> in layer <script type="math/tex">l</script></li>
+  <li><script type="math/tex">{b_{j}}</script>: bias/offset for unit <script type="math/tex">j</script> in layer <script type="math/tex">l</script></li>
+  <li><script type="math/tex">{w_{ij}}</script>: weights connecting node <script type="math/tex">i</script> in layer <script type="math/tex">(l-1)</script> to node <script type="math/tex">j</script> in layer <script type="math/tex">l</script></li>
+  <li><script type="math/tex">{t_{k}}</script>: target value for node <script type="math/tex">k</script> in the output layer</li>
+</ul>
+
+<p>Also note that the parameters for an ANN can be broken up into two distinct sets: those parameters that are associated with the output layer (i.e. <script type="math/tex">\theta_k = \{w_{jk}, b_k\}</script>), and thus directly affect the network output error; and the remaining parameters that are associated with the hidden layer(s), and thus affect the output error indirectly. We’ll first derive the gradients for the output layer parameters, then extend these results to the hidden layer parameters.</p>
+
+<h1 id="gradients-for-output-layer-parameters">Gradients for Output Layer Parameters</h1>
+
+<h4 id="output-layer-connection-weights-w_jk">Output layer connection weights, <script type="math/tex">w_{jk}</script></h4>
+
+<p>Since the output layer parameters directly affect the value of the error function, determining the gradient of the error function with respect to those parameters is fairly straight-forward using an application of the <a href="http://en.wikipedia.org/wiki/Chain_rule">chain rule</a><sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial E }{\partial w_{jk}} &= \frac{1}{2} \sum_{k}(a_k - t_k)^2 \\  
+&= (a_k - t_k)\frac{\partial}{\partial w_{jk}}(a_k - t_k) \tag{2}
+\end{align} %]]></script>
+
+<p>The derivative with respect to <script type="math/tex">t_k</script> is zero because it does not depend on <script type="math/tex">w_{jk}</script>. We can also use the fact that <script type="math/tex">a_k = g(z_k)</script>, and re-apply the chain rule to give</p>
+
+<p><script type="math/tex">% <![CDATA[
+\begin{align}\frac{\partial E }{\partial w_{jk}} &= (a_k - t_k)\frac{\partial}{\partial w_{jk}}a_k \\
+&= (a_k - t_k)\frac{\partial}{\partial w_{jk}}g_k(z_k) \\
+&= (a_k - t_k)g_k'(z_k)\frac{\partial}{\partial w_{jk}}z_k \tag{3}
+\end{align} %]]></script>.</p>
+
+<p>Now, recall that <script type="math/tex">z_k = b_k + \sum_j g_j(z_j)w_{jk}</script> and thus <script type="math/tex">\frac{\partial z_{k}}{\partial w_{jk}} = g_j(z_j) = a_j</script>, thus giving us:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align} \frac{\partial E }{\partial w_{jk}} &= \color{red}{(a_k - t_k)}\color{blue}{g_k'(z_k)}\color{green}{a_j} \end{align} \tag{4} %]]></script>
+
+<p>From *Equation 4 we can see that the gradient of the error function with respect to the output layer weights <script type="math/tex">w_{jk}</script> is a product of three terms:</p>
+<ul>
+  <li><script type="math/tex">\color{red}{(a_k - t_k)}</script>: the difference between the network output <script type="math/tex">a_k</script> and the target value <script type="math/tex">t_k</script>.</li>
+  <li><script type="math/tex">\color{blue}{g_k'(z_k)}</script>: the derivative of output layer activation function <script type="math/tex">g_k()</script>. For more details on activation function derivatives, please refer to <a href="/theclevermachine/derivation-common-neural-network-activation-functions">this post</a></li>
+  <li><script type="math/tex">\color{green}{a_j}</script>: the activation signal of node <script type="math/tex">j</script> from the hidden layer feeding into the output layer.</li>
+</ul>
+
+<p>If we define <script type="math/tex">\delta_k</script> to be all the terms that involve index <script type="math/tex">k</script>:</p>
+
+<script type="math/tex; mode=display">\color{purple}{\delta_k} = \color{red}{(a_k - t_k)}\color{blue}{g_k'(z_k)} \tag{5}</script>
+
+<p>Then we get the “delta form” of the error function gradient for the output layer weights:</p>
+
+<script type="math/tex; mode=display">\frac{\partial E }{\partial w_{jk}} = \color{purple}{\delta_k} \color{green}{a_j} \tag{6}</script>
+
+<p>Here the <script type="math/tex">\delta_k</script> terms can be interpreted as the network output error after being “backpropagated” through the output activation function <script type="math/tex">g_k</script>, thus creating an “error signal”. Loosely speaking, <em>Equation 6</em> can be interpreted as determining how much each <script type="math/tex">w_{jk}</script> contributes to the error signal by weighting the error by the magnitude of the output activation from the previous (hidden) layer. The gradients with respect to each <script type="math/tex">w_{jk}</script> are thus considered to be the “contribution” of that parameter to the total error signal and should be “negated” during learning. This gives the following gradient descent update rule for the output layer weights:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+w_{jk} &\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
+&\leftarrow w_{jk} - \eta (\color{purple}{\delta_k} \color{green}{a_j}) \tag{7}
+\end{align} %]]></script>
+
+<p>where <script type="math/tex">\eta</script> is some step size, often referred to as the “learning rate”. Similar update rules are used to update the remaining parameters, once <script type="math/tex">\frac{\partial E}{\partial \theta}</script> has been determined.</p>
+
+<p>As we’ll see shortly, the process of “backpropagating” the error signal can repeated all the way back to the input layer by successively projecting <script type="math/tex">\delta_k</script> back through <script type="math/tex">w_{jk}</script>, then through the activation function <script type="math/tex">g'_j(z_j)</script> for the hidden layer to give the error signal <script type="math/tex">\delta_j</script>, and so on. This backpropagation concept is central to training neural networks with more than one layer.</p>
+
+<h4 id="output-layer-biases-b_k">Output layer biases, <script type="math/tex">b_{k}</script></h4>
+<p>As for the gradient of the error function with respect to the output layer biases, we follow the same routine as above for <script type="math/tex">w_{jk}</script>. However, the third term in <em>Equation 3</em> is <script type="math/tex">\frac{\partial}{\partial b_k} z_k = \frac{\partial}{\partial b_k} \left[ b_k + \sum_j g_j(z_j)\right] = 1</script>, giving the following gradient for the output biases:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial E }{\partial b_k} &= (a_k - t_k)g_k'(z_k)(1) \\
+&= \color{purple}{\delta_k} \tag{8}
+\end{align} %]]></script>
+
+<p>Thus the gradient for the biases is simply the back-propagated error signal <script type="math/tex">\delta_k</script> from the output units. One interpretation of this is that the biases are weights on activations that are always equal to one, regardless of the feed-forward signal. Thus the bias gradients aren’t affected by the feed-forward signal, only by the error.</p>
+
+<h1 id="gradients-for-hidden-layer-parameters">Gradients for Hidden Layer Parameters</h1>
+
+<p>Now that we’ve derived the gradients for the output layer parameters and established the notion of backpropagation, let’s continue with this information in hand in order to derive the gradients for the remaining layers.</p>
+
+<h4 id="hidden-layer-connection-weights-w_ij">Hidden layer connection weights, <script type="math/tex">w_{ij}</script></h4>
+
+<p>Due to the indirect affect of the hidden layer on the output error, calculating the gradients for the hidden layer weights <script type="math/tex">w_{ij}</script> is somewhat more involved. However, the process starts just the same as for the output layer <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial E }{\partial w_{ij}} &= \frac{1}{2} \sum_{k}(a_k - t_k)^2 \\
+&= \sum_{k} (a_k - t_k) \frac{\partial}{\partial w_{ij}}a_k \tag{9}
+\end{align} %]]></script>
+
+<p>Continuing on, noting that <script type="math/tex">a_k = g_k(z_k)</script> and again applying chain rule, we obtain:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial E }{\partial w_{ij}} &= \sum_{k} (a_k - t_k) \frac{\partial }{\partial w_{ij}}g_k(z_k) \\
+&= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial }{\partial w_{ij}}z_k \tag{10}
+\end{align} %]]></script>
+
+<p>Ok, now here’s where things get <em>slightly more involved</em>. Notice that the partial derivative <script type="math/tex">\frac{\partial }{\partial w_{ij}}z_k</script> in <em>Equation 10</em> is with respect to <script type="math/tex">w_{ij}</script>, but the target <script type="math/tex">z_k</script> is a function of index <script type="math/tex">k</script>. How the heck do we deal with that!? If we expand <script type="math/tex">z_k</script> a little, we find that it is composed of other sub functions:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align} z_k &= b_k + \sum_j a_jw_{jk} \\
+&= b_k + \sum_j g_j(z_j)w_{jk} \\
+&= b_k + \sum_j g_j(b_i + \sum_i a_i w_{ij})w_{jk} \tag{11}
+\end{align} %]]></script>
+
+<p>From <em>Equation 11</em> we see that <script type="math/tex">z_k</script> is indirectly dependent on <script type="math/tex">w_{ij}</script>. <em>Equation 10</em> also suggests that we can again use the chain rule to calculate <script type="math/tex">\frac{\partial z_k }{\partial w_{ij}}</script>. This is probably the trickiest part of the derivation, and also requires noting that <script type="math/tex">z_j = b_j + \sum_i a_jw_{ij}</script> and <script type="math/tex">a_j=g_j(z_j)</script>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial z_k }{\partial w_{ij}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial w_{ij}} \\
+&= \frac{\partial}{\partial a_j} (b_k + \sum_j a_jw_{jk}) \frac{\partial a_j}{\partial w_{ij}} \\
+&= w_{jk}\frac{\partial a_j}{\partial w_{ij}} \\
+&= w_{jk}\frac{\partial g_j(z_j)}{\partial w_{ij}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial w_{ij}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_i + \sum_i a_i w_{ij}) \\
+&= w_{jk}g_j'(z_j)a_i \tag{12}
+\end{align} %]]></script>
+
+<p>Now, plugging <em>Equation 12</em> into <script type="math/tex">\frac{\partial z_k}{\partial w_{ij}}</script> into <em>Equation 10</em> gives the following expression for <script type="math/tex">\frac{\partial E}{\partial w_{ij}}</script>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial E }{\partial w_{ij}} &= \sum_{k} (a_k - t_k)g'_k(z_k)w_{jk} g'_j(z_j)a_i \\
+&= \left(\sum_{k} \color{purple}{\delta_k} w_{jk} \right) \color{darkblue}{g'_j(z_j)}\color{darkgreen}{a_i} \tag{13}
+\end{align} %]]></script>
+
+<p>Notice that the gradient for the hidden layer weights has a similar form to that of the gradient for the output layer weights. Namely the gradient is composed of three terms:</p>
+
+<ul>
+  <li>the current layer’s activation function <script type="math/tex">\color{darkblue}{g'_j(z_j)}</script></li>
+  <li>the output activation signal from the layer below <script type="math/tex">\color{darkgreen}{a_i}</script>.</li>
+  <li>an error term  <script type="math/tex">\sum_{k} \color{purple}{\delta_k} w_{jk}</script></li>
+</ul>
+
+<p>For the output layer weight gradients, the error term was simply the difference in the target and output layer activations <script type="math/tex">\color{red}{a_k - t_k}</script>. Here, the error term includes not only the output layer error signal, <script type="math/tex">\delta_k</script>, but this error signal is further projected onto <script type="math/tex">w_{jk}</script>. Analogous to the output layer weights, the gradient for the hidden layer weights can be interpreted as a proxy for the “contribution” of the weights to the output error signal. However, for hidden layers, this error can only be “observed” from the point-of-view of the weights by backpropagating the error signal through the layers above the hidden layer.</p>
+
+<p>To make this idea more explicit, we can define the resulting error signal backpropagated to layer <script type="math/tex">j</script> as <script type="math/tex">\delta_j</script>, which includes all terms in <em>Equation 13</em> that involve index <script type="math/tex">j</script>. This definition results in the following gradient for the hidden unit weights:</p>
+
+<script type="math/tex; mode=display">\color{darkred}{\delta_j} = \color{darkblue}{g'_j(z_j)} \sum_{k} \color{purple}{\delta_k} w_{jk} \tag{14}</script>
+
+<p>Thus giving the final expression for the gradient:</p>
+
+<script type="math/tex; mode=display">\frac{\partial E }{\partial w_{ij}} = \color{darkred}{\delta_j}\color{darkgreen}{a_i}  \tag{15}</script>
+
+<p><em>Equation 15</em> suggests that <strong><em>in order to calculate the weight gradients at any layer <script type="math/tex">l</script> in an arbitrarily-deep neural network, we simply need to calculate the backpropagated error signal <script type="math/tex">\delta_l</script> that reaches that layer from the “above” layers, and weight it by the feed-forward signal <script type="math/tex">a_{l-1}</script> feeding into that layer.</em></strong></p>
+
+<h4 id="hidden-layer-biases-b_i">Hidden Layer Biases, <script type="math/tex">b_i</script></h4>
+
+<p>Calculating the error gradients with respect to the hidden layer biases follows a very similar procedure to that for the hidden layer weights where, as in <em>Equation 12</em>, we use the chain rule to calculate <script type="math/tex">\frac{\partial z_k}{\partial b_i}</script>.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+
+\frac{\partial E }{\partial b_{i}} &= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{i}}g_k(z_k) \\
+&= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{i}}  \tag{16}
+\end{align} %]]></script>
+
+<p>Again, using the chain rule to solve for <script type="math/tex">\frac{\partial z_k }{\partial b_{i}}</script></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial z_k  }{\partial b_{i}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{i}} \\
+&= \frac{\partial}{\partial a_j}(b_j + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{i}} \\
+&= w_{jk}\frac{\partial a_j}{\partial b_{i}} \\
+&= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{i}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{i}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_i}(b_i + \sum_i a_i w_{ij}) \\
+&= w_{jk}g_j'(z_j)(1) \tag{17}
+\end{align} %]]></script>
+
+<p>Plugging <em>Equation 17</em> into the expression for <script type="math/tex">\frac{\partial z_k }{\partial b_i}</script> in <em>Equation 16</em> gives the final expression for the hidden layer bias gradients:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{\partial E }{\partial b_i} &= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
+&= g'_j(z_j) \sum_{k} \delta_k w_{jk} \\
+&= \color{darkred}{\delta_j} \tag{18}
+\end{align} %]]></script>
+
+<p>In a similar fashion to calculation of the bias gradients for the output layer, the gradients for the hidden layer biases are simply the backpropagated error signal reaching that layer. This suggests that we can also calculate the bias gradients at any layer <script type="math/tex">l</script> in an arbitrarily-deep network by simply calculating the backpropagated error signal reaching that layer <script type="math/tex">\delta_l</script>. Pretty cool!</p>
+
+<h1 id="wrapping-up">Wrapping up</h1>
+
+<p>In this post we went over some of the formal details of the backpropagation learning algorithm. The math covered in this post allows us to train arbitrarily deep neural networks by re-applying the same basic computations. In a later post, we’ll go a bit deeper in implementation and applications of neural networks, referencing this post for the formal development of the underlying calculus required for gradient descent.</p>
+
+<hr />
+<hr />
+<h1 id="notes">Notes</h1>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Though, I guess these days with autograd, who <em>really</em> needs to understand how the calculus for gradient descent works, amiright? (<em>hint</em>: that is a joke) <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>You may also notice that the summation disappears in the derivative. This is because when we take the partial derivative with respect to the <script type="math/tex">j</script>-th dimension/node. Therefore the only term that survives in the error gradient is the <script type="math/tex">j</script>-th, and we can thus ignore the remaining terms in the summation. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Notice here that the sum does <em>not</em> disappear in the derivative as it did for the output layer parameters. This is due to the fact that the hidden layers are fully connected, and thus each of the hidden unit outputs affects the state of each output unit. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><a class="u-url" href="/theclevermachine/derivation-backpropagation" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

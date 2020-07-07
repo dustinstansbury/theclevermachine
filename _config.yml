@@ -76,3 +76,4 @@ exclude:
   - generate_tag_pages
   - serve_site
   - build_site
+  - notebooks
