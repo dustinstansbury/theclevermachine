@@ -7,8 +7,6 @@ tags: neural-networks gradient-descent derivation
 permalink: /derivation-common-neural-network-activation-functions
 ---
 
-# Introduction
-
 When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.
 
 

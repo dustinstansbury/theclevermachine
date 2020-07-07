@@ -7,8 +7,6 @@ tags: neural-networks gradient-descent derivation
 permalink: /derivation-backpropagation
 ---
 
-# Introduction
-
 Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see ***Figure 1***). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs--aka the "backpropagation" algorithm. Along the way, I'll also try to provide some high-level insights into the computations being performed during learning[^1].
 
 # Some Background and Notation

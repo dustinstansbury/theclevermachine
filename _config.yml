@@ -39,9 +39,10 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
 
-# show_excerpts: true
+show_excerpts: true
 
 disqus:
+  # NOTE: assing `shortname` to `disqus_shortname` variable in disqus.html
   shortname: the-clever-machine
 
 # Markdown settings

@@ -3,7 +3,7 @@
     <title>The Clever Machine - neural-networks</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsneural-networks.html"/>
-    <updated>2020-07-07T11:54:31-07:00</updated>
+    <updated>2020-07-07T12:47:56-07:00</updated>
     <id>/theclevermachineneural-networks.html</id>
 
     <author>
@@ -16,9 +16,7 @@
             <link href="/theclevermachine/derivation-common-neural-network-activation-functions"/>
             <updated>2020-06-29T00:00:00-07:00</updated>
             <id>/theclevermachine/derivation-common-neural-network-activation-functions</id>
-            <content type="html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.&lt;/p&gt;
+            <content type="html">&lt;p&gt;When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;center&gt;
@@ -87,9 +85,7 @@
             <link href="/theclevermachine/derivation-backpropagation"/>
             <updated>2020-06-29T00:00:00-07:00</updated>
             <id>/theclevermachine/derivation-backpropagation</id>
-            <content type="html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see &lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+            <content type="html">&lt;p&gt;Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see &lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;some-background-and-notation&quot;&gt;Some Background and Notation&lt;/h1&gt;
 

@@ -53,22 +53,37 @@
           <a class="post-link" href="/theclevermachine/cutting-your-losses">
             Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss
           </a>
-        </h3></li><li><span class="post-meta">Jun 29, 2020</span>
+        </h3><p>In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.</p>
+
+</li><li><span class="post-meta">Jun 29, 2020</span>
         <h3>
           <a class="post-link" href="/theclevermachine/derivation-ols-normal-equations">
             Derivation: Ordinary Least Squares Solution and Normal Equations
           </a>
-        </h3></li><li><span class="post-meta">Jun 29, 2020</span>
+        </h3><p>In a linear regression framework, we assume some output variable <script type="math/tex">y</script> is a linear combination of some independent input variables <script type="math/tex">X</script> plus some independent noise <script type="math/tex">\epsilon</script>. The way the independent variables are combined is defined by a parameter vector <script type="math/tex">\beta</script>:</p>
+
+</li><li><span class="post-meta">Jun 29, 2020</span>
         <h3>
           <a class="post-link" href="/theclevermachine/derivation-common-neural-network-activation-functions">
             Derivation: Derivatives for Common Neural Network Activation Functions
           </a>
-        </h3></li><li><span class="post-meta">Jun 29, 2020</span>
+        </h3><p>When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.</p>
+
+</li><li><span class="post-meta">Jun 29, 2020</span>
         <h3>
           <a class="post-link" href="/theclevermachine/derivation-backpropagation">
             Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks
           </a>
-        </h3></li></ul>
+        </h3><p>Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see <strong><em>Figure 1</em></strong>). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Though, I guess these days with autograd, who <em>really</em> needs to understand how the calculus for gradient descent works, amiright? (<em>hint</em>: that is a joke) <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+</li></ul>
 
     <p class="rss-subscribe">subscribe <a href="/theclevermachine/feed.xml">via RSS</a></p></div>
 

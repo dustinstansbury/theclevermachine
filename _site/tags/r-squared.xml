@@ -3,7 +3,7 @@
     <title>The Clever Machine - r-squared</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsr-squared.html"/>
-    <updated>2020-07-07T11:54:31-07:00</updated>
+    <updated>2020-07-07T12:47:56-07:00</updated>
     <id>/theclevermachiner-squared.html</id>
 
     <author>
@@ -16,9 +16,7 @@
             <link href="/theclevermachine/cutting-your-losses"/>
             <updated>2020-06-30T00:00:00-07:00</updated>
             <id>/theclevermachine/cutting-your-losses</id>
-            <content type="html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.&lt;/p&gt;
+            <content type="html">&lt;p&gt;In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.&lt;/p&gt;
 
 &lt;h1 id=&quot;model-estimation-and-loss-functions&quot;&gt;Model Estimation and Loss Functions&lt;/h1&gt;
 

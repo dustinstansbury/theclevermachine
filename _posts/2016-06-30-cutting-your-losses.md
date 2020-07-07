@@ -7,8 +7,6 @@ tags: statistics least-squares-regression loss-functions parameter-optimization 
 permalink: /cutting-your-losses
 ---
 
-# Introduction
-
 In this post we'll introduce the notion of the loss function and its role in model parameter estimation. We'll then focus in on a common loss function--the sum of squared errors (SSE) loss--and give some motivations and intuitions as to why this particular loss function works so well in practice.
 
 # Model Estimation and Loss Functions

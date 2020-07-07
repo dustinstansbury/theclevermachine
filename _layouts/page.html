@@ -13,3 +13,7 @@ include_in_header: false
   </div>
 
 </article>
+
+{%- if site.disqus.shortname -%}
+    {%- include disqus.html -%}
+{%- endif -%}
