@@ -219,6 +219,7 @@ target_value = 1
 def single_layer_network_predict(w1, target_value):
     return g(w1 * target_value)
 
+
 single_layer_network_output = single_layer_network_predict(w1, target_value)
 single_layer_network_error = error_function(single_layer_network_output, target_value)
 
@@ -328,7 +329,7 @@ ax.annotate(
         arrowstyle='->',
         fc="k", ec="k"
     ),
-   )
+)
 ax.text(.25, .55, '$w_1$', fontsize=20, ha='center', va='center')
 
 # output layer weights
@@ -343,13 +344,13 @@ ax.annotate(
         arrowstyle='<-',
         fc="k", ec="k"
     ),
-   )
+)
 ax.text(.75, .55, '$w_2$', fontsize=20, ha='center', va='center')
 
 plt.xlim([-.25, 1.25])
 plt.ylim([0.2, .8])
 plt.axis('equal')
-plt.axis('off');
+plt.axis('off')
 plt.title("Network Architecture")
 
 # Plot Error Surface
@@ -553,7 +554,7 @@ def generate_classification_data(problem_type, n_obs_per_class=30):
     """Generates training data for all demos
     """
     np.random.seed(123)
-    
+
     truth_table = np.array(
         [
             [0, 0],
@@ -568,7 +569,7 @@ def generate_classification_data(problem_type, n_obs_per_class=30):
             truth_table,
             np.array(
                 [
-                    [.5, .5], 
+                    [.5, .5],
                     [1., .5],
                     [0., .5],
                     [.5, 0.],
@@ -579,21 +580,20 @@ def generate_classification_data(problem_type, n_obs_per_class=30):
     )
     ring_classes = [1., 1., 1., 1., 0., 1., 1., 1., 1.];
 
-
     problem_classes = {
         'AND': np.logical_and(truth_table[:,0], truth_table[:, 1]) * 1.,
         'OR': np.logical_or(truth_table[:,0], truth_table[:, 1]) * 1.,
         'XOR': np.logical_xor(truth_table[:,0], truth_table[:, 1]) * 1.,
         'RING': ring_classes
     }
-    
+
     if problem_type in ('AND', 'OR', 'XOR'):
         observations = np.tile(truth_table, (n_obs_per_class, 1)) + .15 * np.random.randn(n_obs_per_class * 4, 2)
         obs_classes = np.tile(problem_classes[problem_type], n_obs_per_class)
     else:
         observations = np.tile(ring_table, (n_obs_per_class, 1)) + .15 * np.random.randn(n_obs_per_class * 9, 2)
         obs_classes = np.tile(problem_classes[problem_type], n_obs_per_class)
-        
+
     # Permute data
     permutation_idx = np.random.permutation(np.arange(len(obs_classes)))
     obs_classes = obs_classes[permutation_idx]
@@ -609,12 +609,10 @@ def generate_regression_data(problem_type='SIN', n_obs=100):
         f = lambda x: 2.5 + np.sin(x)
     elif problem_type == 'ABS':
         f = lambda x: abs(x)
-    
+
     yy = f(xx) + np.random.randn(*xx.shape)*.5
     perm_idx = np.random.permutation(np.arange(n_obs))
     return xx[perm_idx, None], yy[perm_idx]
-
-
 ```
 </details> 
 <br>
@@ -632,24 +630,24 @@ def initialize_network_parameters(n_input_units, n_hidden_units=0, n_output_unit
     # Weights
     weights = dict()
     weight_gradients = dict()
-    
+
     weights['w_1'] = np.random.rand(n_input_units, w1_size) - .5
     weight_gradients['w_1'] = np.zeros_like(weights['w_1'])
 
     if n_hidden_units > 0:
         weights['w_2'] = np.random.rand(n_hidden_units, n_output_units) - .5
         weight_gradients['w_2'] = np.zeros_like(weights['w_2'])
-    
+
     # Biases
     biases = dict()
     bias_gradients = dict()
     biases['b_1'] = np.random.rand(w1_size) - .5
     bias_gradients['b_1'] = np.zeros_like(biases['b_1'])
-    
+
     if n_hidden_units > 0:
         biases['b_2'] = np.random.rand(n_output_units) - .5
         bias_gradients['b_2'] = np.zeros_like(biases['b_2'])
-        
+
     return weights, biases, weight_gradients, bias_gradients
 
 def get_prediction_surface(pred_surface_xy, weights, biases, g_activation):
@@ -658,8 +656,8 @@ def get_prediction_surface(pred_surface_xy, weights, biases, g_activation):
     return np.array(prediction_surface).squeeze().reshape(PREDICTION_SURFACE_RESOLUTION, PREDICTION_SURFACE_RESOLUTION)
 
 def get_prediction_series(pred_x, weights, biases, g_activation):
-    """Calculates current prediction series for classification problem. Used for visualization"""
-    return step_I_forwardprop(pred_x[:,None], weights, biases, g_activation)[0]
+    """Calculates current prediction series for regression problem. Used for visualization"""
+    return step_I_forwardprop(pred_x[:, None], weights, biases, g_activation)[0]
 
 def run_ann_training_simulation(
     problem_type='AND',
@@ -669,7 +667,7 @@ def run_ann_training_simulation(
     learning_rate=3
 ):
     """Simulate ANN training on one of the following problems:
-    
+
     Binary Classification:
         "AND": noisy binary logical AND data distrubted as 2D datapoints
         "OR": noisy binary logical OR data distrubted as 2D datapoints
@@ -678,7 +676,7 @@ def run_ann_training_simulation(
     Regression (2D)
         "SIN": data are noisy observations around the sin function with a slight vertical offset
         "ABS": data are noisy observations around teh absolute value function
-        
+
     Parameters
     ----------
     problem_type : str
@@ -692,7 +690,7 @@ def run_ann_training_simulation(
         in the training dataset
     learning_rage : float
         The initial learning rate (annealing is applied at each iteration)
-        
+
     Returns
     -------
     loss_history : list[float]
@@ -715,14 +713,14 @@ def run_ann_training_simulation(
     else:
         obs_x, obs_y, targets = generate_classification_data(problem_type, n_observations)
         observations = np.vstack([obs_x, obs_y]).T
-        
+
     # Initialize model parameters $\theta$
     n_output_dims = 1
     n_obs, n_input_dims = observations.shape
     weights, biases, weight_gradients, bias_gradients = initialize_network_parameters(
         n_input_dims, n_hidden_units, n_output_dims
     )
-    
+
     # Initialize problem-specific activation functions and their derivatives
     g_activation = {}
     g_activation_prime = {}
@@ -734,7 +732,7 @@ def run_ann_training_simulation(
         g_activation['g_out'], g_activation_prime['g_out'], _ = activation_functions['sigmoid']
         if 'w_2' in weights:
             g_activation['g_1'], g_activation_prime['g_1'], _ = activation_functions['sigmoid']
-            
+
     # Setup for learning history / visualization
     loss_history = []
     prediction_history = {}
@@ -746,13 +744,13 @@ def run_ann_training_simulation(
         prediction_surface_range = np.linspace(-.5, 1.5, PREDICTION_SURFACE_RESOLUTION)
         prediction_surface_x, prediction_surface_y = np.meshgrid(prediction_surface_range, prediction_surface_range)
         prediction_surface_xy = [(x, y) for x, y in zip(prediction_surface_x.ravel(), prediction_surface_y.ravel())]
-    
+
     # Run the training
     for iteration in range(n_iterations):
         obs_error = []
         for network_input, target in zip(observations, targets):
             network_input = np.atleast_2d(network_input)
-            
+
             # Step I: Forward propagate input signal through the network,
             # collecting activations and hidden states
             a_output, z_output, a_hidden, z_hidden = step_I_forwardprop(
@@ -762,13 +760,14 @@ def run_ann_training_simulation(
             # Step II: Backpropagate error signal
             delta_output, delta_hidden = step_II_backprop(
                 target, a_output, z_output, z_hidden, weights, g_activation_prime
-            )    
-            
+            )
+
             # Step III. Calculate Error gradient w.r.t. parameters
             weight_gradients, bias_gradients = step_III_gradient_calculation(
                 delta_output, delta_hidden, a_hidden, network_input,
                 weight_gradients, bias_gradients
             )
+
             # Step IV. Update model parameters using gradients
             weights, biases = step_IV_update_parameters(
                 weights, biases, weight_gradients, bias_gradients, learning_rate
@@ -778,8 +777,8 @@ def run_ann_training_simulation(
             obs_error.append(error_function(a_output, target))
 
         # Anneal the learning rate (helps learning)
-        learning_rate = learning_rate *.95;
-        
+        learning_rate = learning_rate * .95
+
         # Keep learning history for visualization
         weights_history[iteration] = copy(weights)
         biases_history[iteration] = copy(biases)
@@ -793,7 +792,6 @@ def run_ann_training_simulation(
                 prediction_surface_xy, weights, biases, g_activation
             )
     return loss_history, prediction_history, weights_history, biases_history
-
 ```
 </details> 
 <br>
@@ -812,12 +810,14 @@ PREDICTION_SURFACE_RESOLUTION = 20
 PREDICTION_COLORMAP = 'spring'
 
 def visualize_classification_learning(problem_type, loss_history, prediction_history, outfile=None):
-    fig, axs = plt.subplots(1,2, figsize=(12, 6))
+    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
     prediction_surface_range = np.linspace(-.5, 1.5, PREDICTION_SURFACE_RESOLUTION)
     prediction_surface_x, prediction_surface_y = np.meshgrid(prediction_surface_range, prediction_surface_range)
 
     xx, yy, cls = generate_classification_data(problem_type=problem_type)
+
+    # Initialize plots
     contour = axs[0].contourf(
         prediction_surface_x,
         prediction_surface_y,
@@ -853,7 +853,6 @@ def visualize_classification_learning(problem_type, loss_history, prediction_his
     if outfile:
         # anim.save requires imagemagick library to be installed
         anim.save(outfile, dpi=80, writer='imagemagick')
-
 ```
 </details> 
 
@@ -886,7 +885,6 @@ visualize_classification_learning(
     loss_history,
     prediction_history
 )
-
 ```
 </details> 
 
@@ -924,7 +922,6 @@ visualize_classification_learning(
     loss_history,
     prediction_history
 )
-
 ```
 </details> 
 
@@ -1064,7 +1061,7 @@ $$
 where $$f(\mathbf{x})$$ is a nonlinear data-generating function and $$\mathbf \epsilon$$ is Normally-distributed noise. We then construct a two-layered network with $$\text{tanh}$$ activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.
 
 <details> 
-    
+
 ```python
 def visualize_regression_learning(problem_type, loss_history, prediction_history, weights_history, biases_history, outfile=None):
     fig, axs = plt.subplots(1,2, figsize=(12, 8))
@@ -1074,18 +1071,19 @@ def visualize_regression_learning(problem_type, loss_history, prediction_history
 
     xx, yy = generate_regression_data(problem_type=problem_type, n_obs=len(prediction_history[0]))
     pred_xx = np.linspace(-5, 5, PREDICTION_SURFACE_RESOLUTION)
-    
+
     def get_hidden_unit_predictions(pred_xx, weights, biases):
-        return g_tanh(pred_xx[:,None] @ weights['w_1'] + biases['b_1']) * weights['w_2'].T + biases['b_2']
-    
+        return g_tanh(pred_xx[:, None] @ weights['w_1'] + biases['b_1']) * weights['w_2'].T + biases['b_2']
+
+    # Initialize plots
     points = axs[0].scatter(xx, yy, marker='o', c='magenta', label='Data')
     ii = 0
     pred_line = axs[0].plot(pred_xx, prediction_history[ii], c='blue', label='Network Prediction')
     hidden_predictions = get_hidden_unit_predictions(pred_xx, weights_history[ii], biases_history[ii])
-    
+
     for hj, hidden_pred in enumerate(hidden_predictions.T):
         axs[0].plot(pred_xx, hidden_pred, '--', label=f'$a_{{hj}}^{(1)}w_{{hjk}} + b_{k}$')
-        
+
     axs[0].set_title("Data and Prediction")
     axs[0].legend(loc='upper left')
     loss_line = axs[1].plot(loss_history[:ii], 'r-', linewidth=2)
@@ -1098,15 +1096,15 @@ def visualize_regression_learning(problem_type, loss_history, prediction_history
         points = axs[0].scatter(xx, yy, marker='o', c='magenta', label='Data')
         pred_line = axs[0].plot(pred_xx, prediction_history[ii], c='blue', label='Network Prediction')
         hidden_predictions = get_hidden_unit_predictions(pred_xx, weights_history[ii], biases_history[ii])
-        
+
         for hj, hidden_pred in enumerate(hidden_predictions.T):
             axs[0].plot(pred_xx, hidden_pred, '--', label=f'$a_{{hj}}^{(1)}w_{{hjk}} + b_{k}$')
-            
+
         axs[0].set_title("Data and Prediction")
         axs[0].legend(loc='upper left')
         loss_line = axs[1].plot(loss_history[:ii+1], 'r-', linewidth=2)
         axs[1].set_title("Loss Function")
-        
+
         return axs, pred_line, loss_line, suptitle
 
     anim = FuncAnimation(
@@ -1135,7 +1133,7 @@ def visualize_regression_learning(problem_type, loss_history, prediction_history
 ***Figure 13:*** *Nonlinear regression using a multi-layer ANN. The task is to learn the noisy `sin` function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 `tanh` units, and a single `linear` output unit. (Left subpanel) The weighted hidden unit outputs $$a_{j}^{(1)}w_{jk} + b_k$$ that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation $$a^{(l)}$$ to indicate activations in the $$l$$-th hidden layer.*
 
 <details> 
-    
+
 ```python
 N_HIDDEN_UNITS = 3
 PROBLEM_TYPE = 'SIN'
@@ -1186,7 +1184,7 @@ loss_history, prediction_history, weights_history, biases_history = run_ann_simu
     n_iterations=100,
     learning_rate=.2,
 )
-   
+
 visualize_regression_learning(
     PROBLEM_TYPE,
     loss_history,

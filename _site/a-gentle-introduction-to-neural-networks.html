@@ -287,6 +287,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 </span><span class="k">def</span> <span class="nf">single_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">target_value</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">target_value</span><span class="p">)</span>
 
+
 <span class="n">single_layer_network_output</span> <span class="o">=</span> <span class="n">single_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">target_value</span><span class="p">)</span>
 <span class="n">single_layer_network_error</span> <span class="o">=</span> <span class="n">error_function</span><span class="p">(</span><span class="n">single_layer_network_output</span><span class="p">,</span> <span class="n">target_value</span><span class="p">)</span>
 
@@ -393,7 +394,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
         <span class="n">arrowstyle</span><span class="o">=</span><span class="s">'-&gt;'</span><span class="p">,</span>
         <span class="n">fc</span><span class="o">=</span><span class="s">"k"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">"k"</span>
     <span class="p">),</span>
-   <span class="p">)</span>
+<span class="p">)</span>
 <span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'$w_1$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
 
 <span class="c1"># output layer weights
@@ -408,13 +409,13 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
         <span class="n">arrowstyle</span><span class="o">=</span><span class="s">'&lt;-'</span><span class="p">,</span>
         <span class="n">fc</span><span class="o">=</span><span class="s">"k"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">"k"</span>
     <span class="p">),</span>
-   <span class="p">)</span>
+<span class="p">)</span>
 <span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">75</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'$w_2$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">])</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="p">.</span><span class="mi">8</span><span class="p">])</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'equal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Network Architecture"</span><span class="p">)</span>
 
 <span class="c1"># Plot Error Surface
@@ -598,7 +599,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="s">"""Generates training data for all demos
     """</span>
     <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-    
+
     <span class="n">truth_table</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span>
         <span class="p">[</span>
             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
@@ -613,7 +614,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
             <span class="n">truth_table</span><span class="p">,</span>
             <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">[.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span> 
+                    <span class="p">[.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span>
                     <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span>
                     <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span>
                     <span class="p">[.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
@@ -624,21 +625,20 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="p">)</span>
     <span class="n">ring_classes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">];</span>
 
-
     <span class="n">problem_classes</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">'AND'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">truth_table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
         <span class="s">'OR'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">truth_table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
         <span class="s">'XOR'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">logical_xor</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">truth_table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
         <span class="s">'RING'</span><span class="p">:</span> <span class="n">ring_classes</span>
     <span class="p">}</span>
-    
+
     <span class="k">if</span> <span class="n">problem_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'AND'</span><span class="p">,</span> <span class="s">'OR'</span><span class="p">,</span> <span class="s">'XOR'</span><span class="p">):</span>
         <span class="n">observations</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">truth_table</span><span class="p">,</span> <span class="p">(</span><span class="n">n_obs_per_class</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">.</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_obs_per_class</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">obs_classes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">problem_classes</span><span class="p">[</span><span class="n">problem_type</span><span class="p">],</span> <span class="n">n_obs_per_class</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">observations</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">ring_table</span><span class="p">,</span> <span class="p">(</span><span class="n">n_obs_per_class</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">.</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_obs_per_class</span> <span class="o">*</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">obs_classes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">problem_classes</span><span class="p">[</span><span class="n">problem_type</span><span class="p">],</span> <span class="n">n_obs_per_class</span><span class="p">)</span>
-        
+
     <span class="c1"># Permute data
 </span>    <span class="n">permutation_idx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obs_classes</span><span class="p">)))</span>
     <span class="n">obs_classes</span> <span class="o">=</span> <span class="n">obs_classes</span><span class="p">[</span><span class="n">permutation_idx</span><span class="p">]</span>
@@ -654,12 +654,10 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
         <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">2.5</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">problem_type</span> <span class="o">==</span> <span class="s">'ABS'</span><span class="p">:</span>
         <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    
+
     <span class="n">yy</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">xx</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span><span class="o">*</span><span class="p">.</span><span class="mi">5</span>
     <span class="n">perm_idx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_obs</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">xx</span><span class="p">[</span><span class="n">perm_idx</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="n">perm_idx</span><span class="p">]</span>
-
-
 </code></pre></div>  </div>
 </details>
 <p><br /></p>
@@ -676,24 +674,24 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="c1"># Weights
 </span>    <span class="n">weights</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">weight_gradients</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    
+
     <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_input_units</span><span class="p">,</span> <span class="n">w1_size</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
     <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">n_hidden_units</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_hidden_units</span><span class="p">,</span> <span class="n">n_output_units</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
         <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">])</span>
-    
+
     <span class="c1"># Biases
 </span>    <span class="n">biases</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">bias_gradients</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">w1_size</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
     <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">])</span>
-    
+
     <span class="k">if</span> <span class="n">n_hidden_units</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_output_units</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
         <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">])</span>
-        
+
     <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
 
 <span class="k">def</span> <span class="nf">get_prediction_surface</span><span class="p">(</span><span class="n">pred_surface_xy</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">):</span>
@@ -702,8 +700,8 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">prediction_surface</span><span class="p">).</span><span class="n">squeeze</span><span class="p">().</span><span class="n">reshape</span><span class="p">(</span><span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">get_prediction_series</span><span class="p">(</span><span class="n">pred_x</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">):</span>
-    <span class="s">"""Calculates current prediction series for classification problem. Used for visualization"""</span>
-    <span class="k">return</span> <span class="n">step_I_forwardprop</span><span class="p">(</span><span class="n">pred_x</span><span class="p">[:,</span><span class="bp">None</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="s">"""Calculates current prediction series for regression problem. Used for visualization"""</span>
+    <span class="k">return</span> <span class="n">step_I_forwardprop</span><span class="p">(</span><span class="n">pred_x</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">run_ann_training_simulation</span><span class="p">(</span>
     <span class="n">problem_type</span><span class="o">=</span><span class="s">'AND'</span><span class="p">,</span>
@@ -713,7 +711,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="n">learning_rate</span><span class="o">=</span><span class="mi">3</span>
 <span class="p">):</span>
     <span class="s">"""Simulate ANN training on one of the following problems:
-    
+
     Binary Classification:
         "AND": noisy binary logical AND data distrubted as 2D datapoints
         "OR": noisy binary logical OR data distrubted as 2D datapoints
@@ -722,7 +720,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     Regression (2D)
         "SIN": data are noisy observations around the sin function with a slight vertical offset
         "ABS": data are noisy observations around teh absolute value function
-        
+
     Parameters
     ----------
     problem_type : str
@@ -736,7 +734,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
         in the training dataset
     learning_rage : float
         The initial learning rate (annealing is applied at each iteration)
-        
+
     Returns
     -------
     loss_history : list[float]
@@ -759,14 +757,14 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="k">else</span><span class="p">:</span>
         <span class="n">obs_x</span><span class="p">,</span> <span class="n">obs_y</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">generate_classification_data</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">)</span>
         <span class="n">observations</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">obs_x</span><span class="p">,</span> <span class="n">obs_y</span><span class="p">]).</span><span class="n">T</span>
-        
+
     <span class="c1"># Initialize model parameters $\theta$
 </span>    <span class="n">n_output_dims</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">n_obs</span><span class="p">,</span> <span class="n">n_input_dims</span> <span class="o">=</span> <span class="n">observations</span><span class="p">.</span><span class="n">shape</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span> <span class="o">=</span> <span class="n">initialize_network_parameters</span><span class="p">(</span>
         <span class="n">n_input_dims</span><span class="p">,</span> <span class="n">n_hidden_units</span><span class="p">,</span> <span class="n">n_output_dims</span>
     <span class="p">)</span>
-    
+
     <span class="c1"># Initialize problem-specific activation functions and their derivatives
 </span>    <span class="n">g_activation</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">g_activation_prime</span> <span class="o">=</span> <span class="p">{}</span>
@@ -778,7 +776,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 </span>        <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">],</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">activation_functions</span><span class="p">[</span><span class="s">'sigmoid'</span><span class="p">]</span>
         <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
             <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">],</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">activation_functions</span><span class="p">[</span><span class="s">'sigmoid'</span><span class="p">]</span>
-            
+
     <span class="c1"># Setup for learning history / visualization
 </span>    <span class="n">loss_history</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">prediction_history</span> <span class="o">=</span> <span class="p">{}</span>
@@ -790,13 +788,13 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
         <span class="n">prediction_surface_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
         <span class="n">prediction_surface_x</span><span class="p">,</span> <span class="n">prediction_surface_y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">prediction_surface_range</span><span class="p">,</span> <span class="n">prediction_surface_range</span><span class="p">)</span>
         <span class="n">prediction_surface_xy</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">prediction_surface_x</span><span class="p">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">prediction_surface_y</span><span class="p">.</span><span class="n">ravel</span><span class="p">())]</span>
-    
+
     <span class="c1"># Run the training
 </span>    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
         <span class="n">obs_error</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">network_input</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
             <span class="n">network_input</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">network_input</span><span class="p">)</span>
-            
+
             <span class="c1"># Step I: Forward propagate input signal through the network,
 </span>            <span class="c1"># collecting activations and hidden states
 </span>            <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">z_hidden</span> <span class="o">=</span> <span class="n">step_I_forwardprop</span><span class="p">(</span>
@@ -806,13 +804,14 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
             <span class="c1"># Step II: Backpropagate error signal
 </span>            <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span> <span class="o">=</span> <span class="n">step_II_backprop</span><span class="p">(</span>
                 <span class="n">target</span><span class="p">,</span> <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">z_hidden</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">g_activation_prime</span>
-            <span class="p">)</span>    
-            
+            <span class="p">)</span>
+
             <span class="c1"># Step III. Calculate Error gradient w.r.t. parameters
 </span>            <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span> <span class="o">=</span> <span class="n">step_III_gradient_calculation</span><span class="p">(</span>
                 <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">network_input</span><span class="p">,</span>
                 <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
             <span class="p">)</span>
+
             <span class="c1"># Step IV. Update model parameters using gradients
 </span>            <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span> <span class="o">=</span> <span class="n">step_IV_update_parameters</span><span class="p">(</span>
                 <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span><span class="p">,</span> <span class="n">learning_rate</span>
@@ -822,8 +821,8 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 </span>            <span class="n">obs_error</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_function</span><span class="p">(</span><span class="n">a_output</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
 
         <span class="c1"># Anneal the learning rate (helps learning)
-</span>        <span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span> <span class="o">*</span><span class="p">.</span><span class="mi">95</span><span class="p">;</span>
-        
+</span>        <span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="p">.</span><span class="mi">95</span>
+
         <span class="c1"># Keep learning history for visualization
 </span>        <span class="n">weights_history</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
         <span class="n">biases_history</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">biases</span><span class="p">)</span>
@@ -837,7 +836,6 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
                 <span class="n">prediction_surface_xy</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">,</span> <span class="n">biases_history</span>
-
 </code></pre></div>  </div>
 </details>
 <p><br /></p>
@@ -854,13 +852,15 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <span class="n">PREDICTION_COLORMAP</span> <span class="o">=</span> <span class="s">'spring'</span>
 
 <span class="k">def</span> <span class="nf">visualize_classification_learning</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
     <span class="n">prediction_surface_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
     <span class="n">prediction_surface_x</span><span class="p">,</span> <span class="n">prediction_surface_y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">prediction_surface_range</span><span class="p">,</span> <span class="n">prediction_surface_range</span><span class="p">)</span>
 
     <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">generate_classification_data</span><span class="p">(</span><span class="n">problem_type</span><span class="o">=</span><span class="n">problem_type</span><span class="p">)</span>
-    <span class="n">contour</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">contourf</span><span class="p">(</span>
+
+    <span class="c1"># Initialize plots
+</span>    <span class="n">contour</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">contourf</span><span class="p">(</span>
         <span class="n">prediction_surface_x</span><span class="p">,</span>
         <span class="n">prediction_surface_y</span><span class="p">,</span>
         <span class="n">prediction_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -895,7 +895,6 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="k">if</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="c1"># anim.save requires imagemagick library to be installed
 </span>        <span class="n">anim</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s">'imagemagick'</span><span class="p">)</span>
-
 </code></pre></div>  </div>
 </details>
 
@@ -927,7 +926,6 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="n">loss_history</span><span class="p">,</span>
     <span class="n">prediction_history</span>
 <span class="p">)</span>
-
 </code></pre></div>  </div>
 </details>
 
@@ -964,7 +962,6 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="n">loss_history</span><span class="p">,</span>
     <span class="n">prediction_history</span>
 <span class="p">)</span>
-
 </code></pre></div>  </div>
 </details>
 
@@ -1105,18 +1102,19 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 
     <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">generate_regression_data</span><span class="p">(</span><span class="n">problem_type</span><span class="o">=</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prediction_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">pred_xx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">g_tanh</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">[:,</span><span class="bp">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">])</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">].</span><span class="n">T</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span>
-    
-    <span class="n">points</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'magenta'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Data'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g_tanh</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">])</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">].</span><span class="n">T</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span>
+
+    <span class="c1"># Initialize plots
+</span>    <span class="n">points</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'magenta'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Data'</span><span class="p">)</span>
     <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">pred_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Network Prediction'</span><span class="p">)</span>
     <span class="n">hidden_predictions</span> <span class="o">=</span> <span class="n">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">biases_history</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
-    
+
     <span class="k">for</span> <span class="n">hj</span><span class="p">,</span> <span class="n">hidden_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_predictions</span><span class="p">.</span><span class="n">T</span><span class="p">):</span>
         <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
-        
+
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Data and Prediction"</span><span class="p">)</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
     <span class="n">loss_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[:</span><span class="n">ii</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -1129,15 +1127,15 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
         <span class="n">points</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'magenta'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Data'</span><span class="p">)</span>
         <span class="n">pred_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Network Prediction'</span><span class="p">)</span>
         <span class="n">hidden_predictions</span> <span class="o">=</span> <span class="n">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">biases_history</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
-        
+
         <span class="k">for</span> <span class="n">hj</span><span class="p">,</span> <span class="n">hidden_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_predictions</span><span class="p">.</span><span class="n">T</span><span class="p">):</span>
             <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
-            
+
         <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Data and Prediction"</span><span class="p">)</span>
         <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
         <span class="n">loss_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[:</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Loss Function"</span><span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="n">axs</span><span class="p">,</span> <span class="n">pred_line</span><span class="p">,</span> <span class="n">loss_line</span><span class="p">,</span> <span class="n">suptitle</span>
 
     <span class="n">anim</span> <span class="o">=</span> <span class="n">FuncAnimation</span><span class="p">(</span>
@@ -1213,7 +1211,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">learning_rate</span><span class="o">=</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
-   
+
 <span class="n">visualize_regression_learning</span><span class="p">(</span>
     <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
     <span class="n">loss_history</span><span class="p">,</span>
