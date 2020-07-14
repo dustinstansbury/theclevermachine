@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>A Gentle Introduction to Artificial Neural Networks | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="A Gentle Introduction to Artificial Neural Networks" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed." />
+<meta property="og:description" content="Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed." />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-13T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks","description":"Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.","@type":"BlogPosting","headline":"A Gentle Introduction to Artificial Neural Networks","dateModified":"2020-07-13T00:00:00-07:00","datePublished":"2020-07-13T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">A Gentle Introduction to Artificial Neural Networks</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-07-13T00:00:00-07:00" itemprop="datePublished">Jul 13, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/neural-networks.html">neural-networks</a>
+              , 
+          
+              <a href="/theclevermachine/tags/gradient-descent.html">gradient-descent</a>
+              , 
+          
+              <a href="/theclevermachine/tags/classification.html">classification</a>
+              , 
+          
+              <a href="/theclevermachine/tags/backpropagation.html">backpropagation</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.</p>
+
+<p>For example parametric models assume that data follow some parametric class of nonlinear function (e.g. polynomial, power, or exponential), then fine-tune the shape of the parametric function to fit observed data. However this approach is only helpful if data are fit nicely by the available catalog of parametric functions.</p>
+
+<p>Another approach, kernel-based methods, transforms data non-linearly into an abstract space that measures distances between observations, then predicts new values or classes based on these distances. However, kernel methods generally involve constructing a kernel matrix that depends on the number of training observations and can thus be prohibitive for large data sets.</p>
+
+<p>Another class of models, the ones that are the focus of this post, are artificial neural networks (ANNs). ANNs are nonlinear models motivated by the physiological architecture of the nervous system. They involve a cascade of simple nonlinear computations that, when aggregated, can implement robust and complex nonlinear functions. In fact, depending on how they are constructed, ANNs can approximate any nonlinear function, making them a quite powerful class of models<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+
+<p>In recent years ANNs that use multiple stages of nonlinear computation (aka “deep learning”)  have been able obtain outstanding performance on an array of complex tasks ranging from visual object recognition to natural language processing. I find ANNs super interesting due to their computational power and their intersection with computational neuroscience.  However, I’ve found that most of the available tutorials on ANNs are either dense with formal details and contain little information about implementation or any examples, while others skip a lot of the mathematical detail and provide implementations that seem to come from thin air.  This post aims at giving a more complete overview of ANNs, including (varying degrees of) the math behind ANNs, how ANNs are implemented in code, and finally some toy examples that point out the strengths and weaknesses of ANNs.</p>
+
+<h1 id="single-layer-neural-networks">Single-layer Neural Networks</h1>
+
+<p>The simplest ANN (<strong><em>Figure 1</em></strong>) takes a set of observed inputs <script type="math/tex">\mathbf{a}=(a_1, a_2, ..., a_N)</script>, multiplies each of them by their own associated weight <script type="math/tex">\mathbf{w} = (w_1, w_2, ...w_N)</script> , and sums the weighted values to form a pre-activation <script type="math/tex">z</script>.  Oftentimes there is also a bias <script type="math/tex">b</script> that is tied to an input that is always +1 included in the preactivation calculation. The network then transforms the pre-activation using a nonlinear activation function <script type="math/tex">g(z)</script> to output a final activation <script type="math/tex">a_{\text{out}}</script>.</p>
+
+<hr />
+
+<center>
+    <br />
+    <div id="container">
+        <img width="320" src="assets/images/a-gentle-introduction-to-neural-networks/perceptron2.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1</em></strong>: Diagram of a single-layered artificial neural network.</p>
+
+<hr />
+<p><b></b></p>
+
+<p>There are many options available for the form of the activation function <script type="math/tex">g(z)</script>, and the choice generally depends on the task we would like the network to perform. For instance, if the activation function is the identity function:</p>
+
+<script type="math/tex; mode=display">g_{\text{linear}}(z) = z</script>
+
+<p>which outputs continuous values <script type="math/tex">a_{linear}\in (-\infty, \infty)</script>, then the network implements a linear model akin to used in standard linear regression. Another choice for the activation function is the logistic sigmoid:</p>
+
+<script type="math/tex; mode=display">g_{\text{logistic}}(z) = \frac{1}{1+e^{-z}}</script>
+
+<p>which outputs values <script type="math/tex">a_{logistic} \in (0,1)</script>. When the network outputs use the logistic sigmoid activation function, the network implements linear binary classification. Binary classification can also be implemented using the hyperbolic tangent function, <script type="math/tex">\text{tanh}(z)</script>, which outputs values <script type="math/tex">a_{\text{tanh}}\in (-1, 1)</script> (note that the classes must also be coded as either -1 or 1 when using <script type="math/tex">\text{tanh}</script>. Single-layered neural networks used for classification are often referred to as “perceptrons,” a name given to them when they were first developed in the late 1950s.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/a-gentle-introduction-to-neural-networks/common_activation_functions.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 2:</em></strong> Common activation functions functions used in artificial neural, along with their derivatives</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="c1"># Define a few common activation functions
+</span><span class="n">g_linear</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span>
+<span class="n">g_sigmoid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+<span class="n">g_tanh</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+   
+<span class="c1"># ...and their analytic derivatives    
+</span><span class="n">g_prime_linear</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+<span class="n">g_prime_sigmoid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)))</span>
+<span class="n">g_prime_tanh</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="c1"># Visualize each g_*(z) 
+</span><span class="n">activation_functions</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s">"linear"</span><span class="p">,</span> <span class="p">(</span><span class="n">g_linear</span><span class="p">,</span> <span class="n">g_prime_linear</span><span class="p">,</span> <span class="s">'red'</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">"sigmoid"</span><span class="p">,</span> <span class="p">(</span><span class="n">g_sigmoid</span><span class="p">,</span> <span class="n">g_prime_sigmoid</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">"tanh"</span><span class="p">,</span> <span class="p">(</span><span class="n">g_tanh</span><span class="p">,</span> <span class="n">g_prime_tanh</span><span class="p">,</span> <span class="s">'green'</span><span class="p">)),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># Activation functions
+</span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">f"$g_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">(z)$"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Activation Functions'</span><span class="p">)</span>
+    
+    <span class="c1"># Derivatives
+</span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">f"$g_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">(z)$"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Derivatives'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"Some Common Activation Functions &amp; Their Derivatives</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">);</span>
+
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<hr />
+
+<p>To get a better idea of what these activation function do, their outputs for a given range of input values are plotted in the left of <strong><em>Figure 2</em></strong>. We see that the <script type="math/tex">\text{logistic}</script> and <script type="math/tex">\text{tanh }</script> activation functions (blue and green) have the quintessential sigmoidal “s” shape that saturates for inputs of large magnitude. This behavior makes them useful for categorization. The identity / linear activation (red), however forms a linear mapping between the input to the activation function, which makes it useful for predicting continuous values.</p>
+
+<p>A key property of these activation functions is that they are all smooth and differentiable. We’ll see later in this post why differentiability is important for training neural networks. The derivatives for each of these common activation functions are given by (for mathematical details on calculating these derivatives, see <a href="/theclevermachine/derivation-common-neural-network-activation-functions">this post</a> ):</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align} g'_{\text{linear}}(z) &= 1 \\  
+g'_{\text{logistic}}(z) &= g_{\text{logistic}}(z)(1- g_{\text{logistic}}(z)) \\ 
+g'_{\text{tanh}}(z) &= 1 - g_{\text{tanh}}^2(z) 
+\end{align} %]]></script>
+
+<p>Each of the derivatives are plotted in the right of <strong><em>Figure 2</em></strong>. What is interesting about these derivatives is that they are either a constant (i.e. 1), or are can be defined in terms of the original function. This makes them extremely convenient for efficiently training neural networks, as we can implement the gradient using simple manipulations of the feed-forward states of the network.</p>
+
+<h1 id="multi-layer-neural-networks">Multi-layer Neural Networks</h1>
+
+<p>As was mentioned above, single-layered networks implement linear models, which doesn’t really help us if we want to model nonlinear phenomena. However, by considering the single layer network diagrammed in <strong><em>Figure 1</em></strong> to be a basic building block, we can construct more complicated networks, ones that perform powerful, nonlinear computations. <strong><em>Figure 3</em></strong> demonstrates this concept. Instead of a single layer of weights between inputs and output, we introduce a set of  single-layer networks between the two. This set of intermediate networks is often referred to as a “hidden” layer, as it doesn’t directly observe input or directly compute the output.</p>
+
+<p>By using a hidden layer, we form a <em>multi-layered ANN</em>. Though there are many different conventions for declaring the actual number of layers in a multi-layer network, for this discussion we will use the convention of the number of distinct sets of trainable weights as the number of layers. For example, the network in <strong><em>Figure 3</em></strong> would be considered a 2-layer ANN because it has two layers of weights: those connecting the inputs to the hidden layer <script type="math/tex">(w_{ij})</script>, and those connecting the output of the hidden layer to the output layer <script type="math/tex">(w_{jk})</script>.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="500" src="assets/images/a-gentle-introduction-to-neural-networks/multi-layer-perceptron.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 3</em></strong>: Diagram of a multi-layer ANN. Each node in the network can be considered a single-layered ANN (for simplicity, biases are not visualized in graphical model)</p>
+
+<hr />
+<p><b></b></p>
+
+<p>Multi-layer neural networks form compositional functions that map the inputs nonlinearly to outputs. If we associate index <script type="math/tex">i</script> with the input layer, index <script type="math/tex">j</script> with the hidden layer, and index <script type="math/tex">k</script> with the output layer, then an output unit in the network diagrammed in <strong><em>Figure 3</em></strong> computes an output value <script type="math/tex">a_k</script> given and input <script type="math/tex">a_i</script> via the following compositional function:</p>
+
+<script type="math/tex; mode=display">\begin{array}{rcl}a_{\text{out}} = a_k = g_k(b_k + \sum_jg_j(b_j + \sum_i a_i w_{ij})w_{jk}\end{array}</script>
+
+<p>A breakdown of this function is as follows:</p>
+<ul>
+  <li><script type="math/tex">z_l</script> is the pre-activation values for the units in layer <script type="math/tex">l</script></li>
+  <li><script type="math/tex">g_l()</script> is the activation function for units in layer <script type="math/tex">l</script> (assuming the same function for all units)</li>
+  <li><script type="math/tex">a_l = g_l(z_l)</script> is the output activation for units in layer <script type="math/tex">l</script>.</li>
+  <li><script type="math/tex">w_{l-1, l}</script> are the parameters that weight the output messages of units feeding into layer <script type="math/tex">l</script> to the activation function of units for that layer.</li>
+  <li>The <script type="math/tex">b_l</script> term is the bias/DC offset for units in layer <script type="math/tex">l</script>.</li>
+</ul>
+
+<p>As with the single-layered ANN, the choice of activation function for the output layer will depend on the task that we would like the network to perform (i.e. categorization or regression), and follows similar rules outlined above. However, it is generally desirable for the hidden units to have nonlinear activation functions (e.g. logistic sigmoid or tanh). This is because multiple layers of linear computations can be equally formulated as a single layer of linear computations. Thus using linear activations for the hidden layers doesn’t buy us much. However, as we’ll see shortly, using linear activations for the output unit activation function, while in conjunction with nonlinear activations for the hidden units, allows the network to perform nonlinear regression.</p>
+
+<h1 id="-training-neural-networks--gradient-descent"><a name="training-networks-and-gradient-descent"></a> Training neural networks &amp; gradient descent</h1>
+
+<p>Training neural networks involves determining the model parameters  <script type="math/tex">\theta = \{\mathbf{w}, \mathbf{b}\}</script> that minimize the errors the network makes. This first requires that we have a way of quantifying error. A standard way of quantifying error is to take the squared difference between the network output and the target value:<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+
+<script type="math/tex; mode=display">\begin{array}{rcl}E = \frac{1}{2}(\text{output} - \text{target})^2\end{array}</script>
+
+<p>With an error function in hand, we then aim to find the setting of parameters that minimizes this error function, when aggregated across all the training data<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>. This concept can be interpreted spatially by imagining a “parameter space” whose dimensions are the values of each of the model parameters, and for which the error function will form a surface of varying height depending on its value for each parameter. Model training is thus equivalent to finding point in parameter space that makes the height of the error surface small.</p>
+
+<h1 id="analysis-of-simple-neural-networks">Analysis of simple neural networks</h1>
+
+<h4 id="single-layer-neural-network">Single-layer neural network</h4>
+
+<p>To get a better intuition behind the concept of minimizing the error surface, let’s define a super-simple neural network, one that has a single input and a single output. For further simplicity, we’ll assume the network has no bias term and thus has a single parameter, <script type="math/tex">w_1</script>. We will also assume that the output layer uses the logistic sigmoid activation function. Accordingly, the network will map some input value <script type="math/tex">a_0</script> onto a predicted output <script type="math/tex">a_{\text{out}}</script> via the following function.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
+\end{align} %]]></script>
+
+<p>Now let’s say we want this simple network to learn the identity function: given an input of 1 it should return a target value of 1. Given this target value we can now calculate the value of the error function for each setting of <script type="math/tex">w_1</script>. Varying the value of <script type="math/tex">w_1</script> from -10 to 10 results in the error surface displayed in the right of <strong><em>Figure 4</em></strong>.  We see that the error is small for large positive values of <script type="math/tex">w_1</script>, while the error is large for strongly negative values of <script type="math/tex">w_1</script>. This not surprising, given that the output activation function is the logistic sigmoid, which will map large values onto an output of 1.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/a-gentle-introduction-to-neural-networks/single-layer-ann-error-surface.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 4:</em></strong> <em>Dynamics of a simple, single-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface <script type="math/tex">E(\mathbf w)</script> for the task, as a function of the single model parameter, <script type="math/tex">w_1</script> The network’s error is low when <script type="math/tex">w_1</script> large and positive magnitude and high when <script type="math/tex">w_1</script> is negative</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="n">mpatches</span>
+
+<span class="c1"># Sigmoid activation functions
+</span><span class="n">g</span> <span class="o">=</span> <span class="n">g_sigmoid</span>
+<span class="k">def</span> <span class="nf">error_function</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="s">"""Squared error function (f(x) - y)**2"""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">prediction</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c1"># Grid of allowed parameter values
+</span><span class="n">grid_size</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">parameter_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">parameter_range</span><span class="p">,</span> <span class="n">parameter_range</span><span class="p">)</span>
+
+<span class="n">target_value</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># single layer ANN
+</span><span class="k">def</span> <span class="nf">single_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">target_value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">target_value</span><span class="p">)</span>
+
+<span class="n">single_layer_network_output</span> <span class="o">=</span> <span class="n">single_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">target_value</span><span class="p">)</span>
+<span class="n">single_layer_network_error</span> <span class="o">=</span> <span class="n">error_function</span><span class="p">(</span><span class="n">single_layer_network_output</span><span class="p">,</span> <span class="n">target_value</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">input_node</span> <span class="o">=</span> <span class="n">mpatches</span><span class="p">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">output_node</span> <span class="o">=</span> <span class="n">mpatches</span><span class="p">.</span><span class="n">Circle</span><span class="p">((.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">input_node</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">output_node</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'$a_0$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'$a_{out}$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'$w_1$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s">''</span><span class="p">,</span>
+    <span class="p">(.</span><span class="mi">4</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+    <span class="p">(.</span><span class="mi">1</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">arrowstyle</span><span class="o">=</span><span class="s">'-&gt;'</span><span class="p">,</span>
+        <span class="n">fc</span><span class="o">=</span><span class="s">"k"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">"k"</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="p">.</span><span class="mi">8</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'equal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Network Architecture"</span><span class="p">)</span>
+
+<span class="c1"># Plot Error Surface
+</span><span class="n">ERROR_COLORMAP</span> <span class="o">=</span> <span class="s">'RdBu_r'</span>
+<span class="n">edge_color</span> <span class="o">=</span> <span class="s">'gray'</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">single_layer_network_error</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">ERROR_COLORMAP</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">edge_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'$w_1$'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s">'$E(w)$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Error Surface"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">'Single-layer Network'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<hr />
+
+<h4 id="multi-layer-neural-network">Multi-layer neural network</h4>
+
+<p>Things become more interesting when we move from a single-layered network to a multi-layered network. Let’s repeat the above exercise, but include a single hidden node between the input and the output. Again, we will assume no biases, and logistic sigmoid activations for both the hidden and output nodes. Thus the network will have two parameters: <script type="math/tex">(w_1, w_2)</script>. Accordingly the 2-layered network will predict an output with the following function:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}a_{\text{out}} &= g_{\text{logistic}}(g_{\text{logistic}}(a_0w_1)w_2)\end{align} %]]></script>
+
+<p>Now, if we vary both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script>, we obtain the error surface in right of <strong><em>Figure 5</em></strong>.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/a-gentle-introduction-to-neural-networks/multi-layer-ann-error-surface.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 5:</em></strong> <em>Dynamics of a multi-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface <script type="math/tex">E(\mathbf w)</script> for the task, as a function of the model parameters, <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script>. The network’s error is low when both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script> have large positive magnitudes, and and high when the weights are negative.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">two_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">target_value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w2</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">target_value</span><span class="p">))</span>
+
+<span class="n">two_layer_network_output</span> <span class="o">=</span> <span class="n">two_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">target_value</span><span class="p">)</span>
+<span class="n">two_layer_network_error</span> <span class="o">=</span> <span class="n">error_function</span><span class="p">(</span><span class="n">two_layer_network_output</span><span class="p">,</span> <span class="n">target_value</span><span class="p">)</span>
+
+<span class="c1"># Plot network diagram
+</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">input_node</span> <span class="o">=</span> <span class="n">mpatches</span><span class="p">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">hidden_node</span> <span class="o">=</span> <span class="n">mpatches</span><span class="p">.</span><span class="n">Circle</span><span class="p">((.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">output_node</span> <span class="o">=</span> <span class="n">mpatches</span><span class="p">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">input_node</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">hidden_node</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">output_node</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'$a_0$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'$a_1$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'$a_{out}$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+
+<span class="c1"># hidden layer weights
+</span><span class="n">ax</span><span class="p">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s">''</span><span class="p">,</span>
+    <span class="p">(.</span><span class="mi">4</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+    <span class="p">(.</span><span class="mi">1</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">arrowstyle</span><span class="o">=</span><span class="s">'-&gt;'</span><span class="p">,</span>
+        <span class="n">fc</span><span class="o">=</span><span class="s">"k"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">"k"</span>
+    <span class="p">),</span>
+   <span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'$w_1$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+
+<span class="c1"># output layer weights
+</span><span class="n">ax</span><span class="p">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s">''</span><span class="p">,</span>
+    <span class="p">(.</span><span class="mi">6</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+    <span class="p">(.</span><span class="mi">9</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">arrowstyle</span><span class="o">=</span><span class="s">'&lt;-'</span><span class="p">,</span>
+        <span class="n">fc</span><span class="o">=</span><span class="s">"k"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">"k"</span>
+    <span class="p">),</span>
+   <span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">75</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'$w_2$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="p">.</span><span class="mi">8</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'equal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Network Architecture"</span><span class="p">)</span>
+
+<span class="c1"># Plot Error Surface
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">two_layer_network_error</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">ERROR_COLORMAP</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">edge_color</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'$w_1$'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'$w_2$'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s">'$E(w)$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Error Surface"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">'Multi-layer Network'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+
+<p><br /></p>
+
+<p>We see that the error function is minimized when both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script> are large and positive. We also see that the error surface is more complex than for the single-layered model, exhibiting a number of wide plateau regions. It turns out that the error surface gets more and more complicated as you increase the number of layers in the network and the number of units in each hidden layer. Thus, it is important to consider these phenomena when constructing neural network models.</p>
+
+<p>The examples in <strong><em>Figures 4-5</em></strong> gives us a qualitative idea of how to train the parameters of an ANN, but we would like a more automatic way of doing so. Generally this problem is solved using gradient descent. The gradient descent algorithm first calculates the derivative / gradient of the error function with respect  to each of the model parameters. This gradient information will give us the direction in parameter space that decreases the height of the error surface. We then take a step in that direction and repeat, iteratively calculating the gradient and taking steps in parameter space.</p>
+
+<h1 id="the-backpropagation-algorithm">The Backpropagation Algorithm</h1>
+
+<p>It turns out that the gradient information for the ANN error surface can be calculated efficiently using a message passing algorithm known as the <em>backpropagation algorithm.</em> During backpropagation, input signals are forward-propagated through the network toward the outputs, and network errors are then calculated with respect to target variables and “backpropagated” backwards towards the inputs. The forward and backward signals are then used to determine the direction in the parameter space to move that lowers the network error.</p>
+
+<p>The formal calculations behind the backpropagation algorithm can be somewhat mathematically involved and may detract from the general ideas behind the learning algorithm. For those readers who are interested in the math, I have provided the <a href="/theclevermachine/derivation-backpropagation">formal derivation of the backpropagation algorithm</a> (for those of you who are not interested in the math, I would also encourage you go over the derivation and try to make connections to the source code implementations provided later in the post).</p>
+
+<p><strong><em>Figure 6</em></strong> demonstrates the four key steps of the backpropagation algorithm. The main concept underlying the algorithm is that for a given observation we want to determine the degree of “responsibility” that each network parameter has for mis-predicting a target value associated with the observation. We then change that parameter according to this responsibility so that it reduces the network error.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="480" src="assets/images/a-gentle-introduction-to-neural-networks/backpropagation-steps.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 6:</em></strong> <em>The four key steps of the backpropagation algorithm: I Forward propagate error signals to output, II Calculate output error E, and backpropagate error signal, III Use forward signal and backward signals to calculate parameter gradients, IV update network parameters.</em></p>
+
+<hr />
+
+<p><br /></p>
+
+<p><strong><em>Step I</em></strong> of the backpropagation algorithm is to forward-propagate the observed input forward through the network layers in order to provide a prediction for the current target. This first step of the backpropagation algorithm is demonstrated in <strong><em>Figure 6-I</em></strong>. Note that in the figure <script type="math/tex">a_k</script> could be considered network output (for a network with one hidden layer) or the output of a hidden layer that projects the remainder of the network (in the case of a network with more than one hidden layer). For this discussion, however, we assume that the index <script type="math/tex">k</script> is associated with the output layer of the network, and thus each of the network outputs is designated by <script type="math/tex">a_k</script>. Also note that when implementing this forward-propagation step, we should keep track of the feed-forward pre-activations <script type="math/tex">z_l</script> and activations <script type="math/tex">a_l</script> for all layers <script type="math/tex">l</script>, as these can be used to efficiently calculate backpropagated errors and error function gradients.</p>
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_I_forwardprop</span><span class="p">(</span><span class="n">network_input</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>  <span class="c1"># multi-layer network
+</span>        <span class="n">z_hidden</span> <span class="o">=</span> <span class="n">network_input</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span>
+        <span class="n">a_hidden</span> <span class="o">=</span> <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">](</span><span class="n">z_hidden</span><span class="p">)</span>
+        <span class="n">z_output</span> <span class="o">=</span> <span class="n">a_hidden</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># single-layer network
+</span>        <span class="n">z_hidden</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">a_hidden</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">z_output</span> <span class="o">=</span> <span class="n">network_input</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span>
+    
+    <span class="n">a_output</span> <span class="o">=</span> <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">](</span><span class="n">z_output</span><span class="p">)</span> <span class="c1"># Network prediction
+</span>    <span class="k">return</span> <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">z_hidden</span>
+</code></pre></div>  </div>
+</details>
+<p><b></b></p>
+
+<p><strong><em>Step II</em></strong> of the algorithm is to calculate the network output error and backpropagate it toward the input. For this walkthrough we’ll continue to use the sum of squared differences error function, this time written in a more explicit form than in the <a href="#training-networks-and-gradient-descent">Training neural networks &amp; gradient descent</a> section:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}E(\mathbf{\theta}) &= \frac{1}{2}\sum_{k \in K}(a_k - t_k)^2\end{align} %]]></script>
+
+<p>Here we sum over the values of all <script type="math/tex">k</script> output units (one in this example). Note that the model parameters parameters <script type="math/tex">\theta</script> are implicit in the output activations <script type="math/tex">a_k</script>. This error function has the following derivative with respect to the model parameters <script type="math/tex">\theta</script>:</p>
+
+<script type="math/tex; mode=display">E'(\mathbf{\theta}) = (a_k - t_k)</script>
+
+<p>We can now define an “error signal” <script type="math/tex">\delta_k</script> at the output node that will be backpropagated toward the input. The error signal is calculated as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\delta_k &= g_k'(z_k)E'(\theta) \\  
+&= g_k'(z_k)(a_k - t_k)
+\end{align} %]]></script>
+
+<p>This error signal essentially weights the gradient of the error function by the gradient of the output activation function. Notice that there is a <script type="math/tex">z_k</script> term is used in the calculation of <script type="math/tex">\delta_k</script>. In order to make learning more efficient, we keep track of the <script type="math/tex">z_k</script> during the forward-propagation step so that it can be used in backpropagation. We can continue backpropagating the error signal toward the input by passing <script type="math/tex">\delta_k</script> through the output layer weights <script type="math/tex">w_{jk}</script>, summing over all output nodes, and passing the result through the gradient of the activation function at the hidden layer <script type="math/tex">g_j'(z_j)</script> (<strong><em>Figure 6-II</em></strong>). Performing these operations results in the backpropagated error signal for the hidden layer, <script type="math/tex">\delta_j</script>:</p>
+
+<script type="math/tex; mode=display">\delta_j = g_j'(z_j)\sum_k \delta_k w_{jk}</script>
+
+<p>For networks that have more than one hidden layer, this error backpropagation procedure can continue for layers <script type="math/tex">j-1, j-2, ...</script>, etc.</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_II_backprop</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">z_hidden</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">g_activation_prime</span><span class="p">):</span>
+    <span class="c1"># Calculate error function derivative given input/output/params
+</span>    <span class="n">delta_output</span> <span class="o">=</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">](</span><span class="n">z_output</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">a_output</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1"># Calculate any error contributions from hidden layers nodes
+</span>    <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>  <span class="c1"># multi-layer network
+</span>        <span class="n">delta_hidden</span> <span class="o">=</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">](</span><span class="n">z_hidden</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">delta_output</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">].</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">delta_hidden</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="k">return</span> <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<p><strong><em>Step III</em></strong> of the backpropagation algorithm is to calculate the gradients of the error function with respect to the model parameters at each layer <script type="math/tex">l</script> using the forward signals <script type="math/tex">a_{l-1}</script>, and the backward error signals <script type="math/tex">\delta_l</script> . If one considers the model weights <script type="math/tex">w_{l-1, l}</script> at a layer <script type="math/tex">l</script> as linking the forward signal <script type="math/tex">a_{l-1}</script> to the error signal <script type="math/tex">\delta_l</script> (<strong><em>Figure 6-III</em></strong>), then the gradient of the error function with respect to those weights is:<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup></p>
+
+<script type="math/tex; mode=display">\frac{\partial E}{\partial w_{l-1, l}} = a_{l-1}\delta_l</script>
+
+<p>Thus the gradient of the error function with respect to the model weight at each layer can be efficiently calculated by simply keeping track of the forward-propagated activations feeding into that layer from below, and weighting those activations by the backward-propagated error signals feeding into that layer from above!</p>
+
+<p>What about the bias parameters? It turns out that the same gradient rule used for the weight weights applies, except that “feed-forward activations” for biases are always +1 (see <strong><em>Figure 1</em></strong>). Thus the bias gradients for layer <script type="math/tex">l</script> are simply:</p>
+
+<script type="math/tex; mode=display">\frac{\partial E}{\partial b_{l}} = (1)\delta_l = \delta_l</script>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_III_gradient_calculation</span><span class="p">(</span>
+    <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">network_input</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weight_gradients</span><span class="p">:</span>  <span class="c1"># multi-layer network
+</span>        <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_hidden</span><span class="p">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">delta_output</span>
+        <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta_output</span> <span class="o">*</span> <span class="mi">1</span>
+        <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">network_input</span><span class="p">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">delta_hidden</span>
+        <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta_hidden</span> <span class="o">*</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># single-layer network
+</span>        <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">network_input</span><span class="p">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">delta_output</span>
+        <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta_output</span> <span class="o">*</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<p>The <strong><em>fourth and final step</em></strong> of the backpropagation algorithm is to update the model parameters based on the gradients calculated in Step III. Note that the gradients point in the direction in parameter space that will increase the value of the error function. Thus when updating the model parameters we should choose to go in the opposite direction. How far do we travel in that direction? That is generally determined by a user-defined step size–aka learning rate–parameter, <script type="math/tex">\eta</script>. Thus, given the parameter gradients and the step size, the weights and biases for a given layer are updated accordingly:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+w_{l-1,l} &\leftarrow w_{l-1,l} - \eta \frac{\partial E}{\partial w_{l-1, l}} \\ 
+b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
+\end{align} %]]></script>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_IV_update_parameters</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>  <span class="c1"># multi-layer network
+</span>        <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">-</span> <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">*</span> <span class="n">learning_rate</span>
+        <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">-</span> <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">*</span> <span class="n">learning_rate</span>
+
+    <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">-</span> <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">*</span> <span class="n">learning_rate</span>
+    <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">-</span> <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">*</span> <span class="n">learning_rate</span>
+    <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span>
+</code></pre></div>  </div>
+</details>
+<p><b></b></p>
+
+<p>To train an ANN, the four steps outlined above and in <strong><em>Figure 6</em></strong> are repeated iteratively by observing many input-target pairs and updating the parameters until either the network error reaches a tolerably low value, the parameters cease to update (convergence), or a set number of iterations over the training data has been achieved. Some readers may find the steps of the backpropagation somewhat ad hoc. However, keep in mind that these steps are formally coupled to the calculus of the optimization problem. Thus I again refer the curious reader to check out <a href="/theclevermachine/derivation-backpropagation">the post on deriving the backpropagation algorithm update weight update formulas</a> in order to make connections between the algorithm, the math, and the code, which we’re about to jump into.</p>
+
+<h1 id="neural-networks-for-classification">Neural Networks for Classification</h1>
+
+<p>Here we go over an example of training a single-layered neural network to perform a classification problem. The network is trained to learn a set of logical operators including the  <code class="language-plaintext highlighter-rouge">AND</code>, <code class="language-plaintext highlighter-rouge">OR</code>, or <code class="language-plaintext highlighter-rouge">XOR</code>. To train the network we first generate training data. The inputs consist of 2-dimensional coordinates that span the input values <script type="math/tex">(x_1, x_2)</script> values for a 2-bit truth table:</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="300" src="assets/images/a-gentle-introduction-to-neural-networks/truth-table.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 7:</em></strong> <em>Truth table values learned in classification examples.</em></p>
+
+<hr />
+<p><br /></p>
+
+<p>We then perturb these observations by adding Normally-distributed noise. To generate target variables, we categorize each observations by applying one of logic operators described in <strong><em>Figure 7</em></strong>) to the original (no-noisy) coordinates.</p>
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generate_classification_data</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_obs_per_class</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+    <span class="s">"""Generates training data for all demos
+    """</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+    
+    <span class="n">truth_table</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">ring_table</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">truth_table</span><span class="p">,</span>
+            <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">[.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span> 
+                    <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span>
+                    <span class="p">[.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                    <span class="p">[.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">ring_classes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">];</span>
+
+
+    <span class="n">problem_classes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'AND'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">truth_table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
+        <span class="s">'OR'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">truth_table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
+        <span class="s">'XOR'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">logical_xor</span><span class="p">(</span><span class="n">truth_table</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">truth_table</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.</span><span class="p">,</span>
+        <span class="s">'RING'</span><span class="p">:</span> <span class="n">ring_classes</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="n">problem_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'AND'</span><span class="p">,</span> <span class="s">'OR'</span><span class="p">,</span> <span class="s">'XOR'</span><span class="p">):</span>
+        <span class="n">observations</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">truth_table</span><span class="p">,</span> <span class="p">(</span><span class="n">n_obs_per_class</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">.</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_obs_per_class</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">obs_classes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">problem_classes</span><span class="p">[</span><span class="n">problem_type</span><span class="p">],</span> <span class="n">n_obs_per_class</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">observations</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">ring_table</span><span class="p">,</span> <span class="p">(</span><span class="n">n_obs_per_class</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">.</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_obs_per_class</span> <span class="o">*</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">obs_classes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">tile</span><span class="p">(</span><span class="n">problem_classes</span><span class="p">[</span><span class="n">problem_type</span><span class="p">],</span> <span class="n">n_obs_per_class</span><span class="p">)</span>
+        
+    <span class="c1"># Permute data
+</span>    <span class="n">permutation_idx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obs_classes</span><span class="p">)))</span>
+    <span class="n">obs_classes</span> <span class="o">=</span> <span class="n">obs_classes</span><span class="p">[</span><span class="n">permutation_idx</span><span class="p">]</span>
+    <span class="n">observations</span> <span class="o">=</span> <span class="n">observations</span><span class="p">[</span><span class="n">permutation_idx</span><span class="p">]</span>
+    <span class="n">obs_x</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">observations</span><span class="p">]</span>
+    <span class="n">obs_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">observations</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">obs_x</span><span class="p">,</span> <span class="n">obs_y</span><span class="p">,</span> <span class="n">obs_classes</span>
+
+<span class="k">def</span> <span class="nf">generate_regression_data</span><span class="p">(</span><span class="n">problem_type</span><span class="o">=</span><span class="s">'SIN'</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">problem_type</span> <span class="o">==</span> <span class="s">'SIN'</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">2.5</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">problem_type</span> <span class="o">==</span> <span class="s">'ABS'</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="n">yy</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">xx</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span><span class="o">*</span><span class="p">.</span><span class="mi">5</span>
+    <span class="n">perm_idx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_obs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">xx</span><span class="p">[</span><span class="n">perm_idx</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="n">perm_idx</span><span class="p">]</span>
+
+
+</code></pre></div>  </div>
+</details>
+<p><br /></p>
+
+<p>With training data in hand, we then train the network with the noisy inputs and binary categories targets using the gradient descent / backpropagation algorithm.<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+
+<span class="k">def</span> <span class="nf">initialize_network_parameters</span><span class="p">(</span><span class="n">n_input_units</span><span class="p">,</span> <span class="n">n_hidden_units</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_output_units</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="s">"""Generate weights and bias parameters based on defined network architecture"""</span>
+    <span class="n">w1_size</span> <span class="o">=</span> <span class="n">n_hidden_units</span> <span class="k">if</span> <span class="n">n_hidden_units</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n_output_units</span>
+    <span class="c1"># Weights
+</span>    <span class="n">weights</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">weight_gradients</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    
+    <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_input_units</span><span class="p">,</span> <span class="n">w1_size</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
+    <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">n_hidden_units</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_hidden_units</span><span class="p">,</span> <span class="n">n_output_units</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
+        <span class="n">weight_gradients</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">])</span>
+    
+    <span class="c1"># Biases
+</span>    <span class="n">biases</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">bias_gradients</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">w1_size</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
+    <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="n">n_hidden_units</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_output_units</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
+        <span class="n">bias_gradients</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">])</span>
+        
+    <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
+
+<span class="k">def</span> <span class="nf">get_prediction_surface</span><span class="p">(</span><span class="n">pred_surface_xy</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">):</span>
+    <span class="s">"""Calculates current prediction surface for classification problem. Used for visualization"""</span>
+    <span class="n">prediction_surface</span> <span class="o">=</span> <span class="p">[</span><span class="n">step_I_forwardprop</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="n">pred_surface_xy</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">prediction_surface</span><span class="p">).</span><span class="n">squeeze</span><span class="p">().</span><span class="n">reshape</span><span class="p">(</span><span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_prediction_series</span><span class="p">(</span><span class="n">pred_x</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">):</span>
+    <span class="s">"""Calculates current prediction series for classification problem. Used for visualization"""</span>
+    <span class="k">return</span> <span class="n">step_I_forwardprop</span><span class="p">(</span><span class="n">pred_x</span><span class="p">[:,</span><span class="bp">None</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">run_ann_training_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="s">'AND'</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">n_observations</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">):</span>
+    <span class="s">"""Simulate ANN training on one of the following problems:
+    
+    Binary Classification:
+        "AND": noisy binary logical AND data distrubted as 2D datapoints
+        "OR": noisy binary logical OR data distrubted as 2D datapoints
+        "XOR": noisy binary logical XOR data distrubted as 2D datapoints
+        "RING": data are a mode of one binary class surronded by a ring of the other
+    Regression (2D)
+        "SIN": data are noisy observations around the sin function with a slight vertical offset
+        "ABS": data are noisy observations around teh absolute value function
+        
+    Parameters
+    ----------
+    problem_type : str
+        One of the problem types listed above
+    n_hidden_units : int
+        The number of hidden units in the hidden layer. Zero indicates no hidden layer
+    n_iterations : int
+        The number of times to run through the training observations
+    n_observations : int
+        The number of data points or (or dataset replicas for classification) that are used
+        in the training dataset
+    learning_rage : float
+        The initial learning rate (annealing is applied at each iteration)
+        
+    Returns
+    -------
+    loss_history : list[float]
+        The loss function at each iteration of training
+    prediction_history : dict
+        Network predictions over the range of the training input. Used for learning visualization.
+        Keys are are the iteration number. Values are either prediction surface for classification
+        problems, or prediction series for regression
+    weights_history : dict
+        For each iteration, a snapshot of the state of the parameters. Used for visualizing hidden
+        unit states at each iteration
+    biases_history : dict
+        For each iteration, a snapshot of the state of the biases. Used for visualization. Used for
+        visualizing hidden unit states at each iteration
+    """</span>
+
+    <span class="c1"># Initialize problem data
+</span>    <span class="k">if</span> <span class="n">problem_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'SIN'</span><span class="p">,</span> <span class="s">'ABS'</span><span class="p">):</span>
+        <span class="n">observations</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">generate_regression_data</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">obs_x</span><span class="p">,</span> <span class="n">obs_y</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">generate_classification_data</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_observations</span><span class="p">)</span>
+        <span class="n">observations</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">obs_x</span><span class="p">,</span> <span class="n">obs_y</span><span class="p">]).</span><span class="n">T</span>
+        
+    <span class="c1"># Initialize model parameters $\theta$
+</span>    <span class="n">n_output_dims</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n_obs</span><span class="p">,</span> <span class="n">n_input_dims</span> <span class="o">=</span> <span class="n">observations</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span> <span class="o">=</span> <span class="n">initialize_network_parameters</span><span class="p">(</span>
+        <span class="n">n_input_dims</span><span class="p">,</span> <span class="n">n_hidden_units</span><span class="p">,</span> <span class="n">n_output_dims</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Initialize problem-specific activation functions and their derivatives
+</span>    <span class="n">g_activation</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">g_activation_prime</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">problem_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'SIN'</span><span class="p">,</span> <span class="s">'ABS'</span><span class="p">):</span>  <span class="c1"># regression using linear output (and optional tanh hidden) activations
+</span>        <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">],</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">activation_functions</span><span class="p">[</span><span class="s">'linear'</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+            <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">],</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">activation_functions</span><span class="p">[</span><span class="s">'tanh'</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># classification using all sigmoid activations
+</span>        <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">],</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_out'</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">activation_functions</span><span class="p">[</span><span class="s">'sigmoid'</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+            <span class="n">g_activation</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">],</span> <span class="n">g_activation_prime</span><span class="p">[</span><span class="s">'g_1'</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">activation_functions</span><span class="p">[</span><span class="s">'sigmoid'</span><span class="p">]</span>
+            
+    <span class="c1"># Setup for learning history / visualization
+</span>    <span class="n">loss_history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">prediction_history</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">weights_history</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">biases_history</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">problem_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'SIN'</span><span class="p">,</span> <span class="s">'ABS'</span><span class="p">):</span>
+        <span class="n">prediction_x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prediction_surface_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
+        <span class="n">prediction_surface_x</span><span class="p">,</span> <span class="n">prediction_surface_y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">prediction_surface_range</span><span class="p">,</span> <span class="n">prediction_surface_range</span><span class="p">)</span>
+        <span class="n">prediction_surface_xy</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">prediction_surface_x</span><span class="p">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">prediction_surface_y</span><span class="p">.</span><span class="n">ravel</span><span class="p">())]</span>
+    
+    <span class="c1"># Run the training
+</span>    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="n">obs_error</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">network_input</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+            <span class="n">network_input</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">network_input</span><span class="p">)</span>
+            
+            <span class="c1"># Step I: Forward propagate input signal through the network,
+</span>            <span class="c1"># collecting activations and hidden states
+</span>            <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">z_hidden</span> <span class="o">=</span> <span class="n">step_I_forwardprop</span><span class="p">(</span>
+                <span class="n">network_input</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Step II: Backpropagate error signal
+</span>            <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span> <span class="o">=</span> <span class="n">step_II_backprop</span><span class="p">(</span>
+                <span class="n">target</span><span class="p">,</span> <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">z_hidden</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">g_activation_prime</span>
+            <span class="p">)</span>    
+            
+            <span class="c1"># Step III. Calculate Error gradient w.r.t. parameters
+</span>            <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span> <span class="o">=</span> <span class="n">step_III_gradient_calculation</span><span class="p">(</span>
+                <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">network_input</span><span class="p">,</span>
+                <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
+            <span class="p">)</span>
+            <span class="c1"># Step IV. Update model parameters using gradients
+</span>            <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span> <span class="o">=</span> <span class="n">step_IV_update_parameters</span><span class="p">(</span>
+                <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span><span class="p">,</span> <span class="n">learning_rate</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Keep track of observation error for loss history
+</span>            <span class="n">obs_error</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_function</span><span class="p">(</span><span class="n">a_output</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+
+        <span class="c1"># Anneal the learning rate (helps learning)
+</span>        <span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span> <span class="o">*</span><span class="p">.</span><span class="mi">95</span><span class="p">;</span>
+        
+        <span class="c1"># Keep learning history for visualization
+</span>        <span class="n">weights_history</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">biases_history</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">biases</span><span class="p">)</span>
+        <span class="n">loss_history</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">obs_error</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">problem_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'SIN'</span><span class="p">,</span> <span class="s">'ABS'</span><span class="p">):</span>
+            <span class="n">prediction_history</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_prediction_series</span><span class="p">(</span>
+                <span class="n">prediction_x</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prediction_history</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_prediction_surface</span><span class="p">(</span>
+                <span class="n">prediction_surface_xy</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">,</span> <span class="n">biases_history</span>
+
+</code></pre></div>  </div>
+</details>
+<p><br /></p>
+
+<p>Below we visualize the progress of the model learning as its trained on the logical <code class="language-plaintext highlighter-rouge">OR</code> classification dataset. The code for the classification visualization is here:</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.animation</span>
+<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">FuncAnimation</span>
+
+<span class="n">PREDICTION_SURFACE_RESOLUTION</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">PREDICTION_COLORMAP</span> <span class="o">=</span> <span class="s">'spring'</span>
+
+<span class="k">def</span> <span class="nf">visualize_classification_learning</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+    <span class="n">prediction_surface_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
+    <span class="n">prediction_surface_x</span><span class="p">,</span> <span class="n">prediction_surface_y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">prediction_surface_range</span><span class="p">,</span> <span class="n">prediction_surface_range</span><span class="p">)</span>
+
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">generate_classification_data</span><span class="p">(</span><span class="n">problem_type</span><span class="o">=</span><span class="n">problem_type</span><span class="p">)</span>
+    <span class="n">contour</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">contourf</span><span class="p">(</span>
+        <span class="n">prediction_surface_x</span><span class="p">,</span>
+        <span class="n">prediction_surface_y</span><span class="p">,</span>
+        <span class="n">prediction_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cls</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'gray_r'</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Prediction Surface"</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Loss Function"</span><span class="p">)</span>
+    <span class="n">suptitle</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"Iteration: 0"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">ii</span><span class="p">):</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"Iteration: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">contour</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">contourf</span><span class="p">(</span>
+            <span class="n">prediction_surface_x</span><span class="p">,</span>
+            <span class="n">prediction_surface_y</span><span class="p">,</span>
+            <span class="n">prediction_history</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cls</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'gray_r'</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Prediction Surface"</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[:</span><span class="n">ii</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Loss Function"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">axs</span><span class="p">,</span> <span class="n">contour</span><span class="p">,</span> <span class="n">line</span>
+
+    <span class="n">anim</span> <span class="o">=</span> <span class="n">FuncAnimation</span><span class="p">(</span>
+        <span class="n">fig</span><span class="p">,</span>
+        <span class="n">animate</span><span class="p">,</span>
+        <span class="n">frames</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">loss_history</span><span class="p">)),</span>
+        <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="c1"># anim.save requires imagemagick library to be installed
+</span>        <span class="n">anim</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s">'imagemagick'</span><span class="p">)</span>
+
+</code></pre></div>  </div>
+</details>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/class-learning-or-nhid-0.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 8:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">OR</code> function using a single-layer ANN (aka “perceptron”). Network architecture includes a single sigmoid output encoding the class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'OR'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">visualize_classification_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span>
+<span class="p">)</span>
+
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p><strong><em>Figure 8</em></strong> displays the network state when learning the <code class="language-plaintext highlighter-rouge">OR</code> mapping. The left plot displays the training data and the network output at each iteration. Black dots are training points categorized <code class="language-plaintext highlighter-rouge">1</code> while white dots are categorized <code class="language-plaintext highlighter-rouge">0</code>. Blue regions are where the network predicts values of <code class="language-plaintext highlighter-rouge">0</code>, while green highlights areas where the network predicts <code class="language-plaintext highlighter-rouge">1</code>. We see that the single-layer network is able to easily separate the two classes.  The right plot shows how the loss function (the total error over all training observations) decreases with each training iteration.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/class-learning-and-nhid-0.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 9:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">AND</code> function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'AND'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">visualize_classification_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span>
+<span class="p">)</span>
+
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p><strong><em>Figure 9</em></strong> demonstrates an analogous example, but instead learning the logical <code class="language-plaintext highlighter-rouge">AND</code> operator. Again, the categories can be easily separated by a linear decision boundary (i.e. a plane), and thus the single-layered network easily learns an accurate predictor of the data, as indicated by the small loss function value after a number of iterations.</p>
+
+<h1 id="going-deeper-nonlinear-classification-and-multi-layer-neural-networks">Going Deeper: Nonlinear classification and multi-layer neural networks</h1>
+
+<p>Figures 8 and 9 demonstrate how a single-layered ANN can easily learn the <code class="language-plaintext highlighter-rouge">OR</code> and <code class="language-plaintext highlighter-rouge">AND</code> operators. This is because the decision function required to represent these logical operators is a single linear function (i.e. line/plane) of the input space. What about more complex categorization criterion that cannot be represented by a single plane? An example of a more complex binary classification criterion is the <code class="language-plaintext highlighter-rouge">XOR</code> operator (<strong><em>Figure 7</em></strong>, far right column).</p>
+
+<p>Below we attempt to train the single-layer network to learn the <code class="language-plaintext highlighter-rouge">XOR</code> operator. The single layer network is unable to learn this nonlinear mapping between the inputs and the targets. However, it turns out we can learn the <code class="language-plaintext highlighter-rouge">XOR</code> operator using a multi-layered neural network.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/class-learning-xor-nhid-0.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 10:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">XOR</code> function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be cannot be separated with a linear decision function, the single layer network is unable to classify the points accurately (right).</em></p>
+
+<details>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'XOR'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">visualize_classification_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p>Below we instead train a two-layer (i.e. single-hidden-layer) neural network on the <code class="language-plaintext highlighter-rouge">XOR</code> dataset. The network incorporates a hidden layer with 4 hidden units and logistic sigmoid activation functions for all units in the hidden and output layers.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/class-learning-xor-nhid-4.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 11:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">XOR</code> function using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units and a single sigmoid output unit encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). The multi-layer network is able to capture a linear decision function, and is thus able to classify the points accurately (right).</em></p>
+
+<details>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'XOR'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">visualize_classification_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p><strong><em>Figure 11</em></strong> displays the learning process for the 2-layer network on the <code class="language-plaintext highlighter-rouge">XOR</code> dataset. The 2-layer network is easily able to learn the <code class="language-plaintext highlighter-rouge">XOR</code> operator. We see that by adding a hidden layer between the input and output, the ANN is able to learn the nonlinear categorization criterion!</p>
+
+<p><strong><em>Figure 12</em></strong> shows the results for learning a even more difficult nonlinear categorization function: points in and around <script type="math/tex">(x1, x2) = (0.5, 0.5)</script> are categorized as <code class="language-plaintext highlighter-rouge">1</code>, while points in a ring surrounding the <code class="language-plaintext highlighter-rouge">1</code> datapoints are categorized as a <code class="language-plaintext highlighter-rouge">0</code>:</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/class-learning-ring-nhid-4.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 12:</em></strong> <em>Nonlinear classification using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units, and a single sigmoid output encoding the class. Colormap indicates the probability that an area in the 2D map will be associated with a positive (black) or negative (white) class.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'RING'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">visualize_classification_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p><strong><em>Figure 12</em></strong> visualizes the learning process on the <code class="language-plaintext highlighter-rouge">RING</code> dataset. The 2-layer ANN is able to easily learn this difficult classification criterion in a 40 iterations or so.</p>
+
+<h1 id="neural-networks-for-regression">Neural Networks for Regression</h1>
+
+<p>The previous examples demonstrated how ANNs can be used for classification by using a logistic sigmoid as the output activation function. Here we demonstrate how, by making the output activation function the linear/identity function, the same 2-layer network architecture can be used to implement nonlinear regression.</p>
+
+<p>For this example we define a dataset comprised of 1D inputs, <script type="math/tex">\mathbf{x}</script> that range from <script type="math/tex">(-5, 5)</script>. We then generate noisy targets <script type="math/tex">\mathbf y</script> according to the function:</p>
+
+<script type="math/tex; mode=display">\mathbf{y} = f(\mathbf{x}) + \mathbf{\epsilon}</script>
+
+<p>where <script type="math/tex">f(\mathbf{x})</script> is a nonlinear data-generating function and <script type="math/tex">\mathbf \epsilon</script> is Normally-distributed noise. We then construct a two-layered network with <script type="math/tex">\text{tanh}</script> activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">visualize_regression_learning</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">,</span> <span class="n">biases_history</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+    <span class="n">prediction_surface_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
+    <span class="n">prediction_surface_x</span><span class="p">,</span> <span class="n">prediction_surface_y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">prediction_surface_range</span><span class="p">,</span> <span class="n">prediction_surface_range</span><span class="p">)</span>
+
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">generate_regression_data</span><span class="p">(</span><span class="n">problem_type</span><span class="o">=</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_obs</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prediction_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">pred_xx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">PREDICTION_SURFACE_RESOLUTION</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">g_tanh</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">[:,</span><span class="bp">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_1'</span><span class="p">])</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="s">'w_2'</span><span class="p">].</span><span class="n">T</span> <span class="o">+</span> <span class="n">biases</span><span class="p">[</span><span class="s">'b_2'</span><span class="p">]</span>
+    
+    <span class="n">points</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'magenta'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Data'</span><span class="p">)</span>
+    <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pred_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Network Prediction'</span><span class="p">)</span>
+    <span class="n">hidden_predictions</span> <span class="o">=</span> <span class="n">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">biases_history</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+    
+    <span class="k">for</span> <span class="n">hj</span><span class="p">,</span> <span class="n">hidden_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_predictions</span><span class="p">.</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+        
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Data and Prediction"</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
+    <span class="n">loss_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[:</span><span class="n">ii</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Loss Function"</span><span class="p">)</span>
+    <span class="n">suptitle</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">f"Iteration: </span><span class="si">{</span><span class="n">ii</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">ii</span><span class="p">):</span>
+        <span class="n">suptitle</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"Iteration: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">scatter</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'magenta'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Data'</span><span class="p">)</span>
+        <span class="n">pred_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Network Prediction'</span><span class="p">)</span>
+        <span class="n">hidden_predictions</span> <span class="o">=</span> <span class="n">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">biases_history</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+        
+        <span class="k">for</span> <span class="n">hj</span><span class="p">,</span> <span class="n">hidden_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_predictions</span><span class="p">.</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+            
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Data and Prediction"</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
+        <span class="n">loss_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[:</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Loss Function"</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">axs</span><span class="p">,</span> <span class="n">pred_line</span><span class="p">,</span> <span class="n">loss_line</span><span class="p">,</span> <span class="n">suptitle</span>
+
+    <span class="n">anim</span> <span class="o">=</span> <span class="n">FuncAnimation</span><span class="p">(</span>
+        <span class="n">fig</span><span class="p">,</span>
+        <span class="n">animate</span><span class="p">,</span>
+        <span class="n">frames</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">loss_history</span><span class="p">)),</span>
+        <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">anim</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s">'imagemagick'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/regression-learning-sin.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 13:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">sin</code> function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs <script type="math/tex">a_{j}^{(1)}w_{jk} + b_k</script> that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation <script type="math/tex">a^{(l)}</script> to indicate activations in the <script type="math/tex">l</script>-th hidden layer.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'SIN'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">,</span> <span class="n">biases_history</span> <span class="o">=</span> <span class="n">run_ann_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_observations</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">visualize_regression_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span><span class="p">,</span>
+    <span class="n">weights_history</span><span class="p">,</span>
+    <span class="n">biases_history</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p>The training procedure for <script type="math/tex">f(x): \sin(x) + 2.5</script> is visualized in the left plot of <strong><em>Figure 13</em></strong>. Noisy data generated around the function <script type="math/tex">f(x)</script> are plotted in magenta. The output of the network at each training iteration is plotted in solid blue while the output of each of the tanh hidden units is plotted in dashed lines. This visualization demonstrates how multiple nonlinear functions are combined by the ANN to form the complex output target function. The total squared error loss at each iteration is plotted in the right plot of <strong><em>Figure 13</em></strong>.</p>
+
+<p><strong><em>Figure 14</em></strong> visualizes the training procedure for trying to learn a different nonlinear function, namely <script type="math/tex">f(x): \text{abs}(x)</script>. Again, we see how the outputs of the hidden units are combined to fit the desired data-generating function. The total squared error loss again follows an erratic path during learning.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/a-gentle-introduction-to-neural-networks/regression-learning-abs.gif" />
+    </div>
+</center>
+
+<p><strong><em>Figure 14:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">abs</code> function (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs <script type="math/tex">a_{j}^{(1)}w_{jk} + b_k</script> that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation <script type="math/tex">a^{(l)}</script> to indicate activations in the <script type="math/tex">l</script>-th hidden layer..</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'ABS'</span>
+<span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">,</span> <span class="n">biases_history</span> <span class="o">=</span> <span class="n">run_ann_simulation</span><span class="p">(</span>
+    <span class="n">problem_type</span><span class="o">=</span><span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">n_hidden_units</span><span class="o">=</span><span class="n">N_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">n_observations</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+   
+<span class="n">visualize_regression_learning</span><span class="p">(</span>
+    <span class="n">PROBLEM_TYPE</span><span class="p">,</span>
+    <span class="n">loss_history</span><span class="p">,</span>
+    <span class="n">prediction_history</span><span class="p">,</span>
+    <span class="n">weights_history</span><span class="p">,</span>
+    <span class="n">biases_history</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+
+<h1 id="wrapping-up">Wrapping up</h1>
+
+<p>In this post we covered the main ideas behind artificial neural networks including: single- and multi-layer ANNs, activation functions and their derivatives, a high-level description of the backpropagation algorithm, and a number of classification and regression examples. ANNs, particularly multi-layer ANNs, are a robust and powerful class of models that can be used to learn complex, nonlinear functions. However, there are a number of considerations when using neural networks including:</p>
+
+<ul>
+  <li>How many hidden layers should one use?</li>
+  <li>How many hidden units in each layer?</li>
+  <li>How do these relate to overfitting and generalization?</li>
+  <li>Are there better error functions than the squared difference?</li>
+  <li>What should the learning rate be?</li>
+  <li>What can we do about the complexity of error surface with deep networks?</li>
+  <li>Should we use simulated annealing?</li>
+  <li>What about other activation functions?</li>
+</ul>
+
+<p>It turns out that there are no easy or definite answers to any of these questions, and there is active research focusing on each topic. This is why using ANNs is often considered as much as a “black art” as it is a quantitative technique.</p>
+
+<p>One primary limitation of ANNs is that they are supervised algorithms, requiring a target value for each input observation in order to train the network. This can be prohibitive for training large networks that may require lots of training data to adequately adjust the parameters. However, there are a set of unsupervised variants of ANNs that can be used to learn an initial condition for the ANN (rather than from randomly-generated initial weights) without the need of target values. This technique of “unsupervised pretraining” has been an important component of many “deep learning” models used in AI and machine learning. In future posts, I look forward to covering two of these unsupervised neural networks: autoencoders and restricted Boltzmann machines.</p>
+
+<hr />
+
+<h1 id="notes">Notes</h1>
+
+<p><em>This post is a refactor of content with the same title originally posted on <a href="https://theclevermachine.wordpress.com/2014/09/11/a-gentle-introduction-to-artificial-neural-networks/">The Clever Machine</a> Wordpress blog.</em></p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>This property is not reserved for ANNs; kernel methods are also considered “universal approximators”; however, it turns out that neural networks with multiple layers are more efficient at approximating arbitrary functions than other methods. I refer the interested reader to <a href="http://yann.lecun.com/exdb/publis/pdf/bengio-lecun-07.pdf">an in-depth discussion</a> on the topic.) <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>The squared error is not chosen arbitrarily, but has a number of theoretical benefits and considerations. For more detail, see the <a href="/theclevermachine/cutting-your-losses">this post on the matter</a> <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Aggregating the error across all training observations yields a <em>loss function</em>, which we discuss in depth in <a href="/theclevermachine/cutting-your-losses">this post</a> <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>Note that this result is closely related to the concept of <a href="http://en.wikipedia.org/wiki/Hebbian_theory">Hebbian learning</a> in neuroscience <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:5">
+      <p>Notice for the implementation, there is an additional step known as <a href="https://en.wikipedia.org/wiki/Simulated_annealing">learning rate annealing</a>. This technique decreases the learning rate after every iteration thus making the algorithm take smaller and smaller steps in parameter space. This technique can be useful when the gradient updates begin oscillating between two or more locations in the parameter space. It is also helpful for influencing the algorithm to settle down into a steady state. <a href="#fnref:5" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'the-clever-machine'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/a-gentle-introduction-to-neural-networks" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
