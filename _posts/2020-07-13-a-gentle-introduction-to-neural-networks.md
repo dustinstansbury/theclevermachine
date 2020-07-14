@@ -3,7 +3,7 @@ layout: post
 title: A Gentle Introduction to Artificial Neural Networks
 author: Dustin Stansbury
 date: 2020-07-13
-tags: neural-networks gradient-descent classification backpropagation
+tags: neural-networks gradient-descent backpropagation classification regression
 permalink: /a-gentle-introduction-to-neural-networks
 ---
 

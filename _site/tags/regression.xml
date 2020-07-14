@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>The Clever Machine - classification</title>
+    <title>The Clever Machine - regression</title>
     <link href="/theclevermachine" rel="self"/>
-    <link href="tagsclassification.html"/>
+    <link href="tagsregression.html"/>
     <updated>2020-07-13T17:59:45-07:00</updated>
-    <id>/theclevermachineclassification.html</id>
+    <id>/theclevermachineregression.html</id>
 
     <author>
         <name>Dustin Stansbury</name>
