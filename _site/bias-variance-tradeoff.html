@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets." />
+<meta property="og:description" content="In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets." />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-20T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff","description":"In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets.","@type":"BlogPosting","headline":"Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff","dateModified":"2020-07-20T00:00:00-07:00","datePublished":"2020-07-20T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-07-20T00:00:00-07:00" itemprop="datePublished">Jul 20, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/statistics.html">statistics</a>
+              , 
+          
+              <a href="/theclevermachine/tags/classification.html">classification</a>
+              , 
+          
+              <a href="/theclevermachine/tags/regression.html">regression</a>
+              , 
+          
+              <a href="/theclevermachine/tags/bias-variance-tradeoff.html">bias-variance-tradeoff</a>
+              , 
+          
+              <a href="/theclevermachine/tags/model-selection.html">model-selection</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets.</p>
+
+<h1 id="models-for-regression">Models for Regression</h1>
+
+<p>When performing regression analyses we would like to characterize how the value of some dependent variable changes as some independent variable <script type="math/tex">x</script> is varied. For example, say we would like to characterize the firing rate of a neuron in visual cortex as we vary the orientation of a grating pattern presented to the eye. We assume that there is some true relationship function <script type="math/tex">f(x)</script> that maps the independent variable values (i.e. the angle of the grating pattern) onto the dependent variable values (i.e. firing rate). We would like to determine the form of the function <script type="math/tex">f(x)</script> from observations of independent-dependent value pairs (I may also refer to these as input-output pairs, as we can think of the function <script type="math/tex">f(x)</script> taking x as input and producing an output). However, in the real world, we don’t get to observe <script type="math/tex">f(x)</script> directly, but instead get noisy observations <script type="math/tex">y</script>, where</p>
+
+<script type="math/tex; mode=display">y = f(x) + \epsilon \tag{1}</script>
+
+<p>Here we will assume that <script type="math/tex">\epsilon</script> is random variable distributed according to a zero-mean Gaussian with standard deviation <script type="math/tex">\sigma_{\epsilon}^2</script>. Note that because <script type="math/tex">\epsilon</script> is a random variable, <script type="math/tex">y</script> is also a random variable (with a mean that is conditioned on both <script type="math/tex">x</script> and <script type="math/tex">f(x)</script>, and a variance <script type="math/tex">\sigma_{\epsilon}^2</script>).</p>
+
+<p>As an example, say that the true function <script type="math/tex">f(x)</script> we want to determine has the the following form (though we don’t know it):</p>
+
+<script type="math/tex; mode=display">f(x) = \sin(\pi x)</script>
+
+<p>Thus the observations <script type="math/tex">y</script> we get to see have the following distribution.</p>
+
+<script type="math/tex; mode=display">y = \sin(\pi x) + \mathcal N(0,\sigma_{\epsilon}^2)</script>
+
+<p>Below we define the function <script type="math/tex">f(x)</script> and display it, then draw a few observation samples <script type="math/tex">y</script>, and display them as well:</p>
+
+<hr />
+
+<center>
+    <br />
+    <div id="container">
+        <img width="400" src="assets/images/bias-variance-tradeoff/f_x.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1</em></strong>: A data-generating function <script type="math/tex">f(x)</script> and some noisy samples <script type="math/tex">y</script>.</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Frontmatter
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">MARKER_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">DATA_COLOR</span> <span class="o">=</span> <span class="s">'black'</span>
+<span class="n">ERROR_COLOR</span> <span class="o">=</span> <span class="s">'darkred'</span>
+<span class="n">POLYNOMIAL_FIT_COLORS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'orange'</span><span class="p">,</span> <span class="s">'royalblue'</span><span class="p">,</span> <span class="s">'darkgreen'</span><span class="p">]</span>
+<span class="n">LEGEND_FONTSIZE</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">TITLE_FONTISIZE</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">N_OBSERVATIONS</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">NOISE_STD</span> <span class="o">=</span> <span class="mf">1.</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N_OBSERVATIONS</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="s">"""Base function"""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sample_fx_data</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">noise_std</span><span class="o">=</span><span class="n">NOISE_STD</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">noise_std</span>
+
+
+<span class="k">def</span> <span class="nf">plot_fx_data</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="s">"""Plot f(x) and noisy samples"""</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">sample_fx_data</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">DATA_COLOR</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'f(x)'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">MARKER_SIZE</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DATA_COLOR</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s">'none'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'y'</span><span class="p">)</span>
+
+
+<span class="c1"># Plot the data
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">sample_fx_data</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plot_fx_data</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$f(x) = sin(\pi x)$ and some observations, $y$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+</code></pre></div>  </div>
+
+</details>
+<hr />
+
+<p><br /></p>
+
+<p>Our goal is to characterized the function <script type="math/tex">f(x)</script>, but we don’t know the function form of <script type="math/tex">f(x)</script>, we must instead estimate some other function <script type="math/tex">g(x)</script> that we believe will provide an accurate approximation to <script type="math/tex">f(x)</script>. The function <script type="math/tex">g(x)</script> is called an <em>estimator of <script type="math/tex">f(x)</script></em>. In general, an estimator is some parameterized model that can capture a wide range of functional forms. One such class of estimators is the weighted combination of ordered polynomials:</p>
+
+<script type="math/tex; mode=display">g_D(x) = \theta_0 + \theta_1x + \theta_2x^2 + \dots \theta_D x^D</script>
+
+<p>As the polynomial order <script type="math/tex">D</script> increases, the functions <script type="math/tex">g_D(x)</script> are able to capture increasingly complex behavior. For example, <script type="math/tex">g_0(x)</script> desribes a horizontal line with an adjustable vertical offset <script type="math/tex">\theta_0</script>, <script type="math/tex">g_1(x)</script> desribes a line with adjustable vertical offset and adjustable slope <script type="math/tex">\theta_1</script>, <script type="math/tex">g_2(x)</script> describes a function that also includes a quadratic term <script type="math/tex">\theta_2</script>. We thus try to fit the values of the parameters for a given estimator <script type="math/tex">g_D(x)</script> to best account for observed data in the hopes that we will also accurately approximate <script type="math/tex">f(x)</script>.</p>
+
+<p>Below we estimate the parameters of three polynomial model functions of increasing complexity (using Numpy’s <code class="language-plaintext highlighter-rouge">polyfit</code>) to the sampled data displayed above. Specifically, we estimate the functions <script type="math/tex">g_1(x)</script>, <script type="math/tex">g_3(x)</script>, and <script type="math/tex">g_{10}(x)</script>.</p>
+
+<hr />
+
+<center>
+    <br />
+    <div id="container">
+        <img width="400" src="assets/images/bias-variance-tradeoff/polynomial-fits.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 2</em></strong>: Fitting various polynomial estimators <script type="math/tex">g_D(x)</script> fit to noisy samples <script type="math/tex">y</script>, for <script type="math/tex">D = (1, 3, 10)</script>.</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_fx_data</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">polynomial_degrees</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">degree</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">polynomial_degrees</span><span class="p">):</span>
+    <span class="c1"># Note: we should get an overconditioned warning for degree 10 because of extreme overfitting
+</span>    <span class="n">theta</span><span class="p">[</span><span class="n">degree</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+    <span class="n">fit</span><span class="p">[</span><span class="n">degree</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="n">degree</span><span class="p">],</span> <span class="n">x_grid</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">fit</span><span class="p">[</span><span class="n">degree</span><span class="p">],</span> <span class="n">POLYNOMIAL_FIT_COLORS</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">f"$g_(x)$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="n">LEGEND_FONTSIZE</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Various Polynomial Functions Fit to Observations"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">TITLE_FONTISIZE</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+</details>
+<hr />
+<p><br /></p>
+
+<p>Qualitatively, we see that the estimator <script type="math/tex">g_1(x)</script> (orange line) provides a poor fit to the observed data, as well as a poor approximation to the function <script type="math/tex">f(x)</script> (black curve). We see that the estimator <script type="math/tex">g_{10}(x)</script> (green curve) provides a very accurate fit to the data points, but varies wildly to do so, and therefore provides an inaccurate approximation of <script type="math/tex">f(x)</script>. Finally, we see that the estimator <script type="math/tex">g_3(x)</script> (blue curve) provides a fairly good fit to the observed data, and a much better job at approximating <script type="math/tex">f(x)</script>.</p>
+
+<p>Our original goal was to approximate <script type="math/tex">f(x)</script>, not the data points per se. Therefore <script type="math/tex">g_3(x)</script>, at least qualitatively, provides a more desirable estimate of <script type="math/tex">f(x)</script> than the other two estimators. The fits for <script type="math/tex">g_1(x)</script> and <script type="math/tex">g_{10}(x)</script> are examples of “underfitting” and “overfitting” to the observed data, respectively:</p>
+<ul>
+  <li><strong><em>Underfitting</em></strong> occurs when an estimator <script type="math/tex">g(x)</script> is not flexible enough to capture the underlying trends in the observed data.</li>
+  <li><strong><em>Overfitting</em></strong> occurs when an estimator is too flexible, allowing it to capture illusory trends in the data. These illusory trends are often the result of the noise in the observations <script type="math/tex">y</script>.</li>
+</ul>
+
+<h1 id="bias-and-variance-of-an-estimator">Bias and Variance of an Estimator</h1>
+
+<p>The model fits for <script type="math/tex">g_D(x)</script> discussed above were based on a single, randomly-sampled data set of observations <script type="math/tex">y</script>. However, because <script type="math/tex">\epsilon</script> is a random variable, there are in principle a potentially infinite number of ranndom data sets that can be observed. In order to determine a good model of <script type="math/tex">f(x)</script>, it would be helpful to have an idea of how an estimator will perform on any or all of these potential datasets.  To get an idea of how each of the estimators discussed above performs in general we can repeat the model fitting procedure for many data sets.</p>
+
+<p>Here we perform such an analyses, sampling 50 independent data sets according to <strong><em>Equation 1</em></strong>, then fitting the parameters for the polynomial functions of model order <script type="math/tex">D = (1,3,10)</script> to each dataset.</p>
+
+<hr />
+
+<center>
+    <br />
+    <div id="container">
+        <img width="1000" src="assets/images/bias-variance-tradeoff/polynomial-simualtion-fits.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 3</em></strong>: Fitting various polynomial estimators <script type="math/tex">g_D(x)</script> fit to noisy samples <script type="math/tex">y</script>, for <script type="math/tex">D = (1, 3, 10)</script>.</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">simulation_fits</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
+    <span class="c1"># Start from same samples
+</span>    <span class="n">y_simulation</span> <span class="o">=</span> <span class="n">sample_fx_data</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">degree</span> <span class="ow">in</span> <span class="n">polynomial_degrees</span><span class="p">:</span>
+        <span class="c1"># Note: we should get an overconditioned warning
+</span>        <span class="c1"># for degree 10 because of extreme overfitting
+</span>        <span class="n">theta_tmp</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_simulation</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+        <span class="n">simulation_fits</span><span class="p">[</span><span class="n">degree</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">theta_tmp</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">error_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">actual</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pred</span> <span class="o">-</span> <span class="n">actual</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">degree</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">polynomial_degrees</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">jj</span><span class="p">,</span> <span class="n">fit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">simulation_fits</span><span class="p">[</span><span class="n">degree</span><span class="p">]):</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s">'Single Simulation Model Fit'</span> <span class="k">if</span> <span class="n">jj</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">POLYNOMIAL_FIT_COLORS</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="n">average_fit</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">simulation_fits</span><span class="p">[</span><span class="n">degree</span><span class="p">]).</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">squared_error</span> <span class="o">=</span> <span class="n">error_function</span><span class="p">(</span><span class="n">average_fit</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_grid</span><span class="p">))</span>
+    <span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean</span><span class="p">(</span><span class="n">squared_error</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">average_fit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">POLYNOMIAL_FIT_COLORS</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Average Model'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">squared_error</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ERROR_COLOR</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Squared Error'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s">'black'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'f(x)'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">([])</span>
+    <span class="k">if</span> <span class="n">ii</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'x'</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ii</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'y'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f"$g_(x)$ : RMS Error=</span><span class="si">{</span><span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">rms</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'lower right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">'Model Fits Given Random Samples Around f(x)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">TITLE_FONTISIZE</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+</details>
+<hr />
+<p><br /></p>
+
+<p>The lightly-colored curves in each of the three plots above are an individual polynomial model fit to one of the 50 sampled data sets. The darkly-colored curve in each plot is the average over the 50 individual fits. The dark curve is the true, underlying function <script type="math/tex">f(x)</script>.</p>
+
+<h4 id="estimator-bias">Estimator Bias</h4>
+
+<p>We see that for the estimator <script type="math/tex">g_1(x)</script> (light orange curves), model fits do not vary too dramatically from data set to data set. Thus the averaged estimator fit over all the data sets (dark orange curve), formally written as <script type="math/tex">\mathbb E[g(x)]</script>, is similar (in terms of slope and vertical offset) to each of the individual fits.</p>
+
+<p>A commonly-used statistical metric that tries to assess the <em>average accuracy</em> of an estimator <script type="math/tex">g(x)</script> at approximating a target function <script type="math/tex">f(x)</script> is what is called the <strong>bias of the estimator</strong>. Formally defined as:</p>
+
+<script type="math/tex; mode=display">\text{bias} = \mathbb E[g(x)] - f(x)</script>
+
+<p>The bias describes how much the average estimator fit over many datasets <script type="math/tex">\mathbb E[g(x)]</script> deviates from the value of the <em>actual</em> underlying target function <script type="math/tex">f(x)</script>.</p>
+
+<p>We can see from the plot for <script type="math/tex">g(x)_1</script> that <script type="math/tex">\mathbb E[g_1(x)]</script> deviates significantly from <script type="math/tex">f(x)</script>. Thus we can say that the estimator <script type="math/tex">g_1(x)</script> exhibits large bias when approximating the function <script type="math/tex">f(x)</script>.</p>
+
+<p>When averaging over the individual fits for the estimator <script type="math/tex">g_3(x)</script> (blue curves), we find that the average estimator <script type="math/tex">\mathbb E[g_3(x)]</script> (dark blue curve) accurately approximates the true function <script type="math/tex">f(x)</script>, indicating that the estimator <script type="math/tex">g_3(x)</script> has low bias.</p>
+
+<h4 id="estimator-variance">Estimator Variance</h4>
+
+<p>Another common statistical metric attempts to capture the <em>average consistency</em> of an estimator when fit to multiple datasets. This metric, referred to as the <strong>variance of the estimator</strong> is formally defined as</p>
+
+<script type="math/tex; mode=display">\text{variance} = \mathbb E[(g(x)-\mathbb E[g(x)])^2]</script>
+
+<p>The variance is the expected (i.e. average) squared difference between any single dataset-dependent estimate of <script type="math/tex">g(x)</script> and the average value of <script type="math/tex">g(x)</script> estimated over all datasets.</p>
+
+<p>According to the definition of variance, we can say that the estimator <script type="math/tex">g_1(x)</script> exhibits low variance because the each individual <script type="math/tex">g_1(x)</script> is fairly similar across datasets.</p>
+
+<p>We established earlier that the estimator <script type="math/tex">g_3(x)</script> provided a qualitatively better fit to the function <script type="math/tex">f(x)</script> than the other two polynomial estimators for a single dataset. It appears that this is also the case over many datasets. We also find that estimator <script type="math/tex">g_3(x)</script> exhibits low bias and low variance, whereas the other two, less-desirable estimators, have either high bias or high variance. Thus it would appear that having both low bias and low variance is a reasonable criterion for selecting an accurate model of <script type="math/tex">f(x)</script>.</p>
+
+<p>Investigating the results for the estimator <script type="math/tex">g_{10}(x)</script> (green curves), we see that each individual model fit varies dramatically from one data set to another. Thus we can say that this estimator exhibits large variance.</p>
+
+<p>Included in each of the three plots above is a dashed red line representing the squared difference between the average estimator <script type="math/tex">\mathbb E[g_D(x)]</script> and the true function <script type="math/tex">f(x)</script>. Calculating squared model errors is a common practice for quantifying the goodness of a model fit. If we calculate the expected value of each of the dashed red lines (and assuming that all values of <script type="math/tex">x</script> are equally likely to occur), we would obtain a single value for each estimator that is the mean squared error (MSE) between the expected estimator and the true function.</p>
+
+<script type="math/tex; mode=display">\mathbb E[(\mathbb E[g(x)]-f(x))^2] = \frac{1}{N}\sum_{i=1}^N (\mathbb E[g(x)]-f(x))^2</script>
+
+<p>For the estimator <script type="math/tex">g_3(x)</script>, the MSE will be very small, as the dashed black curve for this estimator is near zero for all values of <script type="math/tex">x</script>. The estimators <script type="math/tex">g_1(x)</script> and <script type="math/tex">g_{10}(x)</script> would have significantly larger values. Now, because exhibiting both a low MSE, as well as having both low bias and variance are indicative of a good estimator, it would be reasonable to assume that squared model error is directly related to bias and variance. The next section provides some formal evidence for this notion.</p>
+
+<h1 id="expected-prediction-error-and-the-bias-variance-tradeoff">Expected Prediction Error and the Bias-variance Tradeoff</h1>
+
+<p>For a given estimator <script type="math/tex">g(x)</script> fit to a data set of <script type="math/tex">x\text{-}y</script> pairs, we would like to know, given all the possible datasets out there, what is the expected prediction error we will observe for a new data point <script type="math/tex">x^*</script>, <script type="math/tex">y^*</script> = <script type="math/tex">f(x^*) + \epsilon</script>. If we define prediction error to be the squared difference in model prediction <script type="math/tex">g(x^*)</script> and observations <script type="math/tex">y^*</script>, the expected prediction error is then:</p>
+
+<script type="math/tex; mode=display">\mathbb E[(g(x^*) - y^*)^2]</script>
+
+<p>If we expand this a little and use a few identities, something interesting happens:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\mathbb E[(g(x^*) - y^*)^2] &= \mathbb E[g(x^*)^2-2g(x^*)y^*+y^{*2}] \tag{2} \\
+& = \mathbb E[g(x^*)^2] - 2\mathbb E[g(x^*)y^*] + \mathbb E[y^{*2}] \tag{3} \\
+& = \mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2] + \mathbb E[g(x^*)]^2 \\
+& \;\;\;\;-2 \mathbb E[g(x^*)]f(x^*) \\
+& \;\;\;\;+ \mathbb E[(y^*-f(x^*))^2] + f(x^*)^2  \tag{4}
+\end{align} %]]></script>
+
+<p>where we have applied the <a href="/theclevermachine/supplemental-lemma-expectation-x-squared">following Lemma</a> to the first and third terms of <strong><em>Equation 3</em></strong>, and use the fact to <script type="math/tex">\mathbb E[y] = f(x)</script> (Think of averaging over an infinite number of datasets sampled from y; all noise will average out, leaving <script type="math/tex">f(x)</script>). Rearranging <strong><em>Equation 4</em></strong>, we obtain:</p>
+
+<script type="math/tex; mode=display">\mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2] + (\mathbb E[g(x^*)]^2 - 2 \mathbb E[g(x^*)]f(x^*) + f(x^*)^2) + \mathbb E[(y^*-f(x^*))^2] \tag{5}</script>
+
+<p>which can be further simplified by reversing a polynomial expansion and grouping into three terms</p>
+
+<script type="math/tex; mode=display">\color{green}{\mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2]} + \color{blue}{( \mathbb E[g(x^*)]-f(x^*))^2} + \color{red}{\mathbb E[(y^*-f(x^*))^2]} \tag{6}</script>
+
+<ol>
+  <li>The first term is the <span style="color:green">variance of the estimator</span> introduced above.</li>
+  <li>The second term is the <span style="color:blue">squared bias of the estimator</span>, also introduced above.</li>
+  <li>The third term is the <span style="color:red">variance of the observation noise</span> and describes how much the observations <script type="math/tex">y</script> vary from the true function <script type="math/tex">f(x)</script>. Notice that the noise term does not depend on the estimator <script type="math/tex">g(x)</script>. This means that the noise term is a constant that places a lower bound on expected prediction error, and in particular is equal to the variance the noise term <script type="math/tex">\sigma_{\epsilon}^2</script>.</li>
+</ol>
+
+<p>Here we find that the expected prediction error on new data <script type="math/tex">(x^*,y^*)</script> (in the squared differences sense) is the combination of these three terms. This take-home is important in that it states that the expected prediction error on new data can be used as a quantitative criterion for selecting the best model from a candidate set of estimators!</p>
+
+<p>It turns out that, given <script type="math/tex">N</script> new data points <script type="math/tex">(\mathbf x^*,\mathbf y^*)</script>, the expected prediction error can be easily approximated as the mean squared error over data pairs:</p>
+
+<script type="math/tex; mode=display">\mathbb E[(g(\mathbf x^*) - \mathbf y^*)^2] \approx \frac{1}{N}\sum_{i=1}^N(g(x_i^*)-y_i^*)^2</script>
+
+<p>thus giving us a convenient metric for determining the best model out of a set of candidate estimators.</p>
+
+<h1 id="demonstration-of-the-bias-variance-tradeoff">Demonstration of the Bias-variance Tradeoff</h1>
+
+<p>Below we demonstrate the findings presented above with another set of simulations. We simulate 100 independent datasets, each with 25 <script type="math/tex">x\text{-}y</script> pairs. We then partition each dataset into two non-overlapping sets:</p>
+
+<ul>
+  <li>a <em>Training Set</em> using for fitting model parameters</li>
+  <li>a <em>Testing Set</em> used to estimate the model prediction error</li>
+</ul>
+
+<p>We then fit the parameters for estimators of varying complexity. Complexity is varied by using polynomial functions that range in model order from 1 (least complex) to 12 (most complex). We then calculate and display the squared bias, variance, and predition error on testing set for each of the estimators:</p>
+
+<center>
+    <br />
+    <div id="container">
+        <img width="1000" src="assets/images/bias-variance-tradeoff/bias-variance-tradeoff.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 4</em></strong>: <em>(Left) Demonstration of how estimator bias and variance contribute to the mean squared error on the Testing Set. The Testing Set error (dark red) can be broken down into a three components: the squared bias (blue) of the estimator, the estimator variance (green), and the noise variance <script type="math/tex">\sigma_{noise}^2</script> (red). The “best” model (polynomial degree <script type="math/tex">D=3</script>) has the optimal balance of low bias and low variance. Note that the noise variance is considered a lower bound on the Testing Set error, as it cannot be accounted for by any model. (Right) Demonstration of overfitting when the model complexity suprasses the optimal bias-variance tradeoff. Models with a complexity above <script type="math/tex">D=3</script> are able to fit the Training Set data better, but at the expense of not generalizing to the Testing Set, resulting in increasing generalization error.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">124</span><span class="p">)</span>
+<span class="n">n_observations_per_dataset</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">n_datasets</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">max_poly_degree</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># Maximum model complexity
+</span><span class="n">model_poly_degrees</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_poly_degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">NOISE_STD</span> <span class="o">=</span> <span class="p">.</span><span class="mi">5</span>
+<span class="n">percent_train</span> <span class="o">=</span> <span class="p">.</span><span class="mi">8</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_observations_per_dataset</span> <span class="o">*</span> <span class="n">percent_train</span><span class="p">))</span>
+
+<span class="c1"># Create training/testing inputs
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_observations_per_dataset</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span>
+
+<span class="c1"># logging variables
+</span><span class="n">theta_hat</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+<span class="n">pred_train</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="n">pred_test</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+<span class="n">train_errors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="n">test_errors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+<span class="c1"># Loop over datasets
+</span><span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_datasets</span><span class="p">):</span>
+
+    <span class="c1"># Simulate training/testing targets
+</span>    <span class="n">y_train</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span> <span class="o">+</span> <span class="n">NOISE_STD</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">x_train</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span> <span class="o">+</span> <span class="n">NOISE_STD</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">x_test</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Loop over model complexities
+</span>    <span class="k">for</span> <span class="n">degree</span> <span class="ow">in</span> <span class="n">model_poly_degrees</span><span class="p">:</span>
+        <span class="c1"># Train model
+</span>        <span class="n">tmp_theta_hat</span> <span class="o">=</span> <span class="n">polyfit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+
+        <span class="c1"># Make predictions on train set
+</span>        <span class="n">tmp_pred_train</span> <span class="o">=</span> <span class="n">polyval</span><span class="p">(</span><span class="n">tmp_theta_hat</span><span class="p">,</span> <span class="n">x_train</span><span class="p">)</span>
+        <span class="n">pred_train</span><span class="p">[</span><span class="n">degree</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">tmp_pred_train</span><span class="p">)</span>
+
+        <span class="c1"># Test predictions
+</span>        <span class="n">tmp_pred_test</span> <span class="o">=</span> <span class="n">polyval</span><span class="p">(</span><span class="n">tmp_theta_hat</span><span class="p">,</span> <span class="n">x_test</span><span class="p">)</span>
+        <span class="n">pred_test</span><span class="p">[</span><span class="n">degree</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">tmp_pred_test</span><span class="p">)</span>
+
+        <span class="c1"># Mean Squared Error for train and test sets
+</span>        <span class="n">train_errors</span><span class="p">[</span><span class="n">degree</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error_function</span><span class="p">(</span><span class="n">tmp_pred_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+        <span class="n">test_errors</span><span class="p">[</span><span class="n">degree</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error_function</span><span class="p">(</span><span class="n">tmp_pred_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_estimator_bias_squared</span><span class="p">(</span><span class="n">pred_test</span><span class="p">):</span>
+    <span class="n">pred_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_test</span><span class="p">)</span>
+    <span class="n">average_model_prediction</span> <span class="o">=</span> <span class="n">pred_test</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># E[g(x)]
+</span>
+    <span class="c1"># (E[g(x)] - f(x))^2, averaged across all trials
+</span>    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">((</span><span class="n">average_model_prediction</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x_test</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_estimator_variance</span><span class="p">(</span><span class="n">pred_test</span><span class="p">):</span>
+    <span class="n">pred_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_test</span><span class="p">)</span>
+    <span class="n">average_model_prediction</span> <span class="o">=</span> <span class="n">pred_test</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># E[g(x)]
+</span>
+    <span class="c1"># (g(x) - E[g(x)])^2, averaged across all trials
+</span>    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">((</span><span class="n">pred_test</span> <span class="o">-</span> <span class="n">average_model_prediction</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="n">complexity_train_error</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">complexity_test_error</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">bias_squared</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">variance</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">degree</span> <span class="ow">in</span> <span class="n">model_poly_degrees</span><span class="p">:</span>
+    <span class="n">complexity_train_error</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_errors</span><span class="p">[</span><span class="n">degree</span><span class="p">]))</span>
+    <span class="n">complexity_test_error</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_errors</span><span class="p">[</span><span class="n">degree</span><span class="p">]))</span>
+    <span class="n">bias_squared</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">calculate_estimator_bias_squared</span><span class="p">(</span><span class="n">pred_test</span><span class="p">[</span><span class="n">degree</span><span class="p">]))</span>
+    <span class="n">variance</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">calculate_estimator_variance</span><span class="p">(</span><span class="n">pred_test</span><span class="p">[</span><span class="n">degree</span><span class="p">]))</span>
+
+<span class="n">best_model_degree</span> <span class="o">=</span> <span class="n">model_poly_degrees</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">complexity_test_error</span><span class="p">)]</span>
+
+
+<span class="c1"># Visualizations
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1">## Plot Bias^2 + variance
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">bias_squared</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'$bias^2$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">variance</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'green'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'variance'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">bias_squared</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">variance</span><span class="p">),</span>  <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'gray'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'$bias^2 + variance$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">complexity_test_error</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Testing Set Error'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ERROR_COLOR</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">best_model_degree</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'--'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'black'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'Best Model(degree=</span><span class="si">{</span><span class="n">best_model_degree</span><span class="si">}</span><span class="s">)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">complexity_test_error</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">bias_squared</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">variance</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Testing Error - ($bias^2 + variance$)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">NOISE_STD</span> <span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'tomato'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$\sigma_^2$ = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">NOISE_STD</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Model Complexity (Polynomial Degree)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">6</span><span class="p">]);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Testing Error Relationship to Bias and Variance'</span><span class="p">)</span>
+
+<span class="c1">## Plot Train / Test Set Error
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">complexity_train_error</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Training Set Error'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">DATA_COLOR</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model_poly_degrees</span><span class="p">,</span> <span class="n">complexity_test_error</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Testing Set Error'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ERROR_COLOR</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">best_model_degree</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'--'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'black'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'Best Model(degree=</span><span class="si">{</span><span class="n">best_model_degree</span><span class="si">}</span><span class="s">)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">6</span><span class="p">]);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Model Complexity (Polynomial Degree)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Error on Training and Testing Sets'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper center'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p>In the left side of <strong><em>Figure 4</em></strong> we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. <strong>Thus there is a tradeoff between bias and variance that comes with model complexity</strong>:</p>
+
+<ul>
+  <li>models that are too complex will have high variance and low bias</li>
+  <li>models that are too simple will have high bias and low variance.</li>
+  <li>The best model will have both low bias and low variance.</li>
+</ul>
+
+<p>In this example, we highlight the best estimator in terms of prediction error on the testing set (dark red curve) with a dashed black vertical line. The best estimator corresponds to a polynomial model of order of <script type="math/tex">D=3</script>. Notice that the vertical black line is located where function defined by the sum of the squared bias and variance (dashed gray curve) is also at a minimum.</p>
+
+<p>It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in <strong><em>Equation 6</em></strong> is also represented in <strong><em>Figure 4</em></strong> as the red curve. This curve was calculated by taking the difference begween the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations <script type="math/tex">\sigma_{noise}^2 = \sigma_{\epsilon}^2</script> (indicated by the dashed red line).</p>
+
+<h1 id="testing-set-error-versus-training-set---overfitting">Testing Set Error versus Training Set &amp;  Overfitting</h1>
+
+<p>It’s important to be clear that all of the simulated results above are based on evaluating prediction error on <em>novel data</em>, not used to estimate model parameters. It turns out that assessing a model performance based on prediction error calculated on the same data used to estimate the model parameters is highly problematic, as it causes models to always “overfit.” In plain terms, overfitting means that we will always favor a more complex estimator if we assess goodness of model fits on the training data, as a more complex model will be better able to capture small, random trends in the data due to noise.</p>
+
+<p>This overfitting phenomenon is demonstrated in the right side of <strong><em>Figure 4</em></strong>. For the same simulation data as in the left of <strong><em>Figure 4</em></strong>, we plot the error calculated on the Training set (black curve) along with the error calculated on the testing set (red curve). We also identify the best estimator based on the Testing Set Error.</p>
+
+<p>We see here that as model complexity increases, the error calculated on the training set continues to decrease, whereas the error on the testing set increases past the optimal polynomial order <script type="math/tex">D=3</script>. We  showed above that error calculated on the testing set is the true indicator of how well an estimator will generalize to new data points. The error calculated on the training set strongly disagrees with the error calculated on the testing set after the optimal model complexity has been reached. Since, in general, the whole point of modeling a data set is to generalize to novel data, assessing model predictions on the training set data should be avoided.</p>
+
+<h1 id="wrapping-up">Wrapping Up</h1>
+
+<p>In this post we discussed how the bias and variance of an estimator are related to squared prediction error on the testing set. Though we focused on regression, these concepts can also be applied to classification problems. We found that an optimal estimator will have both low variance and low bias. We further found that information about squared bias and variance is contained in expected prediction error calculated on a testing set of data not used to fit a model’s parameters.</p>
+
+<p>The concepts of estimator bias and variance are generally only clear in the context of an ensemble of datasets. However, in real-world applications, there is generally only a single observed dataset. In such cases the roles of bias and variance are less obvious (though, it is possible to calculate estimates of variance and bias using resampling methods such as bootstrapping).</p>
+
+<p>However, the direct connection we made between bias, variance with the mean-squared error calculated on a testing set give us a direct means for assessing a group of candidate estimators in light of a single data set. We only need to partition the available data set into a <em>Training Set</em> used to fit model parameters and a <em>Testing Set</em> used to assess prediction accuracy.</p>
+
+<p>Comparing prediction accuracy across potential estimators is equivalent to assessing biases and variances of the estimators across many datasets. Note that resampling methods such as cross-validation can prove helpful here, particularly when the amount of observed data is small.</p>
+
+
+  </div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'the-clever-machine'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/bias-variance-tradeoff" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
