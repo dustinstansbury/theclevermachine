@@ -472,3 +472,9 @@ However, the direct connection we made between bias, variance with the mean-squa
 
 Comparing prediction accuracy across potential estimators is equivalent to assessing biases and variances of the estimators across many datasets. Note that resampling methods such as cross-validation can prove helpful here, particularly when the amount of observed data is small.
 
+---
+---
+
+# Notes
+*This post is a refactor of content with the same title originally posted on [The Clever Machine](https://theclevermachine.wordpress.com/2013/04/21/model-selection-underfitting-overfitting-and-the-bias-variance-tradeoff/#comments) Wordpress blog.*
+
