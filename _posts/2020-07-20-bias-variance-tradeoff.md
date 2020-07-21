@@ -11,13 +11,13 @@ In machine learning and pattern recognition, there are many ways (an infinite nu
 
 # Models for Regression
 
-When performing regression analyses we would like to characterize how the value of some dependent variable changes as some independent variable $$x$$ is varied. For example, say we would like to characterize the firing rate of a neuron in visual cortex as we vary the orientation of a grating pattern presented to the eye. We assume that there is some true relationship function $$f(x)$$ that maps the independent variable values (i.e. the angle of the grating pattern) onto the dependent variable values (i.e. firing rate). We would like to determine the form of the function $$f(x)$$ from observations of independent-dependent value pairs (I may also refer to these as input-output pairs, as we can think of the function $$f(x)$$ taking x as input and producing an output). However, in the real world, we don’t get to observe $$f(x)$$ directly, but instead get noisy observations $$y$$, where
+When performing regression analyses we would like to characterize how the value of some dependent variable changes as some independent variable $$x$$ is varied. For example, say we would like to characterize the firing rate of a neuron in visual cortex as we vary the orientation of a grating pattern presented to the eye. We assume that there is some true relationship function $$f(x)$$ that maps the independent variable values (i.e. the angle of the grating pattern) onto the dependent variable values (i.e. firing rate). We would like to determine the form of the function $$f(x)$$ from observations of independent-dependent value pairs (I may also refer to these as input-output pairs, as we can think of the function $$f(x)$$ taking $$x$$ as input and producing an output). However, in the real world, we don’t get to observe $$f(x)$$ directly, but instead get noisy observations $$y$$, where
 
 $$
 y = f(x) + \epsilon \tag{1}
 $$
 
-Here we will assume that $$\epsilon$$ is random variable distributed according to a zero-mean Gaussian with standard deviation $$\sigma_{\epsilon}^2$$. Note that because $$\epsilon$$ is a random variable, $$y$$ is also a random variable (with a mean that is conditioned on both $$x$$ and $$f(x)$$, and a variance $$\sigma_{\epsilon}^2$$).
+Here we will assume that $$\epsilon$$ is random variable distributed according to a zero-mean Gaussian with standard deviation $$\sigma_{\epsilon}^2$$. Note that because $$\epsilon$$ is a random variable, $$y$$ is also a random variable (with a mean that is conditioned on both $$x$$ and $$f(x)$$, and exhibiting a variance $$\sigma_{\epsilon}^2$$).
 
 As an example, say that the true function $$f(x)$$ we want to determine has the the following form (though we don’t know it):
 
@@ -42,7 +42,7 @@ Below we define the function $$f(x)$$ and display it, then draw a few observatio
     </div>
 </center>
 
-***Figure 1***: A data-generating function $$f(x)$$ and some noisy samples $$y$$.
+***Figure 1***: *A data-generating function $$f(x)$$ and some noisy samples $$y$$. The samples exibit a noise variance $$\sigma_{\epsilon}^2=1$$* 
 
 
 <details >
@@ -101,7 +101,7 @@ $$
 g_D(x) = \theta_0 + \theta_1x + \theta_2x^2 + \dots \theta_D x^D
 $$
 
-As the polynomial order $$D$$ increases, the functions $$g_D(x)$$ are able to capture increasingly complex behavior. For example, $$g_0(x)$$ desribes a horizontal line with an adjustable vertical offset $$\theta_0$$, $$g_1(x)$$ desribes a line with adjustable vertical offset and adjustable slope $$\theta_1$$, $$g_2(x)$$ describes a function that also includes a quadratic term $$\theta_2$$. We thus try to fit the values of the parameters for a given estimator $$g_D(x)$$ to best account for observed data in the hopes that we will also accurately approximate $$f(x)$$.
+As the polynomial order $$D$$ increases, the functions $$g_D(x)$$ are able to capture increasingly complex behavior. For example, $$g_0(x)$$ desribes a horizontal line with an adjustable vertical offset $$\theta_0$$, $$g_1(x)$$ desribes a line with adjustable vertical offset and adjustable linear slope $$\theta_1$$, $$g_2(x)$$ describes a function that also includes a weight on the quadratic term $$\theta_2$$. We thus try to fit the values of the parameters for a given estimator $$g_D(x)$$ to best account for observed data in the hopes that we will also accurately approximate $$f(x)$$.
 
 Below we estimate the parameters of three polynomial model functions of increasing complexity (using Numpy's `polyfit`) to the sampled data displayed above. Specifically, we estimate the functions $$g_1(x)$$, $$g_3(x)$$, and $$g_{10}(x)$$.
 
@@ -114,7 +114,7 @@ Below we estimate the parameters of three polynomial model functions of increasi
     </div>
 </center>
 
-***Figure 2***: Fitting various polynomial estimators $$g_D(x)$$ fit to noisy samples $$y$$, for $$D = (1, 3, 10)$$.
+***Figure 2***: *Fitting various polynomial estimators $$g_D(x)$$ fit to noisy samples $$y$$, for $$D = (1, 3, 10)$$*.
 
 
 <details >
@@ -163,7 +163,7 @@ Here we perform such an analyses, sampling 50 independent data sets according to
     </div>
 </center>
 
-***Figure 3***: Fitting various polynomial estimators $$g_D(x)$$ fit to noisy samples $$y$$, for $$D = (1, 3, 10)$$.
+***Figure 3***: *Fitting various polynomial estimators $$g_D(x)$$ fit to noisy samples $$y$$, for $$D = (1, 3, 10)$$*.
 
 
 <details >
@@ -248,21 +248,21 @@ $$
 $$
 
 
-The variance is the expected (i.e. average) squared difference between any single dataset-dependent estimate of $$g(x)$$ and the average value of $$g(x)$$ estimated over all datasets.
+The variance is the expected (i.e. average) squared difference between any single dataset-dependent estimate of $$g(x)$$ and the average value of $$g(x)$$ estimated over all datasets, $$\mathbb E[g(x)]$$.
 
 According to the definition of variance, we can say that the estimator $$g_1(x)$$ exhibits low variance because the each individual $$g_1(x)$$ is fairly similar across datasets.
 
+Investigating the results for the estimator $$g_{10}(x)$$ (green curves), we see that each individual model fit varies dramatically from one data set to another. Thus we can say that this estimator exhibits high variance. 
+
 We established earlier that the estimator $$g_3(x)$$ provided a qualitatively better fit to the function $$f(x)$$ than the other two polynomial estimators for a single dataset. It appears that this is also the case over many datasets. We also find that estimator $$g_3(x)$$ exhibits low bias and low variance, whereas the other two, less-desirable estimators, have either high bias or high variance. Thus it would appear that having both low bias and low variance is a reasonable criterion for selecting an accurate model of $$f(x)$$.
 
-Investigating the results for the estimator $$g_{10}(x)$$ (green curves), we see that each individual model fit varies dramatically from one data set to another. Thus we can say that this estimator exhibits large variance. 
-
-Included in each of the three plots above is a dashed red line representing the squared difference between the average estimator $$\mathbb E[g_D(x)]$$ and the true function $$f(x)$$. Calculating squared model errors is a common practice for quantifying the goodness of a model fit. If we calculate the expected value of each of the dashed red lines (and assuming that all values of $$x$$ are equally likely to occur), we would obtain a single value for each estimator that is the mean squared error (MSE) between the expected estimator and the true function.
+Included in each of the three plots in ***Figure 3*** is a dashed red line representing the squared difference between the average estimator $$\mathbb E[g_D(x)]$$ and the true function $$f(x)$$. Calculating squared model errors is a common practice for quantifying the goodness of a model fit. If we were to calculate the expected value of each of the dashed red lines--assuming that all $$N$$ values in an array of independent variables $$\mathbf x$$ are equally likely to occur--we would obtain a single value for each estimator that is the mean squared error (MSE) between the expected estimator and the true function:
 
 $$
-\mathbb E[(\mathbb E[g(x)]-f(x))^2] = \frac{1}{N}\sum_{i=1}^N (\mathbb E[g(x)]-f(x))^2
+\mathbb E[(\mathbb E[g(\mathbf{x})]-f(\mathbf{x}))^2] = \frac{1}{N}\sum_{i=1}^N (\mathbb E[g(x_i)]-f(x_i))^2
 $$
 
-For the estimator $$g_3(x)$$, the MSE will be very small, as the dashed black curve for this estimator is near zero for all values of $$x$$. The estimators $$g_1(x)$$ and $$g_{10}(x)$$ would have significantly larger values. Now, because exhibiting both a low MSE, as well as having both low bias and variance are indicative of a good estimator, it would be reasonable to assume that squared model error is directly related to bias and variance. The next section provides some formal evidence for this notion.
+For the estimator $$g_3(x)$$, the MSE will be very small, as the dashed black curve for this estimator is near zero for all values of $$\mathbf x$$. The estimators $$g_1(x)$$ and $$g_{10}(x)$$ would have substantially larger MSE values. Now, because exhibiting both a low MSE, as well as having both low bias and variance are indicative of a good estimator, it would be reasonable to assume that squared model error is directly related to bias and variance. The next section provides some formal evidence for this notion.
 
 # Expected Prediction Error and the Bias-variance Tradeoff
 
@@ -290,7 +290,7 @@ $$
 \mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2] + (\mathbb E[g(x^*)]^2 - 2 \mathbb E[g(x^*)]f(x^*) + f(x^*)^2) + \mathbb E[(y^*-f(x^*))^2] \tag{5}
 $$
 
-which can be further simplified by reversing a polynomial expansion and grouping into three terms
+which can be further simplified by reversing a polynomial expansion and highlighting three terms
 
 $$
 \color{green}{\mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2]} + \color{blue}{( \mathbb E[g(x^*)]-f(x^*))^2} + \color{red}{\mathbb E[(y^*-f(x^*))^2]} \tag{6}
@@ -300,7 +300,7 @@ $$
 2. The second term is the <span style="color:blue">squared bias of the estimator</span>, also introduced above.
 3. The third term is the <span style="color:red">variance of the observation noise</span> and describes how much the observations $$y$$ vary from the true function $$f(x)$$. Notice that the noise term does not depend on the estimator $$g(x)$$. This means that the noise term is a constant that places a lower bound on expected prediction error, and in particular is equal to the variance the noise term $$\sigma_{\epsilon}^2$$.
 
-Here we find that the expected prediction error on new data $$(x^*,y^*)$$ (in the squared differences sense) is the combination of these three terms. This take-home is important in that it states that the expected prediction error on new data can be used as a quantitative criterion for selecting the best model from a candidate set of estimators!
+Here we find that the expected prediction error on new data $$(x^*,y^*)$$ (in the squared differences sense) is the combination of these three terms: the estimator variance, squared-bias, and the observation noise variance. This take-home is important in that it states that the expected prediction error on new data can be used as a quantitative criterion for selecting the best model from a candidate set of estimators!
 
 It turns out that, given $$N$$ new data points $$(\mathbf x^*,\mathbf y^*)$$, the expected prediction error can be easily approximated as the mean squared error over data pairs:
 
@@ -312,12 +312,12 @@ thus giving us a convenient metric for determining the best model out of a set o
 
 # Demonstration of the Bias-variance Tradeoff
 
-Below we demonstrate the findings presented above with another set of simulations. We simulate 100 independent datasets, each with 25 $$x\text{-}y$$ pairs. We then partition each dataset into two non-overlapping sets:
+Below we demonstrate the findings presented above with another set of simulations. We simulate 100 independent datasets, each with 25 $$x\text{-}y$$ pairs; the samples $$y$$ have a noise variacne $$\sigma_{\epsilon}^2=\sigma_{\text{noise}}^2=0.25$$. We then partition each dataset into two non-overlapping sets:
 
 - a *Training Set* using for fitting model parameters
 - a *Testing Set* used to estimate the model prediction error
 
-We then fit the parameters for estimators of varying complexity. Complexity is varied by using polynomial functions that range in model order from 1 (least complex) to 12 (most complex). We then calculate and display the squared bias, variance, and predition error on testing set for each of the estimators:
+We then fit the parameters for estimators of varying complexity. Complexity is varied by using polynomial functions that range in model order from 1 (least complex) to 12 (most complex). We then calculate and display the squared bias, variance, and prediction error on testing set for each of the estimators:
 
 <center>
     <br>
@@ -452,7 +452,7 @@ In the left subpanel of ***Figure 4*** we see how, as the model complexity incre
 
 In this example, we highlight the best estimator in terms of prediction error on the testing set (dark red curve) with a dashed black vertical line. The best estimator corresponds to a polynomial model of order of $$D=3$$. Notice that the vertical black line is located where function defined by the sum of the squared bias and variance (dashed gray curve) is also at a minimum.
 
-It's also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in ***Equation 6*** is also represented in the left subpanel of ***Figure 4*** as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations $$\sigma_{noise}^2 = \sigma_{\epsilon}^2$$ (indicated by the dashed red line).
+It's also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in ***Equation 6*** is also represented in the left subpanel of ***Figure 4*** as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations $$\sigma_{\text{noise}}^2$$ (indicated by the dashed red line).
 
 # Testing Set Error versus Training Set &  Overfitting 
 

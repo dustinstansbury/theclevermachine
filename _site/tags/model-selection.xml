@@ -3,7 +3,7 @@
     <title>The Clever Machine - model-selection</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsmodel-selection.html"/>
-    <updated>2020-07-20T19:53:40-07:00</updated>
+    <updated>2020-07-21T15:08:34-07:00</updated>
     <id>/theclevermachinemodel-selection.html</id>
 
     <author>
@@ -20,11 +20,11 @@
 
 &lt;h1 id=&quot;models-for-regression&quot;&gt;Models for Regression&lt;/h1&gt;
 
-&lt;p&gt;When performing regression analyses we would like to characterize how the value of some dependent variable changes as some independent variable &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is varied. For example, say we would like to characterize the firing rate of a neuron in visual cortex as we vary the orientation of a grating pattern presented to the eye. We assume that there is some true relationship function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; that maps the independent variable values (i.e. the angle of the grating pattern) onto the dependent variable values (i.e. firing rate). We would like to determine the form of the function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; from observations of independent-dependent value pairs (I may also refer to these as input-output pairs, as we can think of the function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; taking x as input and producing an output). However, in the real world, we don’t get to observe &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; directly, but instead get noisy observations &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, where&lt;/p&gt;
+&lt;p&gt;When performing regression analyses we would like to characterize how the value of some dependent variable changes as some independent variable &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is varied. For example, say we would like to characterize the firing rate of a neuron in visual cortex as we vary the orientation of a grating pattern presented to the eye. We assume that there is some true relationship function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; that maps the independent variable values (i.e. the angle of the grating pattern) onto the dependent variable values (i.e. firing rate). We would like to determine the form of the function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; from observations of independent-dependent value pairs (I may also refer to these as input-output pairs, as we can think of the function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; taking &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; as input and producing an output). However, in the real world, we don’t get to observe &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; directly, but instead get noisy observations &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, where&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;y = f(x) + \epsilon \tag{1}&lt;/script&gt;
 
-&lt;p&gt;Here we will assume that &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is random variable distributed according to a zero-mean Gaussian with standard deviation &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2&lt;/script&gt;. Note that because &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is a random variable, &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is also a random variable (with a mean that is conditioned on both &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;, and a variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2&lt;/script&gt;).&lt;/p&gt;
+&lt;p&gt;Here we will assume that &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is random variable distributed according to a zero-mean Gaussian with standard deviation &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2&lt;/script&gt;. Note that because &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is a random variable, &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is also a random variable (with a mean that is conditioned on both &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;, and exhibiting a variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2&lt;/script&gt;).&lt;/p&gt;
 
 &lt;p&gt;As an example, say that the true function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; we want to determine has the the following form (though we don’t know it):&lt;/p&gt;
 
@@ -45,7 +45,7 @@
     &lt;/div&gt;
 &lt;/center&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;: A data-generating function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; and some noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;A data-generating function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; and some noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;. The samples exibit a noise variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2=1&lt;/script&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
 
@@ -100,7 +100,7 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;g_D(x) = \theta_0 + \theta_1x + \theta_2x^2 + \dots \theta_D x^D&lt;/script&gt;
 
-&lt;p&gt;As the polynomial order &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; increases, the functions &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; are able to capture increasingly complex behavior. For example, &lt;script type=&quot;math/tex&quot;&gt;g_0(x)&lt;/script&gt; desribes a horizontal line with an adjustable vertical offset &lt;script type=&quot;math/tex&quot;&gt;\theta_0&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt; desribes a line with adjustable vertical offset and adjustable slope &lt;script type=&quot;math/tex&quot;&gt;\theta_1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;g_2(x)&lt;/script&gt; describes a function that also includes a quadratic term &lt;script type=&quot;math/tex&quot;&gt;\theta_2&lt;/script&gt;. We thus try to fit the values of the parameters for a given estimator &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; to best account for observed data in the hopes that we will also accurately approximate &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;As the polynomial order &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; increases, the functions &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; are able to capture increasingly complex behavior. For example, &lt;script type=&quot;math/tex&quot;&gt;g_0(x)&lt;/script&gt; desribes a horizontal line with an adjustable vertical offset &lt;script type=&quot;math/tex&quot;&gt;\theta_0&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt; desribes a line with adjustable vertical offset and adjustable linear slope &lt;script type=&quot;math/tex&quot;&gt;\theta_1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;g_2(x)&lt;/script&gt; describes a function that also includes a weight on the quadratic term &lt;script type=&quot;math/tex&quot;&gt;\theta_2&lt;/script&gt;. We thus try to fit the values of the parameters for a given estimator &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; to best account for observed data in the hopes that we will also accurately approximate &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;Below we estimate the parameters of three polynomial model functions of increasing complexity (using Numpy’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;polyfit&lt;/code&gt;) to the sampled data displayed above. Specifically, we estimate the functions &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;g_3(x)&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;g_{10}(x)&lt;/script&gt;.&lt;/p&gt;
 
@@ -113,7 +113,7 @@
     &lt;/div&gt;
 &lt;/center&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;: Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;details&gt;
 
@@ -160,7 +160,7 @@
     &lt;/div&gt;
 &lt;/center&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 3&lt;/em&gt;&lt;/strong&gt;: Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 3&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;details&gt;
 
@@ -236,19 +236,19 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{variance} = \mathbb E[(g(x)-\mathbb E[g(x)])^2]&lt;/script&gt;
 
-&lt;p&gt;The variance is the expected (i.e. average) squared difference between any single dataset-dependent estimate of &lt;script type=&quot;math/tex&quot;&gt;g(x)&lt;/script&gt; and the average value of &lt;script type=&quot;math/tex&quot;&gt;g(x)&lt;/script&gt; estimated over all datasets.&lt;/p&gt;
+&lt;p&gt;The variance is the expected (i.e. average) squared difference between any single dataset-dependent estimate of &lt;script type=&quot;math/tex&quot;&gt;g(x)&lt;/script&gt; and the average value of &lt;script type=&quot;math/tex&quot;&gt;g(x)&lt;/script&gt; estimated over all datasets, &lt;script type=&quot;math/tex&quot;&gt;\mathbb E[g(x)]&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;According to the definition of variance, we can say that the estimator &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt; exhibits low variance because the each individual &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt; is fairly similar across datasets.&lt;/p&gt;
 
+&lt;p&gt;Investigating the results for the estimator &lt;script type=&quot;math/tex&quot;&gt;g_{10}(x)&lt;/script&gt; (green curves), we see that each individual model fit varies dramatically from one data set to another. Thus we can say that this estimator exhibits high variance.&lt;/p&gt;
+
 &lt;p&gt;We established earlier that the estimator &lt;script type=&quot;math/tex&quot;&gt;g_3(x)&lt;/script&gt; provided a qualitatively better fit to the function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; than the other two polynomial estimators for a single dataset. It appears that this is also the case over many datasets. We also find that estimator &lt;script type=&quot;math/tex&quot;&gt;g_3(x)&lt;/script&gt; exhibits low bias and low variance, whereas the other two, less-desirable estimators, have either high bias or high variance. Thus it would appear that having both low bias and low variance is a reasonable criterion for selecting an accurate model of &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;Investigating the results for the estimator &lt;script type=&quot;math/tex&quot;&gt;g_{10}(x)&lt;/script&gt; (green curves), we see that each individual model fit varies dramatically from one data set to another. Thus we can say that this estimator exhibits large variance.&lt;/p&gt;
+&lt;p&gt;Included in each of the three plots in &lt;strong&gt;&lt;em&gt;Figure 3&lt;/em&gt;&lt;/strong&gt; is a dashed red line representing the squared difference between the average estimator &lt;script type=&quot;math/tex&quot;&gt;\mathbb E[g_D(x)]&lt;/script&gt; and the true function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;. Calculating squared model errors is a common practice for quantifying the goodness of a model fit. If we were to calculate the expected value of each of the dashed red lines–assuming that all &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; values in an array of independent variables &lt;script type=&quot;math/tex&quot;&gt;\mathbf x&lt;/script&gt; are equally likely to occur–we would obtain a single value for each estimator that is the mean squared error (MSE) between the expected estimator and the true function:&lt;/p&gt;
 
-&lt;p&gt;Included in each of the three plots above is a dashed red line representing the squared difference between the average estimator &lt;script type=&quot;math/tex&quot;&gt;\mathbb E[g_D(x)]&lt;/script&gt; and the true function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;. Calculating squared model errors is a common practice for quantifying the goodness of a model fit. If we calculate the expected value of each of the dashed red lines (and assuming that all values of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; are equally likely to occur), we would obtain a single value for each estimator that is the mean squared error (MSE) between the expected estimator and the true function.&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb E[(\mathbb E[g(\mathbf{x})]-f(\mathbf{x}))^2] = \frac{1}{N}\sum_{i=1}^N (\mathbb E[g(x_i)]-f(x_i))^2&lt;/script&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb E[(\mathbb E[g(x)]-f(x))^2] = \frac{1}{N}\sum_{i=1}^N (\mathbb E[g(x)]-f(x))^2&lt;/script&gt;
-
-&lt;p&gt;For the estimator &lt;script type=&quot;math/tex&quot;&gt;g_3(x)&lt;/script&gt;, the MSE will be very small, as the dashed black curve for this estimator is near zero for all values of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;. The estimators &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;g_{10}(x)&lt;/script&gt; would have significantly larger values. Now, because exhibiting both a low MSE, as well as having both low bias and variance are indicative of a good estimator, it would be reasonable to assume that squared model error is directly related to bias and variance. The next section provides some formal evidence for this notion.&lt;/p&gt;
+&lt;p&gt;For the estimator &lt;script type=&quot;math/tex&quot;&gt;g_3(x)&lt;/script&gt;, the MSE will be very small, as the dashed black curve for this estimator is near zero for all values of &lt;script type=&quot;math/tex&quot;&gt;\mathbf x&lt;/script&gt;. The estimators &lt;script type=&quot;math/tex&quot;&gt;g_1(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;g_{10}(x)&lt;/script&gt; would have substantially larger MSE values. Now, because exhibiting both a low MSE, as well as having both low bias and variance are indicative of a good estimator, it would be reasonable to assume that squared model error is directly related to bias and variance. The next section provides some formal evidence for this notion.&lt;/p&gt;
 
 &lt;h1 id=&quot;expected-prediction-error-and-the-bias-variance-tradeoff&quot;&gt;Expected Prediction Error and the Bias-variance Tradeoff&lt;/h1&gt;
 
@@ -271,7 +271,7 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2] + (\mathbb E[g(x^*)]^2 - 2 \mathbb E[g(x^*)]f(x^*) + f(x^*)^2) + \mathbb E[(y^*-f(x^*))^2] \tag{5}&lt;/script&gt;
 
-&lt;p&gt;which can be further simplified by reversing a polynomial expansion and grouping into three terms&lt;/p&gt;
+&lt;p&gt;which can be further simplified by reversing a polynomial expansion and highlighting three terms&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\color{green}{\mathbb E[(g(x^*) - \mathbb E[g(x^*)])^2]} + \color{blue}{( \mathbb E[g(x^*)]-f(x^*))^2} + \color{red}{\mathbb E[(y^*-f(x^*))^2]} \tag{6}&lt;/script&gt;
 
@@ -281,7 +281,7 @@
   &lt;li&gt;The third term is the &lt;span style=&quot;color:red&quot;&gt;variance of the observation noise&lt;/span&gt; and describes how much the observations &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; vary from the true function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;. Notice that the noise term does not depend on the estimator &lt;script type=&quot;math/tex&quot;&gt;g(x)&lt;/script&gt;. This means that the noise term is a constant that places a lower bound on expected prediction error, and in particular is equal to the variance the noise term &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2&lt;/script&gt;.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Here we find that the expected prediction error on new data &lt;script type=&quot;math/tex&quot;&gt;(x^*,y^*)&lt;/script&gt; (in the squared differences sense) is the combination of these three terms. This take-home is important in that it states that the expected prediction error on new data can be used as a quantitative criterion for selecting the best model from a candidate set of estimators!&lt;/p&gt;
+&lt;p&gt;Here we find that the expected prediction error on new data &lt;script type=&quot;math/tex&quot;&gt;(x^*,y^*)&lt;/script&gt; (in the squared differences sense) is the combination of these three terms: the estimator variance, squared-bias, and the observation noise variance. This take-home is important in that it states that the expected prediction error on new data can be used as a quantitative criterion for selecting the best model from a candidate set of estimators!&lt;/p&gt;
 
 &lt;p&gt;It turns out that, given &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; new data points &lt;script type=&quot;math/tex&quot;&gt;(\mathbf x^*,\mathbf y^*)&lt;/script&gt;, the expected prediction error can be easily approximated as the mean squared error over data pairs:&lt;/p&gt;
 
@@ -291,14 +291,14 @@
 
 &lt;h1 id=&quot;demonstration-of-the-bias-variance-tradeoff&quot;&gt;Demonstration of the Bias-variance Tradeoff&lt;/h1&gt;
 
-&lt;p&gt;Below we demonstrate the findings presented above with another set of simulations. We simulate 100 independent datasets, each with 25 &lt;script type=&quot;math/tex&quot;&gt;x\text{-}y&lt;/script&gt; pairs. We then partition each dataset into two non-overlapping sets:&lt;/p&gt;
+&lt;p&gt;Below we demonstrate the findings presented above with another set of simulations. We simulate 100 independent datasets, each with 25 &lt;script type=&quot;math/tex&quot;&gt;x\text{-}y&lt;/script&gt; pairs; the samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; have a noise variacne &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2=\sigma_{\text{noise}}^2=0.25&lt;/script&gt;. We then partition each dataset into two non-overlapping sets:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;a &lt;em&gt;Training Set&lt;/em&gt; using for fitting model parameters&lt;/li&gt;
   &lt;li&gt;a &lt;em&gt;Testing Set&lt;/em&gt; used to estimate the model prediction error&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;We then fit the parameters for estimators of varying complexity. Complexity is varied by using polynomial functions that range in model order from 1 (least complex) to 12 (most complex). We then calculate and display the squared bias, variance, and predition error on testing set for each of the estimators:&lt;/p&gt;
+&lt;p&gt;We then fit the parameters for estimators of varying complexity. Complexity is varied by using polynomial functions that range in model order from 1 (least complex) to 12 (most complex). We then calculate and display the squared bias, variance, and prediction error on testing set for each of the estimators:&lt;/p&gt;
 
 &lt;center&gt;
     &lt;br /&gt;
@@ -433,7 +433,7 @@
 
 &lt;p&gt;In this example, we highlight the best estimator in terms of prediction error on the testing set (dark red curve) with a dashed black vertical line. The best estimator corresponds to a polynomial model of order of &lt;script type=&quot;math/tex&quot;&gt;D=3&lt;/script&gt;. Notice that the vertical black line is located where function defined by the sum of the squared bias and variance (dashed gray curve) is also at a minimum.&lt;/p&gt;
 
-&lt;p&gt;It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in &lt;strong&gt;&lt;em&gt;Equation 6&lt;/em&gt;&lt;/strong&gt; is also represented in the left subpanel of &lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt; as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations &lt;script type=&quot;math/tex&quot;&gt;\sigma_{noise}^2 = \sigma_{\epsilon}^2&lt;/script&gt; (indicated by the dashed red line).&lt;/p&gt;
+&lt;p&gt;It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in &lt;strong&gt;&lt;em&gt;Equation 6&lt;/em&gt;&lt;/strong&gt; is also represented in the left subpanel of &lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt; as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\text{noise}}^2&lt;/script&gt; (indicated by the dashed red line).&lt;/p&gt;
 
 &lt;h1 id=&quot;testing-set-error-versus-training-set---overfitting&quot;&gt;Testing Set Error versus Training Set &amp;amp;  Overfitting&lt;/h1&gt;
 
