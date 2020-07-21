@@ -3,7 +3,7 @@ layout: post
 title: "Supplemental Proof: The Expected Value of a Squared Random Variable"
 author: Dustin Stansbury
 date: 2020-07-19
-tags: statistics derivation
+tags: statistics derivation expected-value
 permalink: /supplemental-lemma-expectation-x-squared
 ---
 

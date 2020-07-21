@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>The Clever Machine - expected-value</title>
+    <link href="/theclevermachine" rel="self"/>
+    <link href="tagsexpected-value.html"/>
+    <updated>2020-07-20T19:46:43-07:00</updated>
+    <id>/theclevermachineexpected-value.html</id>
+
+    <author>
+        <name>Dustin Stansbury</name>
+    </author>
+
+    
+        <entry>
+            <title>Supplemental Proof: The Expected Value of a Squared Random Variable</title>
+            <link href="/theclevermachine/supplemental-lemma-expectation-x-squared"/>
+            <updated>2020-07-19T00:00:00-07:00</updated>
+            <id>/theclevermachine/supplemental-lemma-expectation-x-squared</id>
+            <content type="html">&lt;p&gt;We want to show the following relationship:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb E[X^2] = \mathbb E[(X - \mathbb E[X])^2] + \mathbb E[X]^2 \tag{1}&lt;/script&gt;
+
+&lt;p&gt;If we expand the first expression on the right-hand side of &lt;strong&gt;&lt;em&gt;Equation 1&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\mathbb E [(X - \mathbb E[X])^2] &amp;= \mathbb E[X^2-2X\mathbb E[X]+\mathbb E [X]^2] \\
+&amp;= \mathbb E[X^2] - 2\mathbb E[X] \mathbb E [\mathbb E [X]] + \mathbb E [\mathbb E [X]^2]. \tag{2}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;If we note that &lt;script type=&quot;math/tex&quot;&gt;\mathbb E[X]&lt;/script&gt; is a constant, then &lt;script type=&quot;math/tex&quot;&gt;\mathbb E[\mathbb E[X]]&lt;/script&gt; is also a constant, namely &lt;script type=&quot;math/tex&quot;&gt;\mathbb E[X]&lt;/script&gt;. Taking this into account &lt;strong&gt;&lt;em&gt;Equation 2&lt;/em&gt;&lt;/strong&gt; simplifies to:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\mathbb E[(X - \mathbb E[X])^2] &amp;= \mathbb E[X^2] - 2\mathbb E[X] \mathbb E[X] + \mathbb E[X]^2 \\
+&amp;= \mathbb E[X^2] - 2\mathbb E[X]^2 + \mathbb E[X]^2 \\
+&amp;= \mathbb E[X^2] - \mathbb E[X]^2 \tag{3}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Plugging &lt;strong&gt;&lt;em&gt;Equation 3&lt;/em&gt;&lt;/strong&gt; back into the right-hand side of &lt;strong&gt;&lt;em&gt;Equation 1&lt;/em&gt;&lt;/strong&gt; gives&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\mathbb E[(X - \mathbb E[X])^2] + \mathbb E[X]^2 &amp;= \mathbb E[X^2] - \mathbb E[X]^2 + \mathbb E[X]^2 \\
+&amp;= \mathbb E[X^2] , \tag{4}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;thus giving the desired result.&lt;/p&gt;
+</content>
+        </entry>
+    
+</feed>

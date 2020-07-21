@@ -444,7 +444,7 @@ plt.legend(loc='upper center')
 ---
 <br> 
 
-In the left side of ***Figure 4*** we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. **Thus there is a tradeoff between bias and variance that comes with model complexity**: 
+In the left subpanel of ***Figure 4*** we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. **Thus there is a tradeoff between bias and variance that comes with model complexity**: 
 
 - models that are too complex will have high variance and low bias
 - models that are too simple will have high bias and low variance.
@@ -452,7 +452,7 @@ In the left side of ***Figure 4*** we see how, as the model complexity increases
 
 In this example, we highlight the best estimator in terms of prediction error on the testing set (dark red curve) with a dashed black vertical line. The best estimator corresponds to a polynomial model of order of $$D=3$$. Notice that the vertical black line is located where function defined by the sum of the squared bias and variance (dashed gray curve) is also at a minimum.
 
-It's also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in ***Equation 6*** is also represented in ***Figure 4*** as the red curve. This curve was calculated by taking the difference begween the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations $$\sigma_{noise}^2 = \sigma_{\epsilon}^2$$ (indicated by the dashed red line).
+It's also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in ***Equation 6*** is also represented in the left subpanel of ***Figure 4*** as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations $$\sigma_{noise}^2 = \sigma_{\epsilon}^2$$ (indicated by the dashed red line).
 
 # Testing Set Error versus Training Set &  Overfitting 
 
@@ -476,5 +476,5 @@ Comparing prediction accuracy across potential estimators is equivalent to asses
 ---
 
 # Notes
-*This post is a refactor of content with the same title originally posted on [The Clever Machine](https://theclevermachine.wordpress.com/2013/04/21/model-selection-underfitting-overfitting-and-the-bias-variance-tradeoff/#comments) Wordpress blog.*
+*This post is a refactor of content with the same title originally posted on [The Clever Machine Wordpress blog](https://theclevermachine.wordpress.com/2013/04/21/model-selection-underfitting-overfitting-and-the-bias-variance-tradeoff/#comments).*
 

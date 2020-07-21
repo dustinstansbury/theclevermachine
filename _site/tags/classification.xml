@@ -3,7 +3,7 @@
     <title>The Clever Machine - classification</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsclassification.html"/>
-    <updated>2020-07-20T16:37:37-07:00</updated>
+    <updated>2020-07-20T19:46:43-07:00</updated>
     <id>/theclevermachineclassification.html</id>
 
     <author>
@@ -423,7 +423,7 @@
 &lt;hr /&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;In the left side of &lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt; we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. &lt;strong&gt;Thus there is a tradeoff between bias and variance that comes with model complexity&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;In the left subpanel of &lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt; we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. &lt;strong&gt;Thus there is a tradeoff between bias and variance that comes with model complexity&lt;/strong&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;models that are too complex will have high variance and low bias&lt;/li&gt;
@@ -433,7 +433,7 @@
 
 &lt;p&gt;In this example, we highlight the best estimator in terms of prediction error on the testing set (dark red curve) with a dashed black vertical line. The best estimator corresponds to a polynomial model of order of &lt;script type=&quot;math/tex&quot;&gt;D=3&lt;/script&gt;. Notice that the vertical black line is located where function defined by the sum of the squared bias and variance (dashed gray curve) is also at a minimum.&lt;/p&gt;
 
-&lt;p&gt;It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in &lt;strong&gt;&lt;em&gt;Equation 6&lt;/em&gt;&lt;/strong&gt; is also represented in &lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt; as the red curve. This curve was calculated by taking the difference begween the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations &lt;script type=&quot;math/tex&quot;&gt;\sigma_{noise}^2 = \sigma_{\epsilon}^2&lt;/script&gt; (indicated by the dashed red line).&lt;/p&gt;
+&lt;p&gt;It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in &lt;strong&gt;&lt;em&gt;Equation 6&lt;/em&gt;&lt;/strong&gt; is also represented in the left subpanel of &lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt; as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations &lt;script type=&quot;math/tex&quot;&gt;\sigma_{noise}^2 = \sigma_{\epsilon}^2&lt;/script&gt; (indicated by the dashed red line).&lt;/p&gt;
 
 &lt;h1 id=&quot;testing-set-error-versus-training-set---overfitting&quot;&gt;Testing Set Error versus Training Set &amp;amp;  Overfitting&lt;/h1&gt;
 
@@ -452,6 +452,12 @@
 &lt;p&gt;However, the direct connection we made between bias, variance with the mean-squared error calculated on a testing set give us a direct means for assessing a group of candidate estimators in light of a single data set. We only need to partition the available data set into a &lt;em&gt;Training Set&lt;/em&gt; used to fit model parameters and a &lt;em&gt;Testing Set&lt;/em&gt; used to assess prediction accuracy.&lt;/p&gt;
 
 &lt;p&gt;Comparing prediction accuracy across potential estimators is equivalent to assessing biases and variances of the estimators across many datasets. Note that resampling methods such as cross-validation can prove helpful here, particularly when the amount of observed data is small.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;notes&quot;&gt;Notes&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;This post is a refactor of content with the same title originally posted on &lt;a href=&quot;https://theclevermachine.wordpress.com/2013/04/21/model-selection-underfitting-overfitting-and-the-bias-variance-tradeoff/#comments&quot;&gt;The Clever Machine Wordpress blog&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 </content>
         </entry>

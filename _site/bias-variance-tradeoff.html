@@ -495,7 +495,7 @@
 <hr />
 <p><br /></p>
 
-<p>In the left side of <strong><em>Figure 4</em></strong> we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. <strong>Thus there is a tradeoff between bias and variance that comes with model complexity</strong>:</p>
+<p>In the left subpanel of <strong><em>Figure 4</em></strong> we see how, as the model complexity increases, the estimator variance (green curve) also increases. Additionally, as model complexity increases, the squared bias (blue curve) decreases. <strong>Thus there is a tradeoff between bias and variance that comes with model complexity</strong>:</p>
 
 <ul>
   <li>models that are too complex will have high variance and low bias</li>
@@ -505,7 +505,7 @@
 
 <p>In this example, we highlight the best estimator in terms of prediction error on the testing set (dark red curve) with a dashed black vertical line. The best estimator corresponds to a polynomial model of order of <script type="math/tex">D=3</script>. Notice that the vertical black line is located where function defined by the sum of the squared bias and variance (dashed gray curve) is also at a minimum.</p>
 
-<p>It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in <strong><em>Equation 6</em></strong> is also represented in <strong><em>Figure 4</em></strong> as the red curve. This curve was calculated by taking the difference begween the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations <script type="math/tex">\sigma_{noise}^2 = \sigma_{\epsilon}^2</script> (indicated by the dashed red line).</p>
+<p>It’s also important to notice that the sum of the squared bias and variance has the same shape as the curve defined by the mean squared prediction error on the testing set. This exemplifies how the error on novel data can be used as a proxy for determining the best estimator from a candidate set based on squared bias and variance. The noise term in <strong><em>Equation 6</em></strong> is also represented in the left subpanel of <strong><em>Figure 4</em></strong> as the red curve. This curve was calculated by taking the difference between the Testing Set error and the sum of the variance and squared bias. We can see that the noise term is roughly constant, and equivalent to underlyng the variance of the observations <script type="math/tex">\sigma_{noise}^2 = \sigma_{\epsilon}^2</script> (indicated by the dashed red line).</p>
 
 <h1 id="testing-set-error-versus-training-set---overfitting">Testing Set Error versus Training Set &amp;  Overfitting</h1>
 
@@ -524,6 +524,12 @@
 <p>However, the direct connection we made between bias, variance with the mean-squared error calculated on a testing set give us a direct means for assessing a group of candidate estimators in light of a single data set. We only need to partition the available data set into a <em>Training Set</em> used to fit model parameters and a <em>Testing Set</em> used to assess prediction accuracy.</p>
 
 <p>Comparing prediction accuracy across potential estimators is equivalent to assessing biases and variances of the estimators across many datasets. Note that resampling methods such as cross-validation can prove helpful here, particularly when the amount of observed data is small.</p>
+
+<hr />
+<hr />
+
+<h1 id="notes">Notes</h1>
+<p><em>This post is a refactor of content with the same title originally posted on <a href="https://theclevermachine.wordpress.com/2013/04/21/model-selection-underfitting-overfitting-and-the-bias-variance-tradeoff/#comments">The Clever Machine Wordpress blog</a>.</em></p>
 
 
   </div><div id="disqus_thread"></div>
