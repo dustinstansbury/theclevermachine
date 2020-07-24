@@ -29,6 +29,10 @@
 <lastmod>2020-07-20T00:00:00-07:00</lastmod>
 </url>
 <url>
+<loc>https://dustinstansbury.github.io/theclevermachine/derivation-normal-equations</loc>
+<lastmod>2020-07-23T00:00:00-07:00</lastmod>
+</url>
+<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/about/</loc>
 </url>
 <url>
@@ -68,6 +72,9 @@
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/neural-networks.html</loc>
 </url>
 <url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/normal-equations.html</loc>
+</url>
+<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/ordinary-least-squares.html</loc>
 </url>
 <url>
@@ -129,5 +136,8 @@
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/model-selection.html</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/normal-equations.html</loc>
 </url>
 </urlset>
