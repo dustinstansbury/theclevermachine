@@ -9,10 +9,6 @@
 <lastmod>2020-06-29T00:00:00-07:00</lastmod>
 </url>
 <url>
-<loc>https://dustinstansbury.github.io/theclevermachine/derivation-ols-normal-equations</loc>
-<lastmod>2020-06-29T00:00:00-07:00</lastmod>
-</url>
-<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/cutting-your-losses</loc>
 <lastmod>2020-06-30T00:00:00-07:00</lastmod>
 </url>
@@ -99,9 +95,6 @@
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/derivation.html</loc>
 </url>
 <url>
-<loc>https://dustinstansbury.github.io/theclevermachine/tags/ordinary-least-squares.html</loc>
-</url>
-<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/statistics.html</loc>
 </url>
 <url>
@@ -136,6 +129,9 @@
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/model-selection.html</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/ordinary-least-squares.html</loc>
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/normal-equations.html</loc>

@@ -3,7 +3,7 @@
     <title>The Clever Machine - normal-equations</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsnormal-equations.html"/>
-    <updated>2020-07-23T21:42:28-07:00</updated>
+    <updated>2020-07-23T23:59:45-07:00</updated>
     <id>/theclevermachinenormal-equations.html</id>
 
     <author>
@@ -16,7 +16,9 @@
             <link href="/theclevermachine/derivation-normal-equations"/>
             <updated>2020-07-23T00:00:00-07:00</updated>
             <id>/theclevermachine/derivation-normal-equations</id>
-            <content type="html">&lt;p&gt;In the linear regression framework, we model an output variable &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; (in this case a scalar) as a linear combination of some independent input variables &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; plus some independent noise &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. The linear combination of the independent variables is defined by a parameter vector &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;:&lt;/p&gt;
+            <content type="html">&lt;p&gt;Have you ever performed linear regression involving multiple predictor variables and run into this expression &lt;script type=&quot;math/tex&quot;&gt;\hat \beta = (X^TX)^{-1}X^Ty&lt;/script&gt;? It’s called the OLS solution via Normal Equations. To find out where it comes from, read on!&lt;/p&gt;
+
+&lt;p&gt;In the linear regression framework, we model an output variable &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; (in this case a scalar) as a linear combination of some independent input variables &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; plus some independent noise &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. The linear combination of the independent variables is defined by a parameter vector &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;y = X \beta + \epsilon&lt;/script&gt;
 
@@ -59,7 +61,7 @@ X^TX \hat \beta&amp;= X^Ty  \text{,} \tag{2}
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat \beta = (X^TX)^{-1}X^Ty&lt;/script&gt;
 
-&lt;p&gt;Yay!&lt;/p&gt;
+&lt;p&gt;…and voila!&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;hr /&gt;

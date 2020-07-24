@@ -3,7 +3,7 @@
     <title>The Clever Machine - derivation</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsderivation.html"/>
-    <updated>2020-07-23T21:42:28-07:00</updated>
+    <updated>2020-07-23T23:59:45-07:00</updated>
     <id>/theclevermachinederivation.html</id>
 
     <author>
@@ -16,7 +16,9 @@
             <link href="/theclevermachine/derivation-normal-equations"/>
             <updated>2020-07-23T00:00:00-07:00</updated>
             <id>/theclevermachine/derivation-normal-equations</id>
-            <content type="html">&lt;p&gt;In the linear regression framework, we model an output variable &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; (in this case a scalar) as a linear combination of some independent input variables &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; plus some independent noise &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. The linear combination of the independent variables is defined by a parameter vector &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;:&lt;/p&gt;
+            <content type="html">&lt;p&gt;Have you ever performed linear regression involving multiple predictor variables and run into this expression &lt;script type=&quot;math/tex&quot;&gt;\hat \beta = (X^TX)^{-1}X^Ty&lt;/script&gt;? It’s called the OLS solution via Normal Equations. To find out where it comes from, read on!&lt;/p&gt;
+
+&lt;p&gt;In the linear regression framework, we model an output variable &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; (in this case a scalar) as a linear combination of some independent input variables &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; plus some independent noise &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. The linear combination of the independent variables is defined by a parameter vector &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;y = X \beta + \epsilon&lt;/script&gt;
 
@@ -59,7 +61,7 @@ X^TX \hat \beta&amp;= X^Ty  \text{,} \tag{2}
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat \beta = (X^TX)^{-1}X^Ty&lt;/script&gt;
 
-&lt;p&gt;Yay!&lt;/p&gt;
+&lt;p&gt;…and voila!&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;hr /&gt;
@@ -103,49 +105,6 @@ X^TX \hat \beta&amp;= X^Ty  \text{,} \tag{2}
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;thus giving the desired result.&lt;/p&gt;
-</content>
-        </entry>
-    
-        <entry>
-            <title>Derivation: Ordinary Least Squares Solution and Normal Equations</title>
-            <link href="/theclevermachine/derivation-ols-normal-equations"/>
-            <updated>2020-06-29T00:00:00-07:00</updated>
-            <id>/theclevermachine/derivation-ols-normal-equations</id>
-            <content type="html">&lt;p&gt;In a linear regression framework, we assume some output variable &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is a linear combination of some independent input variables &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; plus some independent noise &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;. The way the independent variables are combined is defined by a parameter vector &lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{array}{rcl} y &amp;=&amp; X \beta + \epsilon \end{array} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;We also assume that the noise term &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is drawn from a standard Normal distribution:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{array}{rcl}\epsilon &amp;\sim&amp; N(0,I)\end{array} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;For some estimate of the model parameters &lt;script type=&quot;math/tex&quot;&gt;\hat \beta&lt;/script&gt;, the model’s prediction errors &lt;script type=&quot;math/tex&quot;&gt;e&lt;/script&gt; are the difference between the model prediction and the observed ouput values&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{rcl} e = y - X\hat \beta \end{array}&lt;/script&gt;
-
-&lt;p&gt;The Ordinary Least Squares (OLS) solution to the problem (i.e. determining an optimal solution for &lt;script type=&quot;math/tex&quot;&gt;\hat \beta&lt;/script&gt;) involves minimizing the sum of the squared errors with respect to the model parameters, &lt;script type=&quot;math/tex&quot;&gt;\hat \beta&lt;/script&gt;. The sum of squared errors is equal to the inner product of the residuals vector with itself &lt;script type=&quot;math/tex&quot;&gt;\sum e_i^2 = e^Te&lt;/script&gt; :&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{array}{rcl} e^T e &amp;=&amp; (y - X \hat \beta)^T (y - X \hat \beta) \\  &amp;=&amp; y^Ty - y^T (X \hat \beta) - (X \hat \beta)^T y + (X \hat \beta)^T (X \hat \beta) \\  &amp;=&amp; y^Ty - (X \hat \beta)^T y - (X \hat \beta)^T y + (X \hat \beta)^T (X \hat \beta) \\  &amp;=&amp; y^Ty - 2(X \hat \beta)^T y + (X \hat \beta)^T (X \hat \beta) \\  &amp;=&amp; y^Ty - 2\hat \beta^T X^T y + \hat \beta^T X^T X \hat \beta \\  \end{array} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;To determine the parameters, &lt;script type=&quot;math/tex&quot;&gt;\hat \beta&lt;/script&gt;, we minimize the sum of squared residuals with respect to the parameters.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{array}{rcl}
-\frac{\partial}{\partial \beta} \left[ e^T e \right] &amp;=&amp; 0 \\  
--2X^Ty + 2X^TX \hat \beta &amp;=&amp; 0 \text{, and thus} \\ 
-X^TX \hat \beta   &amp;=&amp; X^Ty
-\end{array} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;due to the identity &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial \mathbf{a}^T \mathbf{b}}{\partial \mathbf{a}} = \mathbf{b}&lt;/script&gt;, for vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{a}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}&lt;/script&gt;. This relationship is matrix form of the Normal Equations. Solving for &lt;script type=&quot;math/tex&quot;&gt;\hat \beta&lt;/script&gt; gives  the analytical solution to the Ordinary Least Squares problem.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{array}{rcl} \hat \beta &amp;=&amp; (X^TX)^{-1}X^Ty \end{array} %]]&gt;&lt;/script&gt;
-
-&lt;hr /&gt;
-&lt;hr /&gt;
 </content>
         </entry>
     

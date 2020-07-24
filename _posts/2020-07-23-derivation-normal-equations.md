@@ -7,6 +7,8 @@ tags: ordinary-least-squares derivation normal-equations
 permalink: /derivation-normal-equations
 ---
 
+Have you ever performed linear regression involving multiple predictor variables and run into this expression $$\hat \beta = (X^TX)^{-1}X^Ty$$? It's called the OLS solution via Normal Equations. To find out where it comes from, read on!
+
 In the linear regression framework, we model an output variable $$y$$ (in this case a scalar) as a linear combination of some independent input variables $$X$$ plus some independent noise $$\epsilon$$. The linear combination of the independent variables is defined by a parameter vector $$\beta$$:
 
 $$
@@ -60,7 +62,7 @@ $$
 \hat \beta = (X^TX)^{-1}X^Ty
 $$
 
-Yay!
+...and voila!
 
 ---
 ---
