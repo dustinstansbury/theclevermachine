@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Efficient Matrix Power Calculation via Diagonalization | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Efficient Matrix Power Calculation via Diagonalization" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time , or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix." />
+<meta property="og:description" content="Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time , or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix." />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-08T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization","description":"Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time , or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.","@type":"BlogPosting","headline":"Efficient Matrix Power Calculation via Diagonalization","dateModified":"2020-08-08T00:00:00-07:00","datePublished":"2020-08-08T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Efficient Matrix Power Calculation via Diagonalization</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-08-08T00:00:00-07:00" itemprop="datePublished">Aug 8, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
+              , 
+          
+              <a href="/theclevermachine/tags/matrix-diagonalization.html">matrix-diagonalization</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time <script type="math/tex">t</script>, or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.</p>
+
+<p>If matrix <script type="math/tex">M</script> is an <script type="math/tex">m \times m</script> diagonalizable, then <script type="math/tex">M^k</script> can be calculated directly from the diagonalization <script type="math/tex">M = P D P^{-1}</script> as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+M^k &= M \times M \dots \times M \\
+&= (P D P^{-1}) (P D P^{-1}) \dots (P D P^{-1}) \\
+&= P D (P^{-1} P) D (P^{-1} P) \dots D P^{-1} \\
+&= P D^k P^{-1}
+\end{align} %]]></script>
+
+<p>Therefore to calculate <script type="math/tex">M^k</script>, we simply need to diagonalize <script type="math/tex">M</script> and re-matrix-multiply the diagonalization components after raising the diagonal matrix component <script type="math/tex">D</script> to the <script type="math/tex">k</script>-th power. Since <script type="math/tex">D</script> is a diagonal matrix, the <script type="math/tex">k</script>-th power is calculated by simply raising each element along the diagonal to the <script type="math/tex">k</script>-th power:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+D^k &= \begin{bmatrix}
+    d_{1} & & \\
+    & \ddots & \\
+    & & d_{m}
+  \end{bmatrix}^k \\
+&= \begin{bmatrix}
+    d_{1}^k & & \\
+    & \ddots & \\
+    & & d_{m}^k
+  \end{bmatrix}
+
+\end{align} %]]></script>
+
+<p>This trick allows us to calculate the matrix power by multiplying three matrices, rather than <script type="math/tex">k</script>. Thus as <script type="math/tex">k</script> gets large, or the size of the matrix <script type="math/tex">M</script> grows, you get more and more gains in efficiency.</p>
+
+<p>To demonstrate, let’s calculate the matrix power of a random matrix using <strong>brute force</strong>, the <strong>matrix diagonalization</strong> approach reviewed above, and we’ll also throw in results from <code class="language-plaintext highlighter-rouge">numpy.linalg.matrix_power</code> for completeness.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+
+<span class="c1"># Generate a random 3 x 3 matrix
+</span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># power exponent
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Brute Force:</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="s">"@"</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">' M '</span><span class="p">]</span> <span class="o">*</span> <span class="n">k</span><span class="p">)))</span>
+<span class="c1"># Brute Force:
+#  [[-0.34077132 -0.70544947 -1.07778229]
+#  [ 2.73462284 -0.71537115 -2.62514227]
+#  [ 3.35955945  1.68986542 -4.1619396 ]]
+</span>
+<span class="c1"># Diagonalize M via Eigenvalue Decomposition
+</span><span class="n">D</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">eig</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>  <span class="c1"># Put eigenvalues into a diagonal matrix
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Matrix Diagonalization:</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">real</span><span class="p">(</span><span class="n">P</span> <span class="o">@</span> <span class="n">D</span> <span class="o">**</span> <span class="n">k</span> <span class="o">@</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">inv</span><span class="p">(</span><span class="n">P</span><span class="p">)))</span>
+<span class="c1"># Matrix Diagonalization:
+#  [[-0.34077132 -0.70544947 -1.07778229]
+#  [ 2.73462284 -0.71537115 -2.62514227]
+#  [ 3.35955945  1.68986542 -4.1619396 ]]
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">numpy.linalg.matrix_power:</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+<span class="c1"># numpy.linalg.matrix_power:
+#  [[-0.34077132 -0.70544947 -1.07778229]
+#  [ 2.73462284 -0.71537115 -2.62514227]
+#  [ 3.35955945  1.68986542 -4.1619396 ]]
+</span></code></pre></div></div>
+
+<p>Works! 😁</p>
+
+  </div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'the-clever-machine'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/matrix-power-using-diagonalization" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

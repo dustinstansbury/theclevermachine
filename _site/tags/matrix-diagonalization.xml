@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>The Clever Machine - matrix-diagonalization</title>
+    <link href="/theclevermachine" rel="self"/>
+    <link href="tagsmatrix-diagonalization.html"/>
+    <updated>2020-08-09T14:28:04-07:00</updated>
+    <id>/theclevermachinematrix-diagonalization.html</id>
+
+    <author>
+        <name>Dustin Stansbury</name>
+    </author>
+
+    
+        <entry>
+            <title>Efficient Matrix Power Calculation via Diagonalization</title>
+            <link href="/theclevermachine/matrix-power-using-diagonalization"/>
+            <updated>2020-08-08T00:00:00-07:00</updated>
+            <id>/theclevermachine/matrix-power-using-diagonalization</id>
+            <content type="html">&lt;p&gt;Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;, or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.&lt;/p&gt;
+
+&lt;p&gt;If matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; is an &lt;script type=&quot;math/tex&quot;&gt;m \times m&lt;/script&gt; diagonalizable, then &lt;script type=&quot;math/tex&quot;&gt;M^k&lt;/script&gt; can be calculated directly from the diagonalization &lt;script type=&quot;math/tex&quot;&gt;M = P D P^{-1}&lt;/script&gt; as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+M^k &amp;= M \times M \dots \times M \\
+&amp;= (P D P^{-1}) (P D P^{-1}) \dots (P D P^{-1}) \\
+&amp;= P D (P^{-1} P) D (P^{-1} P) \dots D P^{-1} \\
+&amp;= P D^k P^{-1}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Therefore to calculate &lt;script type=&quot;math/tex&quot;&gt;M^k&lt;/script&gt;, we simply need to diagonalize &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; and re-matrix-multiply the diagonalization components after raising the diagonal matrix component &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; to the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;-th power. Since &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; is a diagonal matrix, the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;-th power is calculated by simply raising each element along the diagonal to the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;-th power:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+D^k &amp;= \begin{bmatrix}
+    d_{1} &amp; &amp; \\
+    &amp; \ddots &amp; \\
+    &amp; &amp; d_{m}
+  \end{bmatrix}^k \\
+&amp;= \begin{bmatrix}
+    d_{1}^k &amp; &amp; \\
+    &amp; \ddots &amp; \\
+    &amp; &amp; d_{m}^k
+  \end{bmatrix}
+
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;This trick allows us to calculate the matrix power by multiplying three matrices, rather than &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;. Thus as &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; gets large, or the size of the matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; grows, you get more and more gains in efficiency.&lt;/p&gt;
+
+&lt;p&gt;To demonstrate, let’s calculate the matrix power of a random matrix using &lt;strong&gt;brute force&lt;/strong&gt;, the &lt;strong&gt;matrix diagonalization&lt;/strong&gt; approach reviewed above, and we’ll also throw in results from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;numpy.linalg.matrix_power&lt;/code&gt; for completeness.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Generate a random 3 x 3 matrix
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;randn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# power exponent
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Brute Force:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;' M '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Brute Force:
+#  [[-0.34077132 -0.70544947 -1.07778229]
+#  [ 2.73462284 -0.71537115 -2.62514227]
+#  [ 3.35955945  1.68986542 -4.1619396 ]]
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Diagonalize M via Eigenvalue Decomposition
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;D&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Put eigenvalues into a diagonal matrix
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Matrix Diagonalization:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;real&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;D&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Matrix Diagonalization:
+#  [[-0.34077132 -0.70544947 -1.07778229]
+#  [ 2.73462284 -0.71537115 -2.62514227]
+#  [ 3.35955945  1.68986542 -4.1619396 ]]
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;numpy.linalg.matrix_power:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matrix_power&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# numpy.linalg.matrix_power:
+#  [[-0.34077132 -0.70544947 -1.07778229]
+#  [ 2.73462284 -0.71537115 -2.62514227]
+#  [ 3.35955945  1.68986542 -4.1619396 ]]
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Works! 😁&lt;/p&gt;
+</content>
+        </entry>
+    
+</feed>
