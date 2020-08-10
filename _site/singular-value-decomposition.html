@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Singular Value Decomposition: The Swiss Army Knife of Linear Algebra | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Singular Value Decomposition: The Swiss Army Knife of Linear Algebra" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post." />
+<meta property="og:description" content="Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post." />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-10T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition","description":"Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post.","@type":"BlogPosting","headline":"Singular Value Decomposition: The Swiss Army Knife of Linear Algebra","dateModified":"2020-08-10T00:00:00-07:00","datePublished":"2020-08-10T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Singular Value Decomposition: The Swiss Army Knife of Linear Algebra</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-08-10T00:00:00-07:00" itemprop="datePublished">Aug 10, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
+              , 
+          
+              <a href="/theclevermachine/tags/matrix-diagonalization.html">matrix-diagonalization</a>
+              , 
+          
+              <a href="/theclevermachine/tags/singular-value-decomposition.html">singular-value-decomposition</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post.</p>
+
+<p><br /></p>
+
+<h1 id="matrix-diagonalization"><a name="matrix-diagonalization"></a>Matrix Diagonalization</h1>
+
+<p>Before introducing SVD, let’s first go over matrix diagonalization. Matrix diagonalization is the process of breaking a matrix <script type="math/tex">M</script> into two separate matrices <script type="math/tex">P</script> and <script type="math/tex">D</script>, such that</p>
+
+<script type="math/tex; mode=display">M_{m \times m} = P_{m \times m} D_{m \times m} P_{m \times m}^{-1} \tag{1}</script>
+
+<p>Where <script type="math/tex">P</script> is an invertible (i.e. square) matrix and <script type="math/tex">D</script> is a diagonal matrix (i.e. containing all zeros, except along the diagonal).</p>
+
+<p>Now, why on earth would you want to do something like diagonalization? It turns out that representing a matrix this way has a lot of numerical and computation conveniences. For example, computing matrix inverses or <a href="/theclevermachine//matrix-power-using-diagonalization">matrix powers</a> can be done efficiently for large matrices or exponents when formulated via diagonalization. Diagonalization is also often used to restate mathematical problems in a new, canonical system where certain operations or structures have convenient interpretations (e.g. <a href="https://lpsa.swarthmore.edu/MtrxVibe/EigApp/EigVib.html">finding nodes in a vibrating system</a> or <a href="https://physics.stackexchange.com/a/18052">identifying energy levels in quantum mechanics</a>).</p>
+
+<p>So how does one diagonalize a matrix? There are lots of approaches to diagonalize a matrix, but a common one is to compute the eigenvalue decomposition of the matrix. To understand why this is equivalent to diagonalization, let’s note that</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+M &= P D P^{-1} \\
+M (P) &= P D P^{-1} (P) \\
+M P &= P D .  \tag{2}
+\end{align} %]]></script>
+
+<p>Some of you may recognize that the statement given by <strong><em>Equation 2</em></strong> is equivalent to finding the eigenvectors <script type="math/tex">a_i</script> and eigenvalues <script type="math/tex">\lambda_i</script> of the matrix <script type="math/tex">M</script>, where</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+P &= \left[a_1, a_2, ... a_m\right] \\
+D &= \begin{bmatrix}
+    \lambda_1 & 0 & \dots & \dots \\
+    0 & \lambda_2 & 0 & \dots \\
+    \vdots & \dots & \ddots & \dots \\
+    0 & \dots & 0 & \lambda_m
+\end{bmatrix} \\
+
+PD &= [\lambda_1 a_1, \lambda_2 a_2, ... \lambda_m a_m]
+\end{align} %]]></script>
+
+<p>Therefore solving for the eigenvalues/vectors of <script type="math/tex">M</script> provides us with the components to diagonalize <script type="math/tex">M</script> (note we’d still need to calculate the value of <script type="math/tex">P^{-1}</script>).</p>
+
+<p>So what is this diagonalization operation doing, exactly? One can think of the diagonalization as performing three steps:</p>
+<ol>
+  <li>Since <script type="math/tex">P</script> is an orthonormal matrix, multiplying a vector by <script type="math/tex">P</script> (or <script type="math/tex">P^{-1}</script>, depending on order of application of <script type="math/tex">M</script>) <strong>rotates</strong> the vector onto a new set of axes that are aligned with the eigenvectors of the matrix.</li>
+  <li>Since <script type="math/tex">D</script> is diagonal, multiplying the results of step 1 by <script type="math/tex">D</script> <strong>scales</strong> the transformed vector along each of new axes.</li>
+  <li>Multiplying by <script type="math/tex">P^{-1}</script> (or <script type="math/tex">P</script>) <strong>reverse rotates</strong> the rescaled vector back onto the original axes.</li>
+</ol>
+
+<p>If all of this rotating and scaling business is still unclear, no worries, we’ll demonstrate similar ideas graphically when discussing SVD (see <strong><em>Figure 6</em></strong>).</p>
+
+<h1 id="diagonalization-isnt-for-everyone-luckily-theres-svd">Diagonalization isn’t for everyone: luckily there’s SVD</h1>
+
+<p>Looking at the diagonalization definition in <strong><em>Equation 1</em></strong>, one can infer that in order to be diagonalizable, <script type="math/tex">M</script> must be square and invertible. Although there are a lot of interesting problems that involve only square matrices there are a many, many more scenarios to do not fit this constraint. This is where SVD comes in!</p>
+
+<p>One can think of SVD as a generalization of diagonalization to non-square matrices. In fact it turns out that <em>all</em> matrices have a SVD solution! As we’ll see, this makes SVD a more general tool than other matrix decompositions like eigenvalue decomposition, which requires square, invertible matrices.</p>
+
+<p>The singular value decomposition is based on the notion that for any matrix <script type="math/tex">M</script>, the matrices <script type="math/tex">M^T M</script> and <script type="math/tex">M M^T</script> are symmetric:</p>
+
+<script type="math/tex; mode=display">(M^T M)^T = M^T(M^T)^T = M^T M \\
+(M M^T)^T = (M^T)^T M^T = M M^T</script>
+
+<p>In addition, SVD takes advantage of the notion that all symmetric matrices like <script type="math/tex">M^T M</script> and <script type="math/tex">M M^T</script> have eigenvalues that form an <a href="https://en.wikipedia.org/wiki/Symmetric_matrix">orthonormal basis</a>. With these two notion in hand, let’s first define the SVD, then we’ll derive its components from the matrices <script type="math/tex">M^T M</script> and <script type="math/tex">M M^T</script>.</p>
+
+<p>The singular value decomposition aims to separate an <script type="math/tex">[m \times n]</script> matrix <script type="math/tex">M</script> into three distinct matrices:</p>
+
+<script type="math/tex; mode=display">M_{m \times n} = U_{m \times m} S_{m \times n} V_{n \times n}^T  \tag{3}</script>
+
+<p>Where <script type="math/tex">U</script> is an orthonormal matrix, <script type="math/tex">V</script> is an orthonormal matrix, and <script type="math/tex">S</script> is a diagonal matrix. To derive <script type="math/tex">U,</script> we analyze the symmetric matrix <script type="math/tex">M^T M</script> while utilizing the SVD definition of <script type="math/tex">M</script> in <strong><em>Equation 3</em></strong>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+M^T M &= (USV^T)^T(USV^T) \\
+&= (VS^TU^T)(USV^T) \\
+&= VS^T I S V^T \text{, since } U \text{ is orthogonal} \\
+&= V S^T S V^T \\
+&= V S^T S V^{-1} \text{, since } V \text{ is orthogonal} \tag{4}
+\end{align} %]]></script>
+
+<p>Look familiar? <strong><em>Equation 4</em></strong> is essentially another diagonalization operation like the one defined in <strong><em>Equation 1</em></strong>, but this time we’re diagonalizing the matrix <script type="math/tex">M^T M</script> instead of <script type="math/tex">M</script>, and have diagonalizing matrix <script type="math/tex">S^TS</script> instead of <script type="math/tex">D</script>. As we showed in <strong><em>Equation 2</em></strong>, this diagonalization can be solved via eigenvalue decomposition, which suggests the two following properties of SVD:</p>
+<ul>
+  <li>The columns of matrix <script type="math/tex">V</script> are simply the eigenvectors of <script type="math/tex">M^T M</script>.</li>
+  <li>Since <script type="math/tex">S^T S</script> gives the eigenvalues of <script type="math/tex">M^T M</script> along its diagonal, the diagonal of matrix <script type="math/tex">S</script> contains the square root of these eigenvalues.</li>
+</ul>
+
+<p>OK, we’ve found <script type="math/tex">V</script> and <script type="math/tex">S</script>, what about <script type="math/tex">U</script>? To derive <script type="math/tex">U</script> we perform analogous computations as for <script type="math/tex">V</script>, but on <script type="math/tex">MM^T</script> instead of <script type="math/tex">M^TM</script>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+MM^T &= (USV^T)(USV^T)^T \\
+&= (USV^T)(VS^TU^T) \\
+&= US^T I S U^T \\
+&= U S^T S U^T \\
+&= U S^T S U^{-1} \tag{5}
+\end{align} %]]></script>
+
+<p><strong><em>Equation 5</em></strong> suggests a third property of SVD, namely that the columns of <script type="math/tex">U</script> are the eigenvectors of <script type="math/tex">M M^T.</script> The matrix <script type="math/tex">S</script> has the same interpretation as in <strong><em>Equation 4</em></strong>.</p>
+
+<p>Note that when <script type="math/tex">m \neq n</script>, the diagonalizing matrix <script type="math/tex">S</script> is not square as was the case for <script type="math/tex">D</script> when diagonalizing square matrices. Instead <script type="math/tex">S</script> will be padded with zero rows or columns, depending on which dimension is larger. We’ll demonstrate all of this visually shortly.</p>
+
+<p><br /></p>
+
+<h1 id="visualizing-svd">Visualizing SVD</h1>
+
+<p>OK, we’ve written down a bunch of equations that mathematically define the components of SVD and how they related to the input matrix <script type="math/tex">M</script>. Now, let’s make these derived components more tangible with some visualizations and code.</p>
+
+<p><strong><em>Figures 1-3</em></strong> below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the “▶︎ Details” button. <strong><em>Figure 1</em></strong> demonstrates the results for a square matrix.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/svd/svd-4x4.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a square matrix <script type="math/tex">M</script>,  where <script type="math/tex">m=n</script></em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'image.cmap'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'RdBu_r'</span>
+
+<span class="n">PRECISION</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="s">"""Returns the Singular Value Decomposition of M (via Numpy), with all
+    components returned in matrix format
+    """</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+    <span class="c1"># Put the vector singular values into a padded matrix
+</span>    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+    <span class="c1"># Rounding for display
+</span>    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">PRECISION</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">PRECISION</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">Vt</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">PRECISION</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">visualize_svd</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">fig_height</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="s">"""Show the Singular Value Decomposition of a random matrix of size `m x n`
+
+    Parameters
+    ----------
+    m : int
+        The number of rows in the random matrix
+    n : int
+        The number of columns
+    fig_height : float
+        Fiddle parameter to make figures render better (because I'm lazy and
+        don't want to work out the scaling arithmetic).
+    """</span>
+    <span class="c1"># Repeatability
+</span>    <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+
+    <span class="c1"># Generate random matrix
+</span>    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Run SVD, as defined above
+</span>    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+    <span class="c1"># Visualization
+</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">fig_height</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$M </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s">'='</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$U </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s">'$</span><span class="se">\\</span><span class="s">times$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$S </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s">'$</span><span class="se">\\</span><span class="s">times$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$V^T </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">f'SVD Components $m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+
+    <span class="n">fname</span> <span class="o">=</span> <span class="s">f'/tmp/svd-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">.png'</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s">'tight'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="n">visualize_svd</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">fig_height</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+<hr />
+
+<p><br /></p>
+
+<p>For the square matrix, SVD returns three equally-sized square matrices. Note that unlike diagonalization defined in <strong><em>Equation 1</em></strong>, where the first and third matrices in the decomposition are the inverse of one another, for SVD this is generally not the case, i.e. <script type="math/tex">U^{-1} \neq V^T</script>.</p>
+
+<p>Another interesting thing to notice in <strong><em>Figure 1</em></strong> is that the main diagonal of <script type="math/tex">S</script> has decreasing values. This is because SVD returns the singular vectors in a ranked format, where the vectors associated with largest eigenvalues are in the first columns of <script type="math/tex">U</script> and rows of <script type="math/tex">V^T</script>, respectively. This turns out to be super-convenient when using SVD for applications like compression and dimensionality reduction, as you can simply choose the most “important” dimensions for the matrix representation as the first entries in the left or right singular vector matrices.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/svd/svd-8x4.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 2:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a tall matrix <script type="math/tex">M</script>, where <script type="math/tex">m>n</script>.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">visualize_svd</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">fig_height</span><span class="o">=</span><span class="mf">4.5</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+<hr />
+<p><br /></p>
+
+<p><strong><em>Figure 2</em></strong> above shows the results of SVD applied to a “tall” matrix, where <script type="math/tex">m > n</script>. We can see that the singular value matrix <script type="math/tex">S</script>, though having a diagonal component with decreasing values, is no longer square. Instead it is padded with extra the rows in order to handle the extra rows in the matrix <script type="math/tex">M</script>.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/svd/svd-4x8.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 3:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a wide matrix <script type="math/tex">M</script>, where <script type="math/tex">% <![CDATA[
+m<n %]]></script>.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">visualize_svd</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">fig_height</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+<hr />
+
+<p><br /></p>
+
+<p><strong><em>Figure 3</em></strong> shows the results of SVD applied to a “wide” matrix, where <script type="math/tex">% <![CDATA[
+m < n %]]></script>. Similar to the results for the “tall” matrix, we can see that the singular value matrix <script type="math/tex">S</script> also has a diagonal component with decreasing values, but is instead padded with extra columns in order to handle the extra columns in the matrix <script type="math/tex">M</script>.</p>
+
+<p><br /></p>
+
+<h1 id="properties-of-svd">Properties of SVD</h1>
+
+<p>The formulation of SVD ensures that the columns of <script type="math/tex">U</script> and <script type="math/tex">V</script> form an orthonormal basis. This means that all column vectors in each matrix are orthogonal/perpendicular <em>and</em> each vector has unit length. This is equivalent to saying that the inner product of each matrix with itself will form an identity matrix (orthogonality), and that the <script type="math/tex">L_2</script> norm of each column will be equal to one. <strong><em>Figure 4</em></strong> below demonstrates both of these properties visually for the SVD of a matrix <script type="math/tex">M</script> with dimensionality <script type="math/tex">[10 \times 5]</script>.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/svd/svd-u-v-properties.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 4, Singular Vectors provide an orthonormal basis:</em></strong>  <em>The <strong>left column</strong> shows the <script type="math/tex">U</script> and <script type="math/tex">V^T</script> that result from running SVD on a random <script type="math/tex">[m \times n] = [10 \times 5]</script> matrix <script type="math/tex">M</script>. The <strong>middle column</strong> plots the <script type="math/tex">L_2</script> norm calculated along the singular vectors (columns) of each matrix; the singular vectors all exhibit unit norm. The <strong>right column</strong> shows the inner product of each matrix with itself; the inner product is the identity matrix, demonstrating the orthogonality of the singular vectors.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">matrix_column_l2_norm</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="s">"""Returns the L2 norm of each column of matrix M, """</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">M</span> <span class="o">**</span> <span class="mi">2</span><span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Generate random m x n matrix, M
+</span><span class="n">m</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>  <span class="c1"># reproducibility
+</span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Run the SVD
+</span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="c1"># Calculate L2 norm of U and V^T
+</span><span class="n">U_norm</span> <span class="o">=</span> <span class="n">matrix_column_l2_norm</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+<span class="n">V_norm</span> <span class="o">=</span> <span class="n">matrix_column_l2_norm</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="c1"># Visualizations
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="c1">## Matrix U
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$U \in \mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">U</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+
+<span class="c1">## L2 norm of U's columns
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">gca</span><span class="p">().</span><span class="n">set_aspect</span><span class="p">(</span><span class="mf">7.</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">U_norm</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'$L_2$ Norm of $U$ Columns'</span><span class="p">)</span>
+
+<span class="c1">## U^TU is a Identity Matrix
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">U</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'cividis'</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'$U^TU$'</span><span class="p">)</span>
+
+<span class="c1">## Matrix V
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">cax1</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$V^T \in \mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">V</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+
+<span class="c1">## L2 norm of V^T's columns
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">V_norm</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'$L_2$ Norm of $V^T$ Columns'</span><span class="p">)</span>
+
+<span class="c1">## VV^T is a Identity Matrix
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">cax2</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span> <span class="o">@</span> <span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'cividis'</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'$VV^T$'</span><span class="p">)</span>
+
+<span class="c1">## Set Colorbars
+</span><span class="n">fig</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="p">[</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="n">location</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="p">[</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]],</span> <span class="n">location</span><span class="o">=</span><span class="s">'right'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+</details>
+
+<hr />
+
+<p><br /></p>
+
+<p>We can see that indeed the norms of all column vectors of <script type="math/tex">U</script> and <script type="math/tex">V</script> are equal to 1, and that the inner product of each indeed produces <script type="math/tex">[10 \times 10]</script> and <script type="math/tex">[5 \times 5]</script> identity matrices, thus indicating both matrices <script type="math/tex">U</script> and <script type="math/tex">V</script> are orthonormal basis sets.</p>
+
+<p>When developing SVD above, we also established three properties relating SVD to eigenvalue decomposition:</p>
+
+<ul>
+  <li><script type="math/tex">U</script> contains the eigenvectors of <script type="math/tex">MM^T</script></li>
+  <li><script type="math/tex">V</script> contains the eigenvectors of <script type="math/tex">M^TM</script></li>
+  <li>The diagonal of <script type="math/tex">S</script> contains the square root of the eigenvalues associated with <script type="math/tex">MM^T</script> and <script type="math/tex">M^TM</script></li>
+</ul>
+
+<p><strong><em>Figure 5</em></strong> below demonstrates the three properties visually for the SVD results calculated / demonstrated in <strong><em>Figure 4</em></strong>.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="550" src="assets/images/svd/svd-eigen-decomposition-equivalence.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 5, The relationship between SVD and Eigenvalue Decomposition:</em></strong>  <em>The <strong>top row</strong> demonstrates the equivalence between singular vectors <script type="math/tex">U</script> and the eigenvalues of <script type="math/tex">MM^T</script>. The <strong>middle row</strong> demonstrates the equivalence between singular vectors <script type="math/tex">V</script> and the eigenvalues of <script type="math/tex">M^TM</script>. The <strong>bottom row</strong> demonstrates how the singular values are equivalent to the square root of the eigenvalues of either <script type="math/tex">MM^T</script> or <script type="math/tex">M^TM</script>.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">evd</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="s">"""Returns the Eigenvalue Decomposition of M (via numpy), with eigenvectors
+    sorted by descending eigenvalues
+    """</span>
+    <span class="k">def</span> <span class="nf">sort_eigs</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span><span class="p">):</span>
+        <span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">evals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">evals_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">real</span><span class="p">(</span><span class="n">evals</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]),</span> <span class="n">PRECISION</span><span class="p">)</span>
+        <span class="n">evecs_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">real</span><span class="p">(</span><span class="n">evecs</span><span class="p">[:,</span> <span class="n">sort_idx</span><span class="p">]),</span> <span class="n">PRECISION</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">evals_sorted</span><span class="p">,</span> <span class="n">evecs_sorted</span>
+
+    <span class="k">return</span> <span class="n">sort_eigs</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">eig</span><span class="p">(</span><span class="n">M</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">align_eigen_vectors</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="s">"""Eigenvector solutions are not unique, so check sign to give consistent results with SVD
+    """</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">E</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="n">sign</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim</span><span class="p">])</span> <span class="o">!=</span> <span class="n">np</span><span class="p">.</span><span class="n">sign</span><span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim</span><span class="p">]):</span>
+            <span class="n">E</span><span class="p">[:,</span> <span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">E</span><span class="p">[:,</span> <span class="n">dim</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">E</span>
+
+
+<span class="n">eigen_values_MtM</span><span class="p">,</span> <span class="n">eigen_vectors_MtM</span> <span class="o">=</span> <span class="n">evd</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">M</span><span class="p">)</span>
+<span class="n">eigen_values_MMt</span><span class="p">,</span> <span class="n">eigen_vectors_MMt</span> <span class="o">=</span> <span class="n">evd</span><span class="p">(</span><span class="n">M</span> <span class="o">@</span> <span class="n">M</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># M isn't symmetric, so we only show results up to the smallest dimension, n
+</span><span class="n">cax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Left Singular Vectors, $U$"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">align_eigen_vectors</span><span class="p">(</span><span class="n">eigen_vectors_MMt</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">]))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Eigenvectors of $MM^T$"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Right Singular Vectors, $V$"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">align_eigen_vectors</span><span class="p">(</span><span class="n">eigen_vectors_MtM</span><span class="p">,</span> <span class="n">V</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Eigenvectors of $M^TM$"</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Singular Values, $S$'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eigen_values_MMt</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">**</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'darkblue'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'of $MM^T$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eigen_values_MtM</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">**</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'gold'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'of $M^TM$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Square Root of Eigenvalues'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre></div>  </div>
+
+</details>
+
+<hr />
+<p><br /></p>
+
+<p>OK, so we’ve been able to derive SVD, and visualize some of the key properties of the component matrices returned by SVD, but what is SVD actually doing? We mentioned above in the <a href="#matrix-diagonalization">Matrix Diagonalization</a> section that the diagonalization process is essentially a rotation, followed by a scaling, followed by a reversal of the original rotation. SVD works in a similar fashion, however, the rotations are not generally the inverses of one another.</p>
+
+<p><strong><em>Figure 6</em></strong> provides a visual breakdown of how the transformation resulting from applying the matrix <script type="math/tex">M</script> to an input matrix of observations <script type="math/tex">X</script> can be broken down into three separate transformation operations, each provided by a component of SVD.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="650" src="assets/images/svd/svd-operations.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 6, Visualization of SVD Operations:</em></strong> <strong>Upper Left</strong>: A 2D data set, distributed uniformly between <script type="math/tex">(-.5, .5)</script>. Each data point is colored by its relative horizontal location in the 2D coordinate system. <strong>Center</strong>: The data after being transformed by matrix <script type="math/tex">M</script>. We see that <script type="math/tex">M</script> shears and flips the data about the horizontal axis. <strong>Bottom Left</strong>: The orthogonal matrix <script type="math/tex">V^T</script> <strong>rotates</strong> the original data into a new coordinate system. <strong>Bottom Right</strong>: The diagonal matrix <script type="math/tex">S</script> <strong>stretches</strong> the data along each of the primary axes in the new coordinate system. The amount of stretch is prescribed by the square root of the eigenvalues of <script type="math/tex">M^TM</script> (or alternatively <script type="math/tex">MM^T</script>)). <strong>Upper Right</strong>: The orthogonal matrix <script type="math/tex">U</script> <strong>rotates the data back</strong> into the original coordinate system. We can see that the cascade of operations <script type="math/tex">U S V^T = M</script>.</p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Generate random observations matrix (uniform distribution)
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>  <span class="c1"># Repeatability
+</span><span class="n">n_observations</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">n_dim</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_observations</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">)</span> <span class="o">-</span> <span class="p">.</span><span class="mi">5</span>
+
+<span class="c1"># Transformation Matrix
+</span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">],</span>
+        <span class="p">[</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="s">'nipy_spectral'</span>
+
+<span class="c1"># SVD of Transformation Matrix
+</span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="c1"># Visualization
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">'Breakdown of SVD Operations</span><span class="se">\n</span><span class="s">$M = U  S  V^T$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+
+<span class="c1">## Data
+### Original X
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$X$"</span><span class="p">)</span>
+
+<span class="c1">### X * M (matrix transformation)
+</span><span class="n">XM</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">M</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">XM</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">XM</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$X \cdot M$"</span><span class="p">)</span>
+
+<span class="c1">### X * V' (rotate)
+</span><span class="n">XVt</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">V</span><span class="p">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">XVt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">XVt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$X \cdot V^T$"</span><span class="p">)</span>
+
+<span class="c1">### X * (S * V') (rotate and scale)
+</span><span class="n">XSVt</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="p">(</span><span class="n">S</span> <span class="o">@</span> <span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">XSVt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">XSVt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$X \cdot (S \cdot V^T)$"</span><span class="p">)</span>
+
+<span class="c1">### X * (U * S * V') (rotate, scale, and rotate)
+</span><span class="n">XUSVt</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="p">(</span><span class="n">U</span> <span class="o">@</span> <span class="n">S</span> <span class="o">@</span> <span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">XUSVt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">XUSVt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$X \cdot (U \cdot S \cdot V^T)$"</span><span class="p">)</span>
+
+<span class="c1">## Operations/Arrows
+### M
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">arrow</span><span class="p">(.</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">capstyle</span><span class="o">=</span><span class="s">'round'</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">arrow</span><span class="p">(.</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="p">.</span><span class="mi">4</span><span class="p">,</span> <span class="n">capstyle</span><span class="o">=</span><span class="s">'round'</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">15</span><span class="p">,</span> <span class="p">.</span><span class="mi">3</span><span class="p">,</span> <span class="s">'$M$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'$USV^T$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+<span class="c1">### V'
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">arrow</span><span class="p">(.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="p">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">capstyle</span><span class="o">=</span><span class="s">'round'</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">3</span><span class="p">,</span> <span class="p">.</span><span class="mi">45</span><span class="p">,</span> <span class="s">'$V^T$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">55</span><span class="p">,</span> <span class="p">.</span><span class="mi">35</span><span class="p">,</span> <span class="s">'rotate'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=-</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+<span class="c1">### S
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">arrow</span><span class="p">(.</span><span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">capstyle</span><span class="o">=</span><span class="s">'round'</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">45</span><span class="p">,</span> <span class="p">.</span><span class="mi">35</span><span class="p">,</span> <span class="s">'$S$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">55</span><span class="p">,</span> <span class="s">'stretch'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+<span class="c1">### U
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">arrow</span><span class="p">(.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">capstyle</span><span class="o">=</span><span class="s">'round'</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">55</span><span class="p">,</span> <span class="p">.</span><span class="mi">45</span><span class="p">,</span> <span class="s">'$U$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">43</span><span class="p">,</span> <span class="p">.</span><span class="mi">35</span><span class="p">,</span> <span class="s">'rotate'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+</details>
+
+<hr />
+<p><br /></p>
+
+<p>We can see above that SVD of matrix <script type="math/tex">M</script> breaks down the transformation encapsulated by <script type="math/tex">M</script> into a rotation (<script type="math/tex">V^T</script>), followed by a stretching (<script type="math/tex">S</script>), followed by another rotation (<script type="math/tex">U</script>).</p>
+
+<p><br /></p>
+
+<h1 id="svd-applications">SVD Applications</h1>
+
+<p>Singular Value Decomposition is the Swiss-army knife of linear algebra. It gives you all the theoretical, computational, and numerical benefits of diagonalization, while expanding the potential problem set to include <em>all</em> matrices, not just square, invertible matrices.</p>
+
+<p>In practice, I hardly ever (directly) calculate an eigenvalue decomposition, but instead turn to SVD for many of my applications. Though the number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use  SVD to solve a number of numerical problems in statistics, Machine Learning, NLP, and Computer Vision, including:</p>
+
+<ul>
+  <li>Data Compression</li>
+  <li>Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression</li>
+  <li>Providing a robust method for executing Principle Components Analysis</li>
+  <li>Matrix completion used in applications like recommendation systems</li>
+  <li>Calculating robust word embedding vectors used in Natural Language Process (NLP).</li>
+  <li>Image whitening via ZCA for Computer Vision</li>
+</ul>
+
+<p>So, I hope to see you soon for the next installment on SVD. Until then Happy Decomposing!</p>
+
+<hr />
+<hr />
+
+<h1 id="resources">Resources</h1>
+
+<ul>
+  <li><a href="https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/">Gilbert Strang’s MIT Open Courseware Course on Linear Algebra (2010)</a></li>
+  <li><a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf">The Matrix Cookbook, Peterson &amp; Pederson (2012)</a></li>
+</ul>
+
+<h1 id="notes">Notes</h1>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Eigenvalue decomposition provides non-unique solutions between calculations, where the solutions may have differently ordered eigenvalues and eigenvectors can have flipped signs. Therefore to compare to SVD, which has a consistent solution, one must perform some sorting and alignment of the eigenvectors. These operations are performed in the <code class="language-plaintext highlighter-rouge">sort_eigs</code> and <code class="language-plaintext highlighter-rouge">align_eigen_vectors</code> helper functions. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'the-clever-machine'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/singular-value-decomposition" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
