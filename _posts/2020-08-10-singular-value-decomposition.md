@@ -581,18 +581,27 @@ We can see above that SVD of matrix $$M$$ breaks down the transformation encapsu
 
 <br>
 
-# SVD Applications
+# The Swiss Army Knife of Linear Algebra
 
-Singular Value Decomposition is the Swiss-army knife of linear algebra. It gives you all the theoretical, computational, and numerical benefits of diagonalization, while expanding the potential problem set to include _all_ matrices, not just square, invertible matrices.
+Singular Value Decomposition gives you all the theoretical, computational, and numerical benefits of diagonalization, while expanding the potential problem set to include _all_ matrices. We've gone over a few distinct benefits of applying SVD, but I'll review them and add a few others here:
 
-In practice, I hardly ever (directly) calculate an eigenvalue decomposition, but instead turn to SVD for many of my applications. Though the number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use  SVD to solve a number of numerical problems in statistics, Machine Learning, NLP, and Computer Vision, including:
+- SVD can be applied to any matrix, not just invertible ones
+- SVD is consistent: you get the same results each time
+- SVD gives you ordered components, allowing you to "build up" a lower-dimensinal representation of $$M$$ that is theoretically optimal.[^2]
+- SVD can be computed efficiently. It turns out that if you don't require all singular vectors of the decomposition, which is almost always the case in statistics and machine learning, then you can calculate the decomposition much more efficiently, particularly if the desired rank of your approximation is small, i.e. $$r \ll m, n$$.
+- SVD can be computed a numerically stable fashion. Decomposing sparse matrices is often numerically unstable for decompositions methods like EVD, but SVD can easily handle sparse matrices, particularly if those matrices have low rank approximations.
+- SVD provides an orthonormal basis for $$M^TM$$ (through $$V^T$$) without explicitly calculating $$M^TM$$. Therefore algorithms based on matrix covariance, like Principle Components Analysis, reduce to SVD.
+- The matrix $$U$$ gives you important/useful vectors that efficiently describe the _columns_ of $$M$$, where the rows of $$V^T$$ gives you important info about the rows of $$M$$. Therefore you get _joint_ information about the column and row space of $$M$$ from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix $$P$$ into user-based factors (row space of $$P$$) and item-based factors (column space $$P$$).
+
+The number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:
 
 - Data Compression
 - Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression
-- Providing a robust method for executing Principle Components Analysis
-- Matrix completion used in applications like recommendation systems
-- Calculating robust word embedding vectors used in Natural Language Process (NLP).
-- Image whitening via ZCA for Computer Vision
+- Providing a robust and efficient method for executing Principle Components Analysis
+- Matrix completion used in recommendation systems
+- Calculating robust word embedding vectors used in Natural Language Process (NLP)
+- Image whitening to improve the efficieny of neural network trainig in Computer Vision
+- TBD
 
 So, I hope to see you soon for the next installment on SVD. Until then Happy Decomposing!
 
@@ -610,3 +619,4 @@ So, I hope to see you soon for the next installment on SVD. Until then Happy Dec
 
 [^1]: Eigenvalue decomposition provides non-unique solutions between calculations, where the solutions may have differently ordered eigenvalues and eigenvectors can have flipped signs. Therefore to compare to SVD, which has a consistent solution, one must perform some sorting and alignment of the eigenvectors. These operations are performed in the `sort_eigs` and `align_eigen_vectors` helper functions.
 
+[^2]: In that the rank-$$r$$ approximation minimizes the Frobenius norm of the difference in actual and approximated matrix.

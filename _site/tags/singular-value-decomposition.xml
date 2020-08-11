@@ -3,7 +3,7 @@
     <title>The Clever Machine - singular-value-decomposition</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagssingular-value-decomposition.html"/>
-    <updated>2020-08-10T16:55:18-07:00</updated>
+    <updated>2020-08-11T08:40:44-07:00</updated>
     <id>/theclevermachinesingular-value-decomposition.html</id>
 
     <author>
@@ -580,19 +580,30 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;svd-applications&quot;&gt;SVD Applications&lt;/h1&gt;
+&lt;h1 id=&quot;the-swiss-army-knife-of-linear-algebra&quot;&gt;The Swiss Army Knife of Linear Algebra&lt;/h1&gt;
 
-&lt;p&gt;Singular Value Decomposition is the Swiss-army knife of linear algebra. It gives you all the theoretical, computational, and numerical benefits of diagonalization, while expanding the potential problem set to include &lt;em&gt;all&lt;/em&gt; matrices, not just square, invertible matrices.&lt;/p&gt;
+&lt;p&gt;Singular Value Decomposition gives you all the theoretical, computational, and numerical benefits of diagonalization, while expanding the potential problem set to include &lt;em&gt;all&lt;/em&gt; matrices. We’ve gone over a few distinct benefits of applying SVD, but I’ll review them and add a few others here:&lt;/p&gt;
 
-&lt;p&gt;In practice, I hardly ever (directly) calculate an eigenvalue decomposition, but instead turn to SVD for many of my applications. Though the number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use  SVD to solve a number of numerical problems in statistics, Machine Learning, NLP, and Computer Vision, including:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;SVD can be applied to any matrix, not just invertible ones&lt;/li&gt;
+  &lt;li&gt;SVD is consistent: you get the same results each time&lt;/li&gt;
+  &lt;li&gt;SVD gives you ordered components, allowing you to “build up” a lower-dimensinal representation of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; that is theoretically optimal.&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+  &lt;li&gt;SVD can be computed efficiently. It turns out that if you don’t require all singular vectors of the decomposition, which is almost always the case in statistics and machine learning, then you can calculate the decomposition much more efficiently, particularly if the desired rank of your approximation is small, i.e. &lt;script type=&quot;math/tex&quot;&gt;r \ll m, n&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;SVD can be computed a numerically stable fashion. Decomposing sparse matrices is often numerically unstable for decompositions methods like EVD, but SVD can easily handle sparse matrices, particularly if those matrices have low rank approximations.&lt;/li&gt;
+  &lt;li&gt;SVD provides an orthonormal basis for &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt; (through &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt;) without explicitly calculating &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt;. Therefore algorithms based on matrix covariance, like Principle Components Analysis, reduce to SVD.&lt;/li&gt;
+  &lt;li&gt;The matrix &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; gives you important/useful vectors that efficiently describe the &lt;em&gt;columns&lt;/em&gt; of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;, where the rows of &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt; gives you important info about the rows of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;. Therefore you get &lt;em&gt;joint&lt;/em&gt; information about the column and row space of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; into user-based factors (row space of &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt;) and item-based factors (column space &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Data Compression&lt;/li&gt;
   &lt;li&gt;Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression&lt;/li&gt;
-  &lt;li&gt;Providing a robust method for executing Principle Components Analysis&lt;/li&gt;
-  &lt;li&gt;Matrix completion used in applications like recommendation systems&lt;/li&gt;
-  &lt;li&gt;Calculating robust word embedding vectors used in Natural Language Process (NLP).&lt;/li&gt;
-  &lt;li&gt;Image whitening via ZCA for Computer Vision&lt;/li&gt;
+  &lt;li&gt;Providing a robust and efficient method for executing Principle Components Analysis&lt;/li&gt;
+  &lt;li&gt;Matrix completion used in recommendation systems&lt;/li&gt;
+  &lt;li&gt;Calculating robust word embedding vectors used in Natural Language Process (NLP)&lt;/li&gt;
+  &lt;li&gt;Image whitening to improve the efficieny of neural network trainig in Computer Vision&lt;/li&gt;
+  &lt;li&gt;TBD&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;So, I hope to see you soon for the next installment on SVD. Until then Happy Decomposing!&lt;/p&gt;
@@ -613,6 +624,9 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
   &lt;ol&gt;
     &lt;li id=&quot;fn:1&quot;&gt;
       &lt;p&gt;Eigenvalue decomposition provides non-unique solutions between calculations, where the solutions may have differently ordered eigenvalues and eigenvectors can have flipped signs. Therefore to compare to SVD, which has a consistent solution, one must perform some sorting and alignment of the eigenvectors. These operations are performed in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sort_eigs&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;align_eigen_vectors&lt;/code&gt; helper functions. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+      &lt;p&gt;In that the rank-&lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; approximation minimizes the Frobenius norm of the difference in actual and approximated matrix. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
