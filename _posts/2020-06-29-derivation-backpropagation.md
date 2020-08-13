@@ -220,11 +220,11 @@ Again, using the chain rule to solve for $$\frac{\partial z_k }{\partial b_{i}}$
 $$
 \begin{align}
 \frac{\partial z_k  }{\partial b_{i}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{i}} \\
-&= \frac{\partial}{\partial a_j}(b_j + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{i}} \\
+&= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{i}} \\
 &= w_{jk}\frac{\partial a_j}{\partial b_{i}} \\
 &= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{i}} \\
 &= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{i}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_i}(b_i + \sum_i a_i w_{ij}) \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_i}(b_j + \sum_i a_i w_{ij}) \\
 &= w_{jk}g_j'(z_j)(1) \tag{17}
 \end{align}
 $$
