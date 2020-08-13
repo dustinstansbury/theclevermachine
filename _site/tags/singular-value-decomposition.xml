@@ -3,7 +3,7 @@
     <title>The Clever Machine - singular-value-decomposition</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagssingular-value-decomposition.html"/>
-    <updated>2020-08-11T08:53:34-07:00</updated>
+    <updated>2020-08-13T13:05:42-07:00</updated>
     <id>/theclevermachinesingular-value-decomposition.html</id>
 
     <author>
@@ -594,7 +594,7 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
   &lt;li&gt;The matrix &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; gives you important/useful vectors that efficiently describe the &lt;em&gt;columns&lt;/em&gt; of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;, where the rows of &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt; gives you important info about the rows of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;. Therefore you get &lt;em&gt;joint&lt;/em&gt; information about the column and row space of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; into user-based factors (row space of &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;) and item-based factors (column space &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;The number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:&lt;/p&gt;
+&lt;p&gt;The number of possible applications of SVD is essentially limitless. In future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Data Compression&lt;/li&gt;

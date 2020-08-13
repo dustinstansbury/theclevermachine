@@ -156,7 +156,7 @@ $$
 \end{align}
 $$
 
-From *Equation 11* we see that $$z_k$$ is indirectly dependent on $$w_{ij}$$. *Equation 10* also suggests that we can again use the chain rule to calculate $$\frac{\partial z_k }{\partial w_{ij}}$$. This is probably the trickiest part of the derivation, and also requires noting that $$z_j = b_j + \sum_i a_jw_{ij}$$ and $$a_j=g_j(z_j)$$:
+From *Equation 11* we see that $$z_k$$ is indirectly dependent on $$w_{ij}$$. *Equation 10* also suggests that we can again use the chain rule to calculate $$\frac{\partial z_k }{\partial w_{ij}}$$. This is probably the trickiest part of the derivation, and also requires noting that $$z_j = b_j + \sum_i a_iw_{ij}$$ and $$a_j=g_j(z_j)$$:
 
 $$
 \begin{align}
@@ -165,7 +165,7 @@ $$
 &= w_{jk}\frac{\partial a_j}{\partial w_{ij}} \\
 &= w_{jk}\frac{\partial g_j(z_j)}{\partial w_{ij}} \\
 &= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial w_{ij}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_i + \sum_i a_i w_{ij}) \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_j + \sum_i a_i w_{ij}) \\
 &= w_{jk}g_j'(z_j)a_i \tag{12}
 \end{align}
 $$

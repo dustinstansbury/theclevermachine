@@ -593,7 +593,7 @@ Singular Value Decomposition gives you all the theoretical, computational, and n
 - SVD provides an orthonormal basis for $$M^TM$$ (through $$V^T$$) without explicitly calculating $$M^TM$$. Therefore algorithms based on matrix covariance, like Principle Components Analysis, reduce to SVD.
 - The matrix $$U$$ gives you important/useful vectors that efficiently describe the _columns_ of $$M$$, where the rows of $$V^T$$ gives you important info about the rows of $$M$$. Therefore you get _joint_ information about the column and row space of $$M$$ from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix $$R$$ into user-based factors (row space of $$R$$) and item-based factors (column space $$R$$).
 
-The number of possible applications of SVD is essentially limitless, in future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:
+The number of possible applications of SVD is essentially limitless. In future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:
 
 - Data Compression
 - Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression

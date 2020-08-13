@@ -223,7 +223,7 @@ w_{jk} &\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
 &= b_k + \sum_j g_j(b_i + \sum_i a_i w_{ij})w_{jk} \tag{11}
 \end{align} %]]></script>
 
-<p>From <em>Equation 11</em> we see that <script type="math/tex">z_k</script> is indirectly dependent on <script type="math/tex">w_{ij}</script>. <em>Equation 10</em> also suggests that we can again use the chain rule to calculate <script type="math/tex">\frac{\partial z_k }{\partial w_{ij}}</script>. This is probably the trickiest part of the derivation, and also requires noting that <script type="math/tex">z_j = b_j + \sum_i a_jw_{ij}</script> and <script type="math/tex">a_j=g_j(z_j)</script>:</p>
+<p>From <em>Equation 11</em> we see that <script type="math/tex">z_k</script> is indirectly dependent on <script type="math/tex">w_{ij}</script>. <em>Equation 10</em> also suggests that we can again use the chain rule to calculate <script type="math/tex">\frac{\partial z_k }{\partial w_{ij}}</script>. This is probably the trickiest part of the derivation, and also requires noting that <script type="math/tex">z_j = b_j + \sum_i a_iw_{ij}</script> and <script type="math/tex">a_j=g_j(z_j)</script>:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
@@ -232,7 +232,7 @@ w_{jk} &\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
 &= w_{jk}\frac{\partial a_j}{\partial w_{ij}} \\
 &= w_{jk}\frac{\partial g_j(z_j)}{\partial w_{ij}} \\
 &= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial w_{ij}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_i + \sum_i a_i w_{ij}) \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_j + \sum_i a_i w_{ij}) \\
 &= w_{jk}g_j'(z_j)a_i \tag{12}
 \end{align} %]]></script>
 

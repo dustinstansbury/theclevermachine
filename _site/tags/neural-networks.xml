@@ -3,7 +3,7 @@
     <title>The Clever Machine - neural-networks</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsneural-networks.html"/>
-    <updated>2020-08-11T08:53:34-07:00</updated>
+    <updated>2020-08-13T13:05:42-07:00</updated>
     <id>/theclevermachineneural-networks.html</id>
 
     <author>
@@ -1414,7 +1414,7 @@ w_{jk} &amp;\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
 &amp;= b_k + \sum_j g_j(b_i + \sum_i a_i w_{ij})w_{jk} \tag{11}
 \end{align} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;From &lt;em&gt;Equation 11&lt;/em&gt; we see that &lt;script type=&quot;math/tex&quot;&gt;z_k&lt;/script&gt; is indirectly dependent on &lt;script type=&quot;math/tex&quot;&gt;w_{ij}&lt;/script&gt;. &lt;em&gt;Equation 10&lt;/em&gt; also suggests that we can again use the chain rule to calculate &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k }{\partial w_{ij}}&lt;/script&gt;. This is probably the trickiest part of the derivation, and also requires noting that &lt;script type=&quot;math/tex&quot;&gt;z_j = b_j + \sum_i a_jw_{ij}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;a_j=g_j(z_j)&lt;/script&gt;:&lt;/p&gt;
+&lt;p&gt;From &lt;em&gt;Equation 11&lt;/em&gt; we see that &lt;script type=&quot;math/tex&quot;&gt;z_k&lt;/script&gt; is indirectly dependent on &lt;script type=&quot;math/tex&quot;&gt;w_{ij}&lt;/script&gt;. &lt;em&gt;Equation 10&lt;/em&gt; also suggests that we can again use the chain rule to calculate &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k }{\partial w_{ij}}&lt;/script&gt;. This is probably the trickiest part of the derivation, and also requires noting that &lt;script type=&quot;math/tex&quot;&gt;z_j = b_j + \sum_i a_iw_{ij}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;a_j=g_j(z_j)&lt;/script&gt;:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
@@ -1423,7 +1423,7 @@ w_{jk} &amp;\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
 &amp;= w_{jk}\frac{\partial a_j}{\partial w_{ij}} \\
 &amp;= w_{jk}\frac{\partial g_j(z_j)}{\partial w_{ij}} \\
 &amp;= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial w_{ij}} \\
-&amp;= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_i + \sum_i a_i w_{ij}) \\
+&amp;= w_{jk}g_j'(z_j)\frac{\partial}{\partial w_{ij}}(b_j + \sum_i a_i w_{ij}) \\
 &amp;= w_{jk}g_j'(z_j)a_i \tag{12}
 \end{align} %]]&gt;&lt;/script&gt;
 
