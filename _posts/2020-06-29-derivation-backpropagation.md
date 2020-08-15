@@ -202,38 +202,38 @@ $$
 
 *Equation 15* suggests that ***in order to calculate the weight gradients at any layer $$l$$ in an arbitrarily-deep neural network, we simply need to calculate the backpropagated error signal $$\delta_l$$ that reaches that layer from the "above" layers, and weight it by the feed-forward signal $$a_{l-1}$$ feeding into that layer.*** 
 
-#### Hidden Layer Biases, $$b_i$$
+#### Hidden Layer Biases, $$b_j$$
 
-Calculating the error gradients with respect to the hidden layer biases follows a very similar procedure to that for the hidden layer weights where, as in *Equation 12*, we use the chain rule to calculate $$\frac{\partial z_k}{\partial b_i}$$. 
+Calculating the error gradients with respect to the hidden layer biases $$b_j$$ follows a very similar procedure to that for the hidden layer weights where, as in *Equation 12*, we use the chain rule to calculate $$\frac{\partial z_k}{\partial b_j}$$.
 
 
 $$
 \begin{align}
 
-\frac{\partial E }{\partial b_{i}} &= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{i}}g_k(z_k) \\
-&= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{i}}  \tag{16}
+\frac{\partial E }{\partial b_{j}} &= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{j}}g_k(z_k) \\
+&= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{j}}  \tag{16}
 \end{align}
 $$
 
-Again, using the chain rule to solve for $$\frac{\partial z_k }{\partial b_{i}}$$
+Again, using the chain rule to solve for $$\frac{\partial z_k }{\partial b_{j}}$$
 
 $$
 \begin{align}
-\frac{\partial z_k  }{\partial b_{i}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{i}} \\
-&= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{i}} \\
-&= w_{jk}\frac{\partial a_j}{\partial b_{i}} \\
-&= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{i}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{i}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_i}(b_j + \sum_i a_i w_{ij}) \\
+\frac{\partial z_k  }{\partial b_{j}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{j}} \\
+&= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{j}} \\
+&= w_{jk}\frac{\partial a_j}{\partial b_{j}} \\
+&= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{j}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{j}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_j}(b_j + \sum_i a_i w_{ij}) \\
 &= w_{jk}g_j'(z_j)(1) \tag{17}
 \end{align}
 $$
 
-Plugging *Equation 17* into the expression for $$\frac{\partial z_k }{\partial b_i}$$ in *Equation 16* gives the final expression for the hidden layer bias gradients:
+Plugging *Equation 17* into the expression for $$\frac{\partial z_k }{\partial b_j}$$ in *Equation 16* gives the final expression for the hidden layer bias gradients:
 
 $$
 \begin{align}
-\frac{\partial E }{\partial b_i} &= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
+\frac{\partial E }{\partial b_j} &= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
 &= g'_j(z_j) \sum_{k} \delta_k w_{jk} \\
 &= \color{darkred}{\delta_j} \tag{18}
 \end{align}

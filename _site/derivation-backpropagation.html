@@ -264,35 +264,35 @@ w_{jk} &\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
 
 <p><em>Equation 15</em> suggests that <strong><em>in order to calculate the weight gradients at any layer <script type="math/tex">l</script> in an arbitrarily-deep neural network, we simply need to calculate the backpropagated error signal <script type="math/tex">\delta_l</script> that reaches that layer from the “above” layers, and weight it by the feed-forward signal <script type="math/tex">a_{l-1}</script> feeding into that layer.</em></strong></p>
 
-<h4 id="hidden-layer-biases-b_i">Hidden Layer Biases, <script type="math/tex">b_i</script></h4>
+<h4 id="hidden-layer-biases-b_j">Hidden Layer Biases, <script type="math/tex">b_j</script></h4>
 
-<p>Calculating the error gradients with respect to the hidden layer biases follows a very similar procedure to that for the hidden layer weights where, as in <em>Equation 12</em>, we use the chain rule to calculate <script type="math/tex">\frac{\partial z_k}{\partial b_i}</script>.</p>
+<p>Calculating the error gradients with respect to the hidden layer biases <script type="math/tex">b_j</script> follows a very similar procedure to that for the hidden layer weights where, as in <em>Equation 12</em>, we use the chain rule to calculate <script type="math/tex">\frac{\partial z_k}{\partial b_j}</script>.</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
 
-\frac{\partial E }{\partial b_{i}} &= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{i}}g_k(z_k) \\
-&= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{i}}  \tag{16}
+\frac{\partial E }{\partial b_{j}} &= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{j}}g_k(z_k) \\
+&= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{j}}  \tag{16}
 \end{align} %]]></script>
 
-<p>Again, using the chain rule to solve for <script type="math/tex">\frac{\partial z_k }{\partial b_{i}}</script></p>
+<p>Again, using the chain rule to solve for <script type="math/tex">\frac{\partial z_k }{\partial b_{j}}</script></p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
-\frac{\partial z_k  }{\partial b_{i}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{i}} \\
-&= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{i}} \\
-&= w_{jk}\frac{\partial a_j}{\partial b_{i}} \\
-&= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{i}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{i}} \\
-&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_i}(b_j + \sum_i a_i w_{ij}) \\
+\frac{\partial z_k  }{\partial b_{j}} &= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{j}} \\
+&= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{j}} \\
+&= w_{jk}\frac{\partial a_j}{\partial b_{j}} \\
+&= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{j}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{j}} \\
+&= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_j}(b_j + \sum_i a_i w_{ij}) \\
 &= w_{jk}g_j'(z_j)(1) \tag{17}
 \end{align} %]]></script>
 
-<p>Plugging <em>Equation 17</em> into the expression for <script type="math/tex">\frac{\partial z_k }{\partial b_i}</script> in <em>Equation 16</em> gives the final expression for the hidden layer bias gradients:</p>
+<p>Plugging <em>Equation 17</em> into the expression for <script type="math/tex">\frac{\partial z_k }{\partial b_j}</script> in <em>Equation 16</em> gives the final expression for the hidden layer bias gradients:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
-\frac{\partial E }{\partial b_i} &= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
+\frac{\partial E }{\partial b_j} &= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
 &= g'_j(z_j) \sum_{k} \delta_k w_{jk} \\
 &= \color{darkred}{\delta_j} \tag{18}
 \end{align} %]]></script>

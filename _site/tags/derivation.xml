@@ -3,7 +3,7 @@
     <title>The Clever Machine - derivation</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsderivation.html"/>
-    <updated>2020-08-13T13:16:53-07:00</updated>
+    <updated>2020-08-15T13:33:40-07:00</updated>
     <id>/theclevermachinederivation.html</id>
 
     <author>
@@ -593,35 +593,35 @@ w_{jk} &amp;\leftarrow w_{jk} - \eta \frac{\partial E }{\partial w_{jk}} \\
 
 &lt;p&gt;&lt;em&gt;Equation 15&lt;/em&gt; suggests that &lt;strong&gt;&lt;em&gt;in order to calculate the weight gradients at any layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; in an arbitrarily-deep neural network, we simply need to calculate the backpropagated error signal &lt;script type=&quot;math/tex&quot;&gt;\delta_l&lt;/script&gt; that reaches that layer from the “above” layers, and weight it by the feed-forward signal &lt;script type=&quot;math/tex&quot;&gt;a_{l-1}&lt;/script&gt; feeding into that layer.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;hidden-layer-biases-b_i&quot;&gt;Hidden Layer Biases, &lt;script type=&quot;math/tex&quot;&gt;b_i&lt;/script&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;hidden-layer-biases-b_j&quot;&gt;Hidden Layer Biases, &lt;script type=&quot;math/tex&quot;&gt;b_j&lt;/script&gt;&lt;/h4&gt;
 
-&lt;p&gt;Calculating the error gradients with respect to the hidden layer biases follows a very similar procedure to that for the hidden layer weights where, as in &lt;em&gt;Equation 12&lt;/em&gt;, we use the chain rule to calculate &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k}{\partial b_i}&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Calculating the error gradients with respect to the hidden layer biases &lt;script type=&quot;math/tex&quot;&gt;b_j&lt;/script&gt; follows a very similar procedure to that for the hidden layer weights where, as in &lt;em&gt;Equation 12&lt;/em&gt;, we use the chain rule to calculate &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k}{\partial b_j}&lt;/script&gt;.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
 
-\frac{\partial E }{\partial b_{i}} &amp;= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{i}}g_k(z_k) \\
-&amp;= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{i}}  \tag{16}
+\frac{\partial E }{\partial b_{j}} &amp;= \sum_{k} (a_k - t_k) \frac{\partial }{\partial b_{j}}g_k(z_k) \\
+&amp;= \sum_{k} (a_k - t_k)g'_k(z_k)\frac{\partial z_k}{\partial b_{j}}  \tag{16}
 \end{align} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;Again, using the chain rule to solve for &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k }{\partial b_{i}}&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Again, using the chain rule to solve for &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k }{\partial b_{j}}&lt;/script&gt;&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
-\frac{\partial z_k  }{\partial b_{i}} &amp;= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{i}} \\
-&amp;= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{i}} \\
-&amp;= w_{jk}\frac{\partial a_j}{\partial b_{i}} \\
-&amp;= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{i}} \\
-&amp;= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{i}} \\
-&amp;= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_i}(b_j + \sum_i a_i w_{ij}) \\
+\frac{\partial z_k  }{\partial b_{j}} &amp;= \frac{\partial z_k}{\partial a_j}\frac{\partial a_j}{\partial b_{j}} \\
+&amp;= \frac{\partial}{\partial a_j}(b_k + \sum_j a_j w_{jk})\frac{\partial a_j}{\partial b_{j}} \\
+&amp;= w_{jk}\frac{\partial a_j}{\partial b_{j}} \\
+&amp;= w_{jk}\frac{\partial g_j(z_j)}{\partial b_{j}} \\
+&amp;= w_{jk}g_j'(z_j)\frac{\partial z_j}{\partial b_{j}} \\
+&amp;= w_{jk}g_j'(z_j)\frac{\partial}{\partial b_j}(b_j + \sum_i a_i w_{ij}) \\
 &amp;= w_{jk}g_j'(z_j)(1) \tag{17}
 \end{align} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;Plugging &lt;em&gt;Equation 17&lt;/em&gt; into the expression for &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k }{\partial b_i}&lt;/script&gt; in &lt;em&gt;Equation 16&lt;/em&gt; gives the final expression for the hidden layer bias gradients:&lt;/p&gt;
+&lt;p&gt;Plugging &lt;em&gt;Equation 17&lt;/em&gt; into the expression for &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial z_k }{\partial b_j}&lt;/script&gt; in &lt;em&gt;Equation 16&lt;/em&gt; gives the final expression for the hidden layer bias gradients:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
-\frac{\partial E }{\partial b_i} &amp;= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
+\frac{\partial E }{\partial b_j} &amp;= \sum_{k} (a_k - t_k)g'_k(z_k) w_{jk} g_j'(z_j) \\
 &amp;= g'_j(z_j) \sum_{k} \delta_k w_{jk} \\
 &amp;= \color{darkred}{\delta_j} \tag{18}
 \end{align} %]]&gt;&lt;/script&gt;
