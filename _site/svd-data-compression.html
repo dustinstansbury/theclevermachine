@@ -18,15 +18,23 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA." />
 <meta property="og:description" content="In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA." />
-<link rel="canonical" href="http://localhost:4000/theclevermachine/svd-data-compression" />
-<meta property="og:url" content="http://localhost:4000/theclevermachine/svd-data-compression" />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/svd-data-compression" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/svd-data-compression" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-16T00:00:00-07:00" />
 <script type="application/ld+json">
-{"headline":"SVD and Data Compression Using Low-rank Matrix Approximation","dateModified":"2020-08-16T00:00:00-07:00","datePublished":"2020-08-16T00:00:00-07:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/svd-data-compression"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"http://localhost:4000/theclevermachine/svd-data-compression","description":"In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/svd-data-compression"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/svd-data-compression","description":"In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.","@type":"BlogPosting","headline":"SVD and Data Compression Using Low-rank Matrix Approximation","dateModified":"2020-08-16T00:00:00-07:00","datePublished":"2020-08-16T00:00:00-07:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
 
   
 
@@ -84,7 +92,7 @@
 
 <h1 id="data-compression-and-low-rank-approximation">Data Compression and Low-Rank Approximation</h1>
 
-<p>First off, what do we mean by low-rank approximation? Say you have an <script type="math/tex">m \times n</script> data matrix <script type="math/tex">X</script>. The data contained in <script type="math/tex">X</script> could be anything, really. For example, in a computer vision setting, <script type="math/tex">X</script> could encode a single image, where each entry in the matrix is a pixel intensity value at a location encoded by the <script type="math/tex">i,j</script>-th row and column. In a machine learning setting, <script type="math/tex">X</script> could be a data set, where each row is an observation and each column is a measurable dimension. Heck, in a computer-vision-machine-learning setting, <script type="math/tex">X</script> could represent multiple images, with each image being encoded as a row, and each column being one of <script type="math/tex">n = (\text{width} \times \text{height}</script>) values, encoding the image location-pixel values unraveled into a row-vector.</p>
+<p>First off, what do we mean by low-rank approximation? Say you have an <script type="math/tex">m \times n</script> data matrix <script type="math/tex">X</script>. The data contained in <script type="math/tex">X</script> could be anything, really. For example, in a computer vision setting, <script type="math/tex">X</script> could encode a single image, where each entry in the matrix is a pixel intensity value at a location encoded by the <script type="math/tex">i,j</script>-th row and column. In a machine learning setting, <script type="math/tex">X</script> could be a data set, where each row is an observation and each column is a measurable dimension. Heck, in a computer-vision-meets-machine-learning setting, <script type="math/tex">X</script> could represent multiple images, with each image being encoded as a row, and each column being one of <script type="math/tex">n = (\text{width} \times \text{height}</script>) values, encoding the image location-pixel values unraveled into a row-vector.</p>
 
 <p>No matter the type of information <script type="math/tex">X</script> encodes, it will have a <a href="https://en.wikipedia.org/wiki/Rank_(linear_algebra)"><em>matrix rank</em></a> <script type="math/tex">r</script>, which is essentially the number of linearly independent columns (column rank) or rows (row rank) contained in the matrix. We’ll focus on column rank in this post. It’s entirely possible (and common) for a matrix to have a rank that is smaller than the number of columns in the matrix. For example, the left two plots in <strong><em>Figure 1</em></strong> display two different matrices <script type="math/tex">X</script> and <script type="math/tex">\tilde X</script>. These two matrices have the same column rank, despite having a different numbers of columns. This is because the matrix <script type="math/tex">X</script> is full rank in that its column rank is equal to the number of columns. In contrast, the matrix <script type="math/tex">\tilde X</script> contains redundant columns, resulting in a column rank that is smaller than the number of columns.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
 
@@ -99,7 +107,7 @@
 </center>
 
 <p><strong><em>Figure 1: Matrix Rank and Reconstruction.</em></strong>
-<em><strong>Left:</strong> a full-column-rank matrix <script type="math/tex">X</script>. <strong>Middle:</strong> a matrix <script type="math/tex">\tilde X</script> with redundant columns formed by scaling and concatenating columns of <script type="math/tex">X</script>. <strong>Right</strong>: exact reconstruction of <script type="math/tex">\hat X</script> using a rank <script type="math/tex">k=r=4</script> singular value decomposition.</em></p>
+<em><strong>Left:</strong> a full-column-rank matrix <script type="math/tex">X</script>. <strong>Middle:</strong> a matrix <script type="math/tex">\tilde X</script> with redundant columns formed by scaling and concatenating columns of <script type="math/tex">X</script>. <strong>Right</strong>: exact reconstruction of <script type="math/tex">\tilde X</script> using a rank <script type="math/tex">k=r=4</script> singular value decomposition.</em></p>
 
 <details>
 
@@ -159,7 +167,7 @@
 
 <p>When a matrix like <script type="math/tex">\tilde X</script> contains redundant information, that matrix can often be <em>compressed</em>: i.e. it can be represented using less data than the original matrix with little-to-no loss in information. One way to perform compression is by using LRA.</p>
 
-<p>Low-rank approximation (<strong><em>Figure 2</em></strong>) is the process of representing the information in a matrix <script type="math/tex">M</script> using a matrix <script type="math/tex">\hat M</script> that has a rank that is smaller than the original matrix <script type="math/tex">M</script>.</p>
+<p>Low-rank approximation (<strong><em>Figure 2</em></strong>) is the process of representing the information in a matrix <script type="math/tex">M</script> using a matrix <script type="math/tex">\hat M</script> that has a rank that is smaller than the original matrix. To reduce the rank of <script type="math/tex">\hat M</script> we can attempt construct the matrix as a combination of a “tall” left-hand matrix <script type="math/tex">L_k</script> and a “wide” right-hand matrix <script type="math/tex">R_k</script>:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
@@ -203,7 +211,7 @@ L &= (US) \text{, and} \\
 R &= V \tag{2}
 \end{align} %]]></script>
 
-<p>When full-rank SVD is used, <strong><em>Equation 2</em></strong> provides a method to <em>exactly</em> reconstruct <script type="math/tex">M</script>. In a similar fashion, <strong><em>Figure 1, right</em></strong> demonstrates how SVD can be used used to <em>exactly</em> reconstruct the redundant matrix <script type="math/tex">\tilde X</script> using a decomposition of rank <script type="math/tex">k=r=4</script>, despite the matrix <script type="math/tex">\tilde X</script> having a 8 columns.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+<p>When full-rank SVD is used, <strong><em>Equation 2</em></strong> provides a method to <em>exactly</em> reconstruct <script type="math/tex">M</script>. In a similar fashion, <strong><em>Figure 1, right</em></strong> demonstrates how SVD can be used used to <em>exactly</em> reconstruct the redundant matrix <script type="math/tex">\tilde X</script> using a decomposition of rank <script type="math/tex">k=r=4</script>, despite the matrix <script type="math/tex">\tilde X</script> having 8 columns.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
 
 <p>However, we’re not limited to exact reconstruction of <script type="math/tex">M</script>; SVD offers a straight-forward way to obtain a low-rank approximation of <script type="math/tex">M</script>. We can replace <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> in <strong><em>Equation 2</em></strong> with <script type="math/tex">U_k</script>, <script type="math/tex">S_k</script>, and <script type="math/tex">V_k</script>, where we use only the first <script type="math/tex">k</script> columns of the decomposition matrices:</p>
 
@@ -220,7 +228,7 @@ k < r %]]></script> then <strong><em>Equation 3</em></strong> provides a LRA of 
 
 <h1 id="application-image-compression">Application: Image Compression</h1>
 
-<p>Singular value decomposition can be used to decompose <em>any</em> matrix, which allows us to use SVD to compress all sorts of data, including images. <strong><em>Figure 3. left</em></strong> depicts a grayscale image, encoded as a data matrix <script type="math/tex">X</script> with rank <script type="math/tex">r=128</script>. When SVD is applied to <script type="math/tex">X</script>, it returns a set of left singular vectors <script type="math/tex">U,</script> right singular vectors <script type="math/tex">V</script>, and a diagonal matrix <script type="math/tex">S</script> that contains the singular values associated with the singular vectors.</p>
+<p>Singular value decomposition can be used to decompose <em>any</em> matrix, which allows us to use SVD to compress all sorts of data, including images. <strong><em>Figure 3, left</em></strong> depicts a grayscale image, encoded as a data matrix <script type="math/tex">X</script> with rank <script type="math/tex">r=128</script>. When SVD is applied to <script type="math/tex">X</script>, it returns a set of left singular vectors <script type="math/tex">U,</script> right singular vectors <script type="math/tex">V</script>, and a diagonal matrix <script type="math/tex">S</script> that contains the singular values associated with the singular vectors.</p>
 
 <p>SVD is great because the singular vectors and values are rank-ordered in such a way that earlier components carry the most information about <script type="math/tex">X</script>. The singular values in <script type="math/tex">S</script> (<strong><em>Figure 3, center</em></strong>) can be used as a proxy for the amount of information in <script type="math/tex">X</script> encoded in each component of the decomposition (<strong><em>Figure 3, right</em></strong>).</p>
 

@@ -11,7 +11,7 @@ In a [previous post](/theclevermachine/singular-value-decomposition) we introduc
 
 # Data Compression and Low-Rank Approximation
 
-First off, what do we mean by low-rank approximation? Say you have an $$m \times n$$ data matrix $$X$$. The data contained in $$X$$ could be anything, really. For example, in a computer vision setting, $$X$$ could encode a single image, where each entry in the matrix is a pixel intensity value at a location encoded by the $$i,j$$-th row and column. In a machine learning setting, $$X$$ could be a data set, where each row is an observation and each column is a measurable dimension. Heck, in a computer-vision-machine-learning setting, $$X$$ could represent multiple images, with each image being encoded as a row, and each column being one of $$n = (\text{width} \times \text{height}$$) values, encoding the image location-pixel values unraveled into a row-vector.
+First off, what do we mean by low-rank approximation? Say you have an $$m \times n$$ data matrix $$X$$. The data contained in $$X$$ could be anything, really. For example, in a computer vision setting, $$X$$ could encode a single image, where each entry in the matrix is a pixel intensity value at a location encoded by the $$i,j$$-th row and column. In a machine learning setting, $$X$$ could be a data set, where each row is an observation and each column is a measurable dimension. Heck, in a computer-vision-meets-machine-learning setting, $$X$$ could represent multiple images, with each image being encoded as a row, and each column being one of $$n = (\text{width} \times \text{height}$$) values, encoding the image location-pixel values unraveled into a row-vector.
 
 No matter the type of information $$X$$ encodes, it will have a [*matrix rank*](https://en.wikipedia.org/wiki/Rank_(linear_algebra)) $$r$$, which is essentially the number of linearly independent columns (column rank) or rows (row rank) contained in the matrix. We'll focus on column rank in this post. It's entirely possible (and common) for a matrix to have a rank that is smaller than the number of columns in the matrix. For example, the left two plots in ***Figure 1*** display two different matrices $$X$$ and $$\tilde X$$. These two matrices have the same column rank, despite having a different numbers of columns. This is because the matrix $$X$$ is full rank in that its column rank is equal to the number of columns. In contrast, the matrix $$\tilde X$$ contains redundant columns, resulting in a column rank that is smaller than the number of columns.[^1]
 
@@ -26,7 +26,7 @@ No matter the type of information $$X$$ encodes, it will have a [*matrix rank*](
 </center>
 
 ***Figure 1: Matrix Rank and Reconstruction.***
-***Left:** a full-column-rank matrix $$X$$. **Middle:** a matrix $$\tilde X$$ with redundant columns formed by scaling and concatenating columns of $$X$$. **Right**: exact reconstruction of $$\hat X$$ using a rank $$k=r=4$$ singular value decomposition.*
+***Left:** a full-column-rank matrix $$X$$. **Middle:** a matrix $$\tilde X$$ with redundant columns formed by scaling and concatenating columns of $$X$$. **Right**: exact reconstruction of $$\tilde X$$ using a rank $$k=r=4$$ singular value decomposition.*
 
 <details>
 
@@ -87,7 +87,7 @@ plt.suptitle("Low-Rank Approximation of a Matrix", fontsize=18)
 
 When a matrix like $$\tilde X$$ contains redundant information, that matrix can often be *compressed*: i.e. it can be represented using less data than the original matrix with little-to-no loss in information. One way to perform compression is by using LRA.
 
-Low-rank approximation (***Figure 2***) is the process of representing the information in a matrix $$M$$ using a matrix $$\hat M$$ that has a rank that is smaller than the original matrix $$M$$.
+Low-rank approximation (***Figure 2***) is the process of representing the information in a matrix $$M$$ using a matrix $$\hat M$$ that has a rank that is smaller than the original matrix. To reduce the rank of $$\hat M$$ we can attempt construct the matrix as a combination of a "tall" left-hand matrix $$L_k$$ and a "wide" right-hand matrix $$R_k$$:
 
 $$
 \begin{align}
@@ -132,7 +132,7 @@ R &= V \tag{2}
 \end{align}
 $$
 
-When full-rank SVD is used, ***Equation 2*** provides a method to _exactly_ reconstruct $$M$$. In a similar fashion, ***Figure 1, right*** demonstrates how SVD can be used used to *exactly* reconstruct the redundant matrix $$\tilde X$$ using a decomposition of rank $$k=r=4$$, despite the matrix $$\tilde X$$ having a 8 columns.[^2]
+When full-rank SVD is used, ***Equation 2*** provides a method to _exactly_ reconstruct $$M$$. In a similar fashion, ***Figure 1, right*** demonstrates how SVD can be used used to *exactly* reconstruct the redundant matrix $$\tilde X$$ using a decomposition of rank $$k=r=4$$, despite the matrix $$\tilde X$$ having 8 columns.[^2]
 
 
 However, we're not limited to exact reconstruction of $$M$$; SVD offers a straight-forward way to obtain a low-rank approximation of $$M$$. We can replace $$U$$, $$S$$, and $$V$$ in ***Equation 2*** with $$U_k$$, $$S_k$$, and $$V_k$$, where we use only the first $$k$$ columns of the decomposition matrices:
@@ -150,7 +150,7 @@ When $$k < r$$ then ***Equation 3*** provides a LRA of $$M$$, $$\hat M_k$$, via 
 
 # Application: Image Compression
 
-Singular value decomposition can be used to decompose _any_ matrix, which allows us to use SVD to compress all sorts of data, including images. ***Figure 3. left*** depicts a grayscale image, encoded as a data matrix $$X$$ with rank $$r=128$$. When SVD is applied to $$X$$, it returns a set of left singular vectors $$U,$$ right singular vectors $$V$$, and a diagonal matrix $$S$$ that contains the singular values associated with the singular vectors.
+Singular value decomposition can be used to decompose _any_ matrix, which allows us to use SVD to compress all sorts of data, including images. ***Figure 3, left*** depicts a grayscale image, encoded as a data matrix $$X$$ with rank $$r=128$$. When SVD is applied to $$X$$, it returns a set of left singular vectors $$U,$$ right singular vectors $$V$$, and a diagonal matrix $$S$$ that contains the singular values associated with the singular vectors.
 
 SVD is great because the singular vectors and values are rank-ordered in such a way that earlier components carry the most information about $$X$$. The singular values in $$S$$ (***Figure 3, center***) can be used as a proxy for the amount of information in $$X$$ encoded in each component of the decomposition (***Figure 3, right***).
 
