@@ -1,1 +1,1 @@
-Sitemap: https://dustinstansbury.github.io/theclevermachine/sitemap.xml
+Sitemap: http://localhost:4000/theclevermachine/sitemap.xml

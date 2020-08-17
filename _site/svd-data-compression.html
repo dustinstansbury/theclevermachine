@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>SVD and Data Compression Using Low-rank Matrix Approximation | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="SVD and Data Compression Using Low-rank Matrix Approximation" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA." />
+<meta property="og:description" content="In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA." />
+<link rel="canonical" href="http://localhost:4000/theclevermachine/svd-data-compression" />
+<meta property="og:url" content="http://localhost:4000/theclevermachine/svd-data-compression" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-16T00:00:00-07:00" />
+<script type="application/ld+json">
+{"headline":"SVD and Data Compression Using Low-rank Matrix Approximation","dateModified":"2020-08-16T00:00:00-07:00","datePublished":"2020-08-16T00:00:00-07:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/svd-data-compression"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"http://localhost:4000/theclevermachine/svd-data-compression","description":"In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">SVD and Data Compression Using Low-rank Matrix Approximation</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-08-16T00:00:00-07:00" itemprop="datePublished">Aug 16, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
+              , 
+          
+              <a href="/theclevermachine/tags/singular-value-decomposition.html">singular-value-decomposition</a>
+              , 
+          
+              <a href="/theclevermachine/tags/low-rank-approximation.html">low-rank-approximation</a>
+              , 
+          
+              <a href="/theclevermachine/tags/data-compression.html">data-compression</a>
+              , 
+          
+              <a href="/theclevermachine/tags/image-compression.html">image-compression</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>In a <a href="/theclevermachine/singular-value-decomposition">previous post</a> we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.</p>
+
+<h1 id="data-compression-and-low-rank-approximation">Data Compression and Low-Rank Approximation</h1>
+
+<p>First off, what do we mean by low-rank approximation? Say you have an <script type="math/tex">m \times n</script> data matrix <script type="math/tex">X</script>. The data contained in <script type="math/tex">X</script> could be anything, really. For example, in a computer vision setting, <script type="math/tex">X</script> could encode a single image, where each entry in the matrix is a pixel intensity value at a location encoded by the <script type="math/tex">i,j</script>-th row and column. In a machine learning setting, <script type="math/tex">X</script> could be a data set, where each row is an observation and each column is a measurable dimension. Heck, in a computer-vision-machine-learning setting, <script type="math/tex">X</script> could represent multiple images, with each image being encoded as a row, and each column being one of <script type="math/tex">n = (\text{width} \times \text{height}</script>) values, encoding the image location-pixel values unraveled into a row-vector.</p>
+
+<p>No matter the type of information <script type="math/tex">X</script> encodes, it will have a <a href="https://en.wikipedia.org/wiki/Rank_(linear_algebra)"><em>matrix rank</em></a> <script type="math/tex">r</script>, which is essentially the number of linearly independent columns (column rank) or rows (row rank) contained in the matrix. We’ll focus on column rank in this post. It’s entirely possible (and common) for a matrix to have a rank that is smaller than the number of columns in the matrix. For example, the left two plots in <strong><em>Figure 1</em></strong> display two different matrices <script type="math/tex">X</script> and <script type="math/tex">\tilde X</script>. These two matrices have the same column rank, despite having a different numbers of columns. This is because the matrix <script type="math/tex">X</script> is full rank in that its column rank is equal to the number of columns. In contrast, the matrix <script type="math/tex">\tilde X</script> contains redundant columns, resulting in a column rank that is smaller than the number of columns.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="650" src="assets/images/svd-data-compression/matrix-low-rank-approximation.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1: Matrix Rank and Reconstruction.</em></strong>
+<em><strong>Left:</strong> a full-column-rank matrix <script type="math/tex">X</script>. <strong>Middle:</strong> a matrix <script type="math/tex">\tilde X</script> with redundant columns formed by scaling and concatenating columns of <script type="math/tex">X</script>. <strong>Right</strong>: exact reconstruction of <script type="math/tex">\hat X</script> using a rank <script type="math/tex">k=r=4</script> singular value decomposition.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'image.cmap'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'RdBu_r'</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span> <span class="c1"># Repeatability
+</span><span class="n">MATRIX_RANK</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c1"># Create a random matrix, which will have independent columns
+# and thus a rank equal to the number of columns
+</span><span class="n">X_orig</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">MATRIX_RANK</span><span class="p">)</span>
+<span class="n">X_orig_rank</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">X_orig</span><span class="p">)</span>
+
+<span class="c1"># Create a new redundant matrix with twice as many columns, but new columns are
+# simply a linear scaling of original matrix
+</span><span class="n">X_redundant</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">X_orig</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">X_orig</span><span class="p">])</span>
+
+<span class="c1"># Permute columns of redundant matrix
+</span><span class="n">X_redundant</span> <span class="o">=</span> <span class="n">X_redundant</span><span class="p">[:,</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X_redundant</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))]</span>
+<span class="n">X_redundant_rank</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">X_redundant</span><span class="p">)</span>
+
+<span class="c1"># Run SVD on redundant matrix, we'll use this for LRA
+</span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X_redundant</span><span class="p">)</span>
+
+<span class="c1"># Low-rank reconstruction (exact in this case)
+</span><span class="n">X_redundant_reconstructed</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">MATRIX_RANK</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[:</span><span class="n">MATRIX_RANK</span><span class="p">]</span> <span class="o">@</span> <span class="n">V</span><span class="p">[:</span><span class="n">MATRIX_RANK</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">((</span><span class="n">X_redundant</span> <span class="o">-</span> <span class="n">X_redundant_reconstructed</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Visualizations
+## Original matrix
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_orig</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">clim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f"A Rank $r=$</span><span class="si">{</span><span class="n">X_orig_rank</span><span class="si">}</span><span class="s"> matrix, X"</span><span class="p">)</span>
+
+<span class="c1">## Redundant matrix
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_redundant</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">clim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f"A redundant Rank $r=$</span><span class="si">{</span><span class="n">X_redundant_rank</span><span class="si">}</span><span class="s"> matrix, $</span><span class="se">\\</span><span class="s">tilde X$"</span><span class="p">)</span>
+
+<span class="c1">## Low-rank approximation (exact reconstruction)
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_redundant_reconstructed</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">clim</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f"Reconstruction of $</span><span class="se">\\</span><span class="s">tilde X$</span><span class="se">\n</span><span class="s">using </span><span class="si">{</span><span class="n">MATRIX_RANK</span><span class="si">}</span><span class="s"> components of SVD</span><span class="se">\n</span><span class="s">Total Squared Error: </span><span class="si">{</span><span class="n">reconstruction_error</span><span class="p">:</span><span class="mf">1.1</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"Low-Rank Approximation of a Matrix"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+
+<p><br /></p>
+
+<p>When a matrix like <script type="math/tex">\tilde X</script> contains redundant information, that matrix can often be <em>compressed</em>: i.e. it can be represented using less data than the original matrix with little-to-no loss in information. One way to perform compression is by using LRA.</p>
+
+<p>Low-rank approximation (<strong><em>Figure 2</em></strong>) is the process of representing the information in a matrix <script type="math/tex">M</script> using a matrix <script type="math/tex">\hat M</script> that has a rank that is smaller than the original matrix <script type="math/tex">M</script>.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+M &= L R^T \\
+&\approx L_k R_k^T \\
+&\approx \hat M \tag{1}
+
+\end{align} %]]></script>
+
+<p>This allows a matrix that would normally be represented using <script type="math/tex">m \times n</script> values to be represented using <script type="math/tex">k(m + n)</script> values. If <script type="math/tex">k</script> is small relative to <script type="math/tex">m</script> and <script type="math/tex">n</script>, then the LRA can be used to store important information in <script type="math/tex">M</script> much more efficiently.</p>
+
+<p><br /></p>
+
+<hr />
+
+<center>
+    <br />
+    <div id="container">
+        <img width="500" src="assets/images/svd-data-compression/low-rank-approximation.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 2: Low-rank Matrix Decomposition:</em></strong>
+<em>A matrix <script type="math/tex">M</script> of size <script type="math/tex">m \times n</script> and rank <script type="math/tex">r</script> can be decomposed into a pair of matrices <script type="math/tex">L_k</script> and <script type="math/tex">R_k</script>. When <script type="math/tex">k=r</script>, the matrix <script type="math/tex">M</script> can be exactly reconstructed from the decomposition. When <script type="math/tex">% <![CDATA[
+k < r %]]></script>, then the decomposition provides a low-rank approximation <script type="math/tex">\hat M</script> of <script type="math/tex">M</script>.</em></p>
+
+<hr />
+
+<p><br /></p>
+
+<p>Low-rank approximation is often useful when the matrix <script type="math/tex">M</script> contains information that can be ignored, such as redundant information, or irrelevant information that isn’t helpful, or can possibly even be detrimental for solving a particular numerical problem (e.g. noise).</p>
+
+<p>There are a number of methods for constructing the matrix <script type="math/tex">\hat M</script>, but a common method is to use <a href="/theclevermachine/singular-value-decomposition">Singular Value Decomposition (SVD)</a>. Specifically, SVD decomposes matrix <script type="math/tex">M</script> into three matrices:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+M &= USV^T \\
+&= (US) V^T \\
+&= L R^T \text{, where} \\
+L &= (US) \text{, and} \\
+R &= V \tag{2}
+\end{align} %]]></script>
+
+<p>When full-rank SVD is used, <strong><em>Equation 2</em></strong> provides a method to <em>exactly</em> reconstruct <script type="math/tex">M</script>. In a similar fashion, <strong><em>Figure 1, right</em></strong> demonstrates how SVD can be used used to <em>exactly</em> reconstruct the redundant matrix <script type="math/tex">\tilde X</script> using a decomposition of rank <script type="math/tex">k=r=4</script>, despite the matrix <script type="math/tex">\tilde X</script> having a 8 columns.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+
+<p>However, we’re not limited to exact reconstruction of <script type="math/tex">M</script>; SVD offers a straight-forward way to obtain a low-rank approximation of <script type="math/tex">M</script>. We can replace <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> in <strong><em>Equation 2</em></strong> with <script type="math/tex">U_k</script>, <script type="math/tex">S_k</script>, and <script type="math/tex">V_k</script>, where we use only the first <script type="math/tex">k</script> columns of the decomposition matrices:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+M &\approx U_kS_kV_k^T \\
+&\approx \hat M_k. \tag{3}
+\end{align} %]]></script>
+
+<p>When <script type="math/tex">% <![CDATA[
+k < r %]]></script> then <strong><em>Equation 3</em></strong> provides a LRA of <script type="math/tex">M</script>, <script type="math/tex">\hat M_k</script>, via SVD. We’ll demonstrate this more clearly with an example that uses SVD for image compression.</p>
+
+<p><br /></p>
+
+<h1 id="application-image-compression">Application: Image Compression</h1>
+
+<p>Singular value decomposition can be used to decompose <em>any</em> matrix, which allows us to use SVD to compress all sorts of data, including images. <strong><em>Figure 3. left</em></strong> depicts a grayscale image, encoded as a data matrix <script type="math/tex">X</script> with rank <script type="math/tex">r=128</script>. When SVD is applied to <script type="math/tex">X</script>, it returns a set of left singular vectors <script type="math/tex">U,</script> right singular vectors <script type="math/tex">V</script>, and a diagonal matrix <script type="math/tex">S</script> that contains the singular values associated with the singular vectors.</p>
+
+<p>SVD is great because the singular vectors and values are rank-ordered in such a way that earlier components carry the most information about <script type="math/tex">X</script>. The singular values in <script type="math/tex">S</script> (<strong><em>Figure 3, center</em></strong>) can be used as a proxy for the amount of information in <script type="math/tex">X</script> encoded in each component of the decomposition (<strong><em>Figure 3, right</em></strong>).</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/svd-data-compression/image-singular-values.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 3: Singular Value Decomposition of an image <script type="math/tex">X</script>.</em></strong> <em><strong>Left:</strong> A Grayscale image can be interpreted as a matrix <script type="math/tex">X</script>. <strong>Center:</strong> the singular values (blue) and their log (red) as a function of rank <script type="math/tex">k.</script> Singular values decrease exponentially with rank, with earlier singular values being much larger than later ones. <strong>Right:</strong> The total information about <script type="math/tex">X</script> encoded in all the singular values up to <script type="math/tex">k.</script> A majority of information is encoded in the first singular vectors returned by SVD.</em></p>
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load image
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">"../assets/images/svd-data-compression/cameraman.png"</span><span class="p">)</span>
+
+<span class="c1"># Donwsample and encode RGBa image as matrix of intensities, X
+</span><span class="n">DOWNSAMPLE</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">img</span><span class="p">[::</span><span class="n">DOWNSAMPLE</span><span class="p">,</span> <span class="p">::</span><span class="n">DOWNSAMPLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">img</span><span class="p">[::</span><span class="n">DOWNSAMPLE</span><span class="p">,</span> <span class="p">::</span><span class="n">DOWNSAMPLE</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">img</span><span class="p">[::</span><span class="n">DOWNSAMPLE</span><span class="p">,</span> <span class="p">::</span><span class="n">DOWNSAMPLE</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> 
+<span class="n">X</span> <span class="o">=</span> <span class="mf">0.2989</span> <span class="o">*</span> <span class="n">R</span> <span class="o">+</span> <span class="mf">0.5870</span> <span class="o">*</span> <span class="n">G</span> <span class="o">+</span> <span class="mf">0.1140</span> <span class="o">*</span> <span class="n">B</span>
+
+<span class="c1"># Calculate the rank of the data matrix, X
+</span><span class="n">img_rank</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+<span class="c1"># Run SVD on Image
+</span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Calculate the cumulative variance explained by each singular value
+</span><span class="n">total_S</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
+<span class="n">n_components</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">component_idx</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>  <span class="n">n_components</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">info_retained</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_S</span>
+
+<span class="c1"># Visualizations
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1">## Raw Image, X
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f"Matrix $X$ encoding a Grayscale Image</span><span class="se">\n</span><span class="s">(Rank, $r=$</span><span class="si">{</span><span class="n">img_rank</span><span class="si">}</span><span class="s">)"</span><span class="p">)</span>
+
+<span class="c1">## Singular values as function of rank
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1">### Raw singular values
+</span><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Singular Values of $$X$$'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'darkblue'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"Rank, $k$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'$S_k$'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'darkblue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'y'</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s">'darkblue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Singular Values, $S_k$'</span><span class="p">)</span>
+
+<span class="c1">### log(singular values)
+</span><span class="n">twax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">gca</span><span class="p">().</span><span class="n">twinx</span><span class="p">()</span>  <span class="c1"># twin axes that shares the same x-axis
+</span><span class="n">twax</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">S</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'$\log(S_k)$</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'y'</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="c1">## Information retained as function of rank
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">info_retained</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'darkgreen'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_components</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"Rank, $k$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Cumulative % of Information About $X$</span><span class="se">\n</span><span class="s">Carried by Singular Vectors'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<hr />
+<p><br /></p>
+
+<p>We can see in <strong><em>Figure 3, center, right</em></strong> that a majority of the information about <script type="math/tex">X</script> is encoded in the first handfull of singular vectors/values returned by SVD. For example, 80% of information is endoded by less than a <script type="math/tex">1/3</script> of the singular vectors. This suggest that we can encode a majority of the information about the original data using only a subset of SVD components, and that it is easy to identify the optimal subset.</p>
+
+<p><strong><em>Figure 4</em></strong> demonstrates this idea. In each row of <strong><em>Figure 4</em></strong> we reconstruct <script type="math/tex">X</script> while increasing the rank <script type="math/tex">k</script> used in the reconstruction.<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup> Using only a few singular vectors (e.g. <script type="math/tex">k=4</script>) limits the reconstruction <script type="math/tex">\hat X_k</script> to encode only low-frequency spatial information about the image. As the number of singular vectors used in the approximation increases, the reconstruction includes increasing high-frequency spatial information, and thus decreasing the reconstruction error.</p>
+
+<p>Using roughly 50% of the data required to store <script type="math/tex">X</script> (<script type="math/tex">k=32)</script> provides around 80% of the information in <script type="math/tex">X,</script> and the reconstruction is almost perceptually indistinguishable from the original image. We can also see that this approach isn’t a magic bullet. There’s a trade-off between the amount of data required for the reconstruction (i.e requirements for the components of <script type="math/tex">U_k</script>, <script type="math/tex">V_k</script>, and <script type="math/tex">S_k</script>) and the information provided about <script type="math/tex">X</script>. Using 64 components results in basically no overall compression, but less than 100% information encoded. Effects like these need to be considered when using LRA for image compression.</p>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="650" src="assets/images/svd-data-compression/svd-image-reconstruction.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 4: Image Compression via LRA/SVD.</em></strong> <em><strong>Top Left</strong> Matrix <script type="math/tex">X</script> encodes an image that we reconstruct using an increasing number of left singular vectors provided by SVD. <strong>Second Column:</strong> The approximation <script type="math/tex">\hat{X}_k</script> of image <script type="math/tex">X</script> using the first <script type="math/tex">k</script> most-informative left singular vectors. <strong>Third column:</strong> The spatial reconstruction error using approximation <script type="math/tex">\hat{X}_k</script>. <strong>Right Column:</strong> displays data compression information for each row. Information includes the percentage of original image size used to represent the approximation, as well as the amount of information about <script type="math/tex">X</script> contained in the approximation.</em></p>
+
+<details>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Image Reconstruction
+</span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">clim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$X$"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Reconstruct image with increasing number of singular vectors/values
+</span><span class="k">for</span> <span class="n">power</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">power</span><span class="p">)</span>
+
+    <span class="c1"># Compressed/Reconstructed Image
+</span>    <span class="n">X_reconstruction</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[:</span><span class="n">rank</span><span class="p">]</span> <span class="o">@</span> <span class="n">V</span><span class="p">[:</span><span class="n">rank</span><span class="p">,:]</span>
+
+    <span class="c1"># Calculate number of floats required to store compressed image
+</span>    <span class="n">rank_data_compression</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">rank</span><span class="p">].</span><span class="n">size</span> <span class="o">+</span> <span class="n">S</span><span class="p">[:</span><span class="n">rank</span><span class="p">].</span><span class="n">size</span> <span class="o">+</span> <span class="n">V</span><span class="p">[:</span><span class="n">rank</span><span class="p">,:].</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">X</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Variance of original image explained by n components
+</span>    <span class="n">rank_info_retained</span> <span class="o">=</span> <span class="n">info_retained</span><span class="p">[</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Visualizations
+</span>    <span class="c1">## Original Image
+</span>    <span class="k">if</span> <span class="n">power</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">power</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">cla</span><span class="p">()</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+    <span class="c1">## Image reconstruction
+</span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">power</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_reconstruction</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'gray'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">clim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$\hat_$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="c1">## Reconstruction error
+</span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">power</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">cax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_reconstruction</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">clim</span><span class="p">([</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$X -\hat_$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="c1">## Compression/reconstruction info
+</span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">power</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">compression_text</span> <span class="o">=</span> <span class="s">f'Compression: </span><span class="si">{</span><span class="n">rank_data_compression</span><span class="p">:</span><span class="mf">1.1</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="se">\n</span><span class="s">Info. Retained </span><span class="si">{</span><span class="n">rank_info_retained</span><span class="p">:</span><span class="mf">1.1</span><span class="n">f</span><span class="si">}</span><span class="s">%'</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="p">.</span><span class="mi">4</span><span class="p">,</span> <span class="n">compression_text</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    
+<span class="n">fig</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">pad</span><span class="o">=</span><span class="p">.</span><span class="mi">01</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+</details>
+
+<hr />
+
+<p><br /></p>
+
+<h1 id="wrapping-up">Wrapping Up</h1>
+
+<p>In this post we discussed one of many applications of SVD: compression of high-dimensional data via LRA. This application is closely related to other numerical techniques such as denoising and matrix completion, as well as statistical analysis techniques for dimensionality reduction like Principal Components Analysis (PCA). Stay tuned, as I plan to dig into these additional applications of SVD in future posts. Until then, happy compressing!</p>
+
+<h1 id="notes">Notes</h1>
+<hr />
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>It turns out these redundant columns have been generated by scaling and concatenating multiple columns from the full-rank matrix <script type="math/tex">X</script>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>This isn’t low-rank approximation, per se, since <script type="math/tex">k=r</script>. However, it <em>does</em> demonstrate an important concept: redundancy can be compressed using a subset of components returned from matrix decomposition. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>In a normal compression scenario, rather than calculating the full SVD and selecting a subset of components, we would simply calculate a low-rank SVD, which can be done more efficiently than the full SVD. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'the-clever-machine'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/svd-data-compression" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

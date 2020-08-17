@@ -3,7 +3,7 @@
     <title>The Clever Machine - matrix-diagonalization</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsmatrix-diagonalization.html"/>
-    <updated>2020-08-15T13:33:40-07:00</updated>
+    <updated>2020-08-16T23:44:28-07:00</updated>
     <id>/theclevermachinematrix-diagonalization.html</id>
 
     <author>
@@ -590,16 +590,16 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
   &lt;li&gt;SVD gives you ordered components, allowing you to “build up” a lower-dimensinal representation of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; that is theoretically optimal.&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
   &lt;li&gt;SVD can be computed efficiently. It turns out that if you don’t require all singular vectors of the decomposition, which is almost always the case in statistics and machine learning, then you can calculate the decomposition much more efficiently, particularly if the desired rank of your approximation is small, i.e. &lt;script type=&quot;math/tex&quot;&gt;r \ll m, n&lt;/script&gt;.&lt;/li&gt;
   &lt;li&gt;SVD can be computed a numerically stable fashion. Decomposing sparse matrices is often numerically unstable for decompositions methods like EVD, but SVD can easily handle sparse matrices, particularly if those matrices have low rank approximations.&lt;/li&gt;
-  &lt;li&gt;SVD provides an orthonormal basis for &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt; (through &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt;) without explicitly calculating &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt;. Therefore algorithms based on matrix covariance, like Principle Components Analysis, reduce to SVD.&lt;/li&gt;
+  &lt;li&gt;SVD provides an orthonormal basis for &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt; (through &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt;) without explicitly calculating &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt;. Therefore algorithms based on matrix covariance, like Principal Components Analysis, reduce to SVD.&lt;/li&gt;
   &lt;li&gt;The matrix &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; gives you important/useful vectors that efficiently describe the &lt;em&gt;columns&lt;/em&gt; of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;, where the rows of &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt; gives you important info about the rows of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;. Therefore you get &lt;em&gt;joint&lt;/em&gt; information about the column and row space of &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; into user-based factors (row space of &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;) and item-based factors (column space &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;The number of possible applications of SVD is essentially limitless. In future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Data Compression&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/theclevermachine/svd-data-compression&quot;&gt;Data Compression via Low-rank Approximation&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression&lt;/li&gt;
-  &lt;li&gt;Providing a robust and efficient method for executing Principle Components Analysis&lt;/li&gt;
+  &lt;li&gt;Providing a robust and efficient method for executing Principal Components Analysis&lt;/li&gt;
   &lt;li&gt;Matrix completion used in recommendation systems&lt;/li&gt;
   &lt;li&gt;Calculating robust word embedding vectors used in Natural Language Process (NLP)&lt;/li&gt;
   &lt;li&gt;Image whitening to improve the efficieny of neural network trainig in Computer Vision&lt;/li&gt;

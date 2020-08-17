@@ -590,14 +590,14 @@ Singular Value Decomposition gives you all the theoretical, computational, and n
 - SVD gives you ordered components, allowing you to "build up" a lower-dimensinal representation of $$M$$ that is theoretically optimal.[^2]
 - SVD can be computed efficiently. It turns out that if you don't require all singular vectors of the decomposition, which is almost always the case in statistics and machine learning, then you can calculate the decomposition much more efficiently, particularly if the desired rank of your approximation is small, i.e. $$r \ll m, n$$.
 - SVD can be computed a numerically stable fashion. Decomposing sparse matrices is often numerically unstable for decompositions methods like EVD, but SVD can easily handle sparse matrices, particularly if those matrices have low rank approximations.
-- SVD provides an orthonormal basis for $$M^TM$$ (through $$V^T$$) without explicitly calculating $$M^TM$$. Therefore algorithms based on matrix covariance, like Principle Components Analysis, reduce to SVD.
+- SVD provides an orthonormal basis for $$M^TM$$ (through $$V^T$$) without explicitly calculating $$M^TM$$. Therefore algorithms based on matrix covariance, like Principal Components Analysis, reduce to SVD.
 - The matrix $$U$$ gives you important/useful vectors that efficiently describe the _columns_ of $$M$$, where the rows of $$V^T$$ gives you important info about the rows of $$M$$. Therefore you get _joint_ information about the column and row space of $$M$$ from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix $$R$$ into user-based factors (row space of $$R$$) and item-based factors (column space $$R$$).
 
 The number of possible applications of SVD is essentially limitless. In future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:
 
-- Data Compression
+- [Data Compression via Low-rank Approximation](/theclevermachine/svd-data-compression)
 - Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression
-- Providing a robust and efficient method for executing Principle Components Analysis
+- Providing a robust and efficient method for executing Principal Components Analysis
 - Matrix completion used in recommendation systems
 - Calculating robust word embedding vectors used in Natural Language Process (NLP)
 - Image whitening to improve the efficieny of neural network trainig in Computer Vision
