@@ -87,7 +87,7 @@ plt.suptitle("Low-Rank Approximation of a Matrix", fontsize=18)
 
 When a matrix like $$\tilde X$$ contains redundant information, that matrix can often be *compressed*: i.e. it can be represented using less data than the original matrix with little-to-no loss in information. One way to perform compression is by using LRA.
 
-Low-rank approximation (***Figure 2***) is the process of representing the information in a matrix $$M$$ using a matrix $$\hat M$$ that has a rank that is smaller than the original matrix. To reduce the rank of $$\hat M$$ we can attempt construct the matrix as a combination of a "tall" left-hand matrix $$L_k$$ and a "wide" right-hand matrix $$R_k$$:
+Low-rank approximation (***Figure 2***) is the process of representing the information in a matrix $$M$$ using a matrix $$\hat M$$ that has a rank that is smaller than the original matrix. To reduce the rank of $$\hat M$$ we can attempt construct the matrix as a combination of a "tall" left-hand matrix $$L_k$$ and a "wide" right-hand matrix $$R_k^T$$:
 
 $$
 \begin{align}

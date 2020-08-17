@@ -3,7 +3,7 @@
     <title>The Clever Machine - data-compression</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsdata-compression.html"/>
-    <updated>2020-08-17T08:44:08-07:00</updated>
+    <updated>2020-08-17T08:48:54-07:00</updated>
     <id>/theclevermachinedata-compression.html</id>
 
     <author>
@@ -95,7 +95,7 @@
 
 &lt;p&gt;When a matrix like &lt;script type=&quot;math/tex&quot;&gt;\tilde X&lt;/script&gt; contains redundant information, that matrix can often be &lt;em&gt;compressed&lt;/em&gt;: i.e. it can be represented using less data than the original matrix with little-to-no loss in information. One way to perform compression is by using LRA.&lt;/p&gt;
 
-&lt;p&gt;Low-rank approximation (&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;) is the process of representing the information in a matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; using a matrix &lt;script type=&quot;math/tex&quot;&gt;\hat M&lt;/script&gt; that has a rank that is smaller than the original matrix. To reduce the rank of &lt;script type=&quot;math/tex&quot;&gt;\hat M&lt;/script&gt; we can attempt construct the matrix as a combination of a “tall” left-hand matrix &lt;script type=&quot;math/tex&quot;&gt;L_k&lt;/script&gt; and a “wide” right-hand matrix &lt;script type=&quot;math/tex&quot;&gt;R_k&lt;/script&gt;:&lt;/p&gt;
+&lt;p&gt;Low-rank approximation (&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;) is the process of representing the information in a matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; using a matrix &lt;script type=&quot;math/tex&quot;&gt;\hat M&lt;/script&gt; that has a rank that is smaller than the original matrix. To reduce the rank of &lt;script type=&quot;math/tex&quot;&gt;\hat M&lt;/script&gt; we can attempt construct the matrix as a combination of a “tall” left-hand matrix &lt;script type=&quot;math/tex&quot;&gt;L_k&lt;/script&gt; and a “wide” right-hand matrix &lt;script type=&quot;math/tex&quot;&gt;R_k^T&lt;/script&gt;:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
