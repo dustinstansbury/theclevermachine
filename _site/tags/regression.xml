@@ -3,7 +3,7 @@
     <title>The Clever Machine - regression</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsregression.html"/>
-    <updated>2020-08-17T08:48:54-07:00</updated>
+    <updated>2020-09-11T10:58:08-07:00</updated>
     <id>/theclevermachineregression.html</id>
 
     <author>
@@ -48,6 +48,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;A data-generating function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; and some noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;. The samples exibit a noise variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2=1&lt;/script&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Frontmatter
 &lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
@@ -116,6 +117,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plot_fx_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
@@ -163,6 +165,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 3&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;collections&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultdict&lt;/span&gt;
 
@@ -310,6 +313,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;(Left) Demonstration of how estimator bias and variance contribute to the mean squared error on the Testing Set. The Testing Set error (dark red) can be broken down into a three components: the squared bias (blue) of the estimator, the estimator variance (green), and the noise variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{noise}^2&lt;/script&gt; (red). The “best” model (polynomial degree &lt;script type=&quot;math/tex&quot;&gt;D=3&lt;/script&gt;) has the optimal balance of low bias and low variance. Note that the noise variance is considered a lower bound on the Testing Set error, as it cannot be accounted for by any model. (Right) Demonstration of overfitting when the model complexity suprasses the optimal bias-variance tradeoff. Models with a complexity above &lt;script type=&quot;math/tex&quot;&gt;D=3&lt;/script&gt; are able to fit the Training Set data better, but at the expense of not generalizing to the Testing Set, resulting in increasing generalization error.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;124&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;n_observations_per_dataset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
@@ -516,6 +520,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2:&lt;/em&gt;&lt;/strong&gt; Common activation functions functions used in artificial neural, along with their derivatives&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
@@ -645,6 +650,7 @@ a_{\text{out}} &amp;= g_{\text{logistic}}(a_0w_1)
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 4:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Dynamics of a simple, single-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface &lt;script type=&quot;math/tex&quot;&gt;E(\mathbf w)&lt;/script&gt; for the task, as a function of the single model parameter, &lt;script type=&quot;math/tex&quot;&gt;w_1&lt;/script&gt; The network’s error is low when &lt;script type=&quot;math/tex&quot;&gt;w_1&lt;/script&gt; large and positive magnitude and high when &lt;script type=&quot;math/tex&quot;&gt;w_1&lt;/script&gt; is negative&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;mpl_toolkits.mplot3d&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Axes3D&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.patches&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mpatches&lt;/span&gt;
@@ -740,6 +746,7 @@ a_{\text{out}} &amp;= g_{\text{logistic}}(a_0w_1)
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 5:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Dynamics of a multi-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface &lt;script type=&quot;math/tex&quot;&gt;E(\mathbf w)&lt;/script&gt; for the task, as a function of the model parameters, &lt;script type=&quot;math/tex&quot;&gt;w_1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;w_2&lt;/script&gt;. The network’s error is low when both &lt;script type=&quot;math/tex&quot;&gt;w_1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;w_2&lt;/script&gt; have large positive magnitudes, and and high when the weights are negative.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;two_layer_network_predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target_value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target_value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
@@ -842,7 +849,9 @@ a_{\text{out}} &amp;= g_{\text{logistic}}(a_0w_1)
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Step I&lt;/em&gt;&lt;/strong&gt; of the backpropagation algorithm is to forward-propagate the observed input forward through the network layers in order to provide a prediction for the current target. This first step of the backpropagation algorithm is demonstrated in &lt;strong&gt;&lt;em&gt;Figure 6-I&lt;/em&gt;&lt;/strong&gt;. Note that in the figure &lt;script type=&quot;math/tex&quot;&gt;a_k&lt;/script&gt; could be considered network output (for a network with one hidden layer) or the output of a hidden layer that projects the remainder of the network (in the case of a network with more than one hidden layer). For this discussion, however, we assume that the index &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; is associated with the output layer of the network, and thus each of the network outputs is designated by &lt;script type=&quot;math/tex&quot;&gt;a_k&lt;/script&gt;. Also note that when implementing this forward-propagation step, we should keep track of the feed-forward pre-activations &lt;script type=&quot;math/tex&quot;&gt;z_l&lt;/script&gt; and activations &lt;script type=&quot;math/tex&quot;&gt;a_l&lt;/script&gt; for all layers &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;, as these can be used to efficiently calculate backpropagated errors and error function gradients.&lt;/p&gt;
+
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;step_I_forwardprop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;biases&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g_activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'w_2'&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# multi-layer network
@@ -884,6 +893,7 @@ a_{\text{out}} &amp;= g_{\text{logistic}}(a_0w_1)
 &lt;p&gt;For networks that have more than one hidden layer, this error backpropagation procedure can continue for layers &lt;script type=&quot;math/tex&quot;&gt;j-1, j-2, ...&lt;/script&gt;, etc.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;step_II_backprop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g_activation_prime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;# Calculate error function derivative given input/output/params
@@ -911,6 +921,7 @@ a_{\text{out}} &amp;= g_{\text{logistic}}(a_0w_1)
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial E}{\partial b_{l}} = (1)\delta_l = \delta_l&lt;/script&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;step_III_gradient_calculation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;delta_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delta_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a_hidden&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;network_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weight_gradients&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bias_gradients&lt;/span&gt;
@@ -939,6 +950,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;step_IV_update_parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;biases&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weight_gradients&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bias_gradients&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;learning_rate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'w_2'&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# multi-layer network
@@ -972,7 +984,9 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;We then perturb these observations by adding Normally-distributed noise. To generate target variables, we categorize each observations by applying one of logic operators described in &lt;strong&gt;&lt;em&gt;Figure 7&lt;/em&gt;&lt;/strong&gt;) to the original (no-noisy) coordinates.&lt;/p&gt;
+
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;generate_classification_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;problem_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_obs_per_class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Generates training data for all demos
@@ -1044,6 +1058,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;With training data in hand, we then train the network with the noisy inputs and binary categories targets using the gradient descent / backpropagation algorithm.&lt;sup id=&quot;fnref:5&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;copy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;copy&lt;/span&gt;
 
@@ -1222,6 +1237,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;Below we visualize the progress of the model learning as its trained on the logical &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OR&lt;/code&gt; classification dataset. The code for the classification visualization is here:&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.animation&lt;/span&gt;
@@ -1290,6 +1306,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 8:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Learning the logical &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OR&lt;/code&gt; function using a single-layer ANN (aka “perceptron”). Network architecture includes a single sigmoid output encoding the class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'OR'&lt;/span&gt;
@@ -1326,6 +1343,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 9:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Learning the logical &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AND&lt;/code&gt; function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'AND'&lt;/span&gt;
@@ -1366,6 +1384,8 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 10:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Learning the logical &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;XOR&lt;/code&gt; function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be cannot be separated with a linear decision function, the single layer network is unable to classify the points accurately (right).&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
+
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'XOR'&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;loss_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prediction_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;run_ann_training_simulation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
@@ -1401,6 +1421,8 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 11:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Learning the logical &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;XOR&lt;/code&gt; function using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units and a single sigmoid output unit encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). The multi-layer network is able to capture a linear decision function, and is thus able to classify the points accurately (right).&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
+
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'XOR'&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;loss_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prediction_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;run_ann_training_simulation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
@@ -1438,6 +1460,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 12:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Nonlinear classification using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units, and a single sigmoid output encoding the class. Colormap indicates the probability that an area in the 2D map will be associated with a positive (black) or negative (white) class.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'RING'&lt;/span&gt;
@@ -1472,6 +1495,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;f(\mathbf{x})&lt;/script&gt; is a nonlinear data-generating function and &lt;script type=&quot;math/tex&quot;&gt;\mathbf \epsilon&lt;/script&gt; is Normally-distributed noise. We then construct a two-layered network with &lt;script type=&quot;math/tex&quot;&gt;\text{tanh}&lt;/script&gt; activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;visualize_regression_learning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;problem_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;loss_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prediction_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weights_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;biases_history&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outfile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;axs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subplots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
@@ -1541,6 +1565,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 13:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Nonlinear regression using a multi-layer ANN. The task is to learn the noisy &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sin&lt;/code&gt; function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tanh&lt;/code&gt; units, and a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;linear&lt;/code&gt; output unit. (Left subpanel) The weighted hidden unit outputs &lt;script type=&quot;math/tex&quot;&gt;a_{j}^{(1)}w_{jk} + b_k&lt;/script&gt; that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation &lt;script type=&quot;math/tex&quot;&gt;a^{(l)}&lt;/script&gt; to indicate activations in the &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;-th hidden layer.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'SIN'&lt;/span&gt;
@@ -1580,6 +1605,7 @@ b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 14:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Nonlinear regression using a multi-layer ANN. The task is to learn the noisy &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;abs&lt;/code&gt; function (magenta datapoints). Network architecture includes a hidden layer with 3 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tanh&lt;/code&gt; units, and a single &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;linear&lt;/code&gt; output unit. (Left subpanel) The weighted hidden unit outputs &lt;script type=&quot;math/tex&quot;&gt;a_{j}^{(1)}w_{jk} + b_k&lt;/script&gt; that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation &lt;script type=&quot;math/tex&quot;&gt;a^{(l)}&lt;/script&gt; to indicate activations in the &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;-th hidden layer..&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;N_HIDDEN_UNITS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;PROBLEM_TYPE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'ABS'&lt;/span&gt;

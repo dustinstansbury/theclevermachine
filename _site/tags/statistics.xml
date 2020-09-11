@@ -3,7 +3,7 @@
     <title>The Clever Machine - statistics</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsstatistics.html"/>
-    <updated>2020-08-17T08:48:54-07:00</updated>
+    <updated>2020-09-11T10:58:08-07:00</updated>
     <id>/theclevermachinestatistics.html</id>
 
     <author>
@@ -48,6 +48,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;A data-generating function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; and some noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;. The samples exibit a noise variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{\epsilon}^2=1&lt;/script&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Frontmatter
 &lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
@@ -116,6 +117,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plot_fx_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
@@ -163,6 +165,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 3&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Fitting various polynomial estimators &lt;script type=&quot;math/tex&quot;&gt;g_D(x)&lt;/script&gt; fit to noisy samples &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;D = (1, 3, 10)&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;collections&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultdict&lt;/span&gt;
 
@@ -310,6 +313,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;(Left) Demonstration of how estimator bias and variance contribute to the mean squared error on the Testing Set. The Testing Set error (dark red) can be broken down into a three components: the squared bias (blue) of the estimator, the estimator variance (green), and the noise variance &lt;script type=&quot;math/tex&quot;&gt;\sigma_{noise}^2&lt;/script&gt; (red). The “best” model (polynomial degree &lt;script type=&quot;math/tex&quot;&gt;D=3&lt;/script&gt;) has the optimal balance of low bias and low variance. Note that the noise variance is considered a lower bound on the Testing Set error, as it cannot be accounted for by any model. (Right) Demonstration of overfitting when the model complexity suprasses the optimal bias-variance tradeoff. Models with a complexity above &lt;script type=&quot;math/tex&quot;&gt;D=3&lt;/script&gt; are able to fit the Training Set data better, but at the expense of not generalizing to the Testing Set, resulting in increasing generalization error.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;124&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;n_observations_per_dataset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
@@ -561,6 +565,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &amp;= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;2-dimensional dataset with a Linear Regression model fit. Parameters are fit by minimizing the SSE loss function&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scipy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt;
@@ -614,6 +619,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &amp;= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;The SEE loss that results from the Least Squares Solution (total red area) gives the RSS; or the minimum amount of variance that cannot be explained by a linear model&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;lss_loss&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;linear_model_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
@@ -686,6 +692,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &amp;= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 3&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;The SSE loss that results from a bias-only model (total green area) gives the TSS, which can be thought of as the (unscaled) variance of the data set’s output variables&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# offset parameter of LSS solution is the mean of outputs
 &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;beta_0&lt;/span&gt;
@@ -740,6 +747,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &amp;= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 &lt;/ol&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;lss_loss&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RSS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;linear_model_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;bias_only_loss&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TSS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bias_only_model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -778,6 +786,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &amp;= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 4&lt;/em&gt;&lt;/strong&gt;: &lt;em&gt;Modeling linear regression as a physical system of a bar (linear model function &lt;script type=&quot;math/tex&quot;&gt;f(\mathbf x)&lt;/script&gt;) suspended by the force of multiple springs (model errors &lt;script type=&quot;math/tex&quot;&gt;\mathbf e&lt;/script&gt;)&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Plot Error as physical system
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subplots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;

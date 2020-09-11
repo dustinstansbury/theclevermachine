@@ -10,7 +10,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
   </script>
   
-  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css">
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss | The Clever Machine</title>
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss" />
@@ -144,6 +145,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <p><strong><em>Figure 1</em></strong>: <em>2-dimensional dataset with a Linear Regression model fit. Parameters are fit by minimizing the SSE loss function</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
@@ -197,6 +199,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <p><strong><em>Figure 2</em></strong>: <em>The SEE loss that results from the Least Squares Solution (total red area) gives the RSS; or the minimum amount of variance that cannot be explained by a linear model</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lss_loss</span> <span class="o">=</span> <span class="n">RSS</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">linear_model_function</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -269,6 +272,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <p><strong><em>Figure 3</em></strong>: <em>The SSE loss that results from a bias-only model (total green area) gives the TSS, which can be thought of as the (unscaled) variance of the data set’s output variables</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># offset parameter of LSS solution is the mean of outputs
 </span><span class="k">assert</span> <span class="n">y</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">==</span> <span class="n">beta_0</span>
@@ -323,6 +327,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 </ol>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lss_loss</span> <span class="o">=</span> <span class="n">RSS</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">linear_model_function</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">bias_only_loss</span> <span class="o">=</span> <span class="n">TSS</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">bias_only_model</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
@@ -361,6 +366,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <p><strong><em>Figure 4</em></strong>: <em>Modeling linear regression as a physical system of a bar (linear model function <script type="math/tex">f(\mathbf x)</script>) suspended by the force of multiple springs (model errors <script type="math/tex">\mathbf e</script>)</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Plot Error as physical system
 </span><span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>

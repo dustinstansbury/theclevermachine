@@ -10,7 +10,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
   </script>
   
-  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css">
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>A Gentle Introduction to Artificial Neural Networks | The Clever Machine</title>
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="A Gentle Introduction to Artificial Neural Networks" />
@@ -140,6 +141,7 @@
 <p><strong><em>Figure 2:</em></strong> Common activation functions functions used in artificial neural, along with their derivatives</p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -269,6 +271,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 <p><strong><em>Figure 4:</em></strong> <em>Dynamics of a simple, single-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface <script type="math/tex">E(\mathbf w)</script> for the task, as a function of the single model parameter, <script type="math/tex">w_1</script> The network’s error is low when <script type="math/tex">w_1</script> large and positive magnitude and high when <script type="math/tex">w_1</script> is negative</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="n">mpatches</span>
@@ -364,6 +367,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 <p><strong><em>Figure 5:</em></strong> <em>Dynamics of a multi-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface <script type="math/tex">E(\mathbf w)</script> for the task, as a function of the model parameters, <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script>. The network’s error is low when both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script> have large positive magnitudes, and and high when the weights are negative.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">two_layer_network_predict</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">target_value</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w2</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">target_value</span><span class="p">))</span>
@@ -466,7 +470,9 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 <p><br /></p>
 
 <p><strong><em>Step I</em></strong> of the backpropagation algorithm is to forward-propagate the observed input forward through the network layers in order to provide a prediction for the current target. This first step of the backpropagation algorithm is demonstrated in <strong><em>Figure 6-I</em></strong>. Note that in the figure <script type="math/tex">a_k</script> could be considered network output (for a network with one hidden layer) or the output of a hidden layer that projects the remainder of the network (in the case of a network with more than one hidden layer). For this discussion, however, we assume that the index <script type="math/tex">k</script> is associated with the output layer of the network, and thus each of the network outputs is designated by <script type="math/tex">a_k</script>. Also note that when implementing this forward-propagation step, we should keep track of the feed-forward pre-activations <script type="math/tex">z_l</script> and activations <script type="math/tex">a_l</script> for all layers <script type="math/tex">l</script>, as these can be used to efficiently calculate backpropagated errors and error function gradients.</p>
+
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_I_forwardprop</span><span class="p">(</span><span class="n">network_input</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">g_activation</span><span class="p">):</span>
     <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>  <span class="c1"># multi-layer network
@@ -508,6 +514,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 <p>For networks that have more than one hidden layer, this error backpropagation procedure can continue for layers <script type="math/tex">j-1, j-2, ...</script>, etc.</p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_II_backprop</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">a_output</span><span class="p">,</span> <span class="n">z_output</span><span class="p">,</span> <span class="n">z_hidden</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">g_activation_prime</span><span class="p">):</span>
     <span class="c1"># Calculate error function derivative given input/output/params
@@ -535,6 +542,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 <script type="math/tex; mode=display">\frac{\partial E}{\partial b_{l}} = (1)\delta_l = \delta_l</script>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_III_gradient_calculation</span><span class="p">(</span>
     <span class="n">delta_output</span><span class="p">,</span> <span class="n">delta_hidden</span><span class="p">,</span> <span class="n">a_hidden</span><span class="p">,</span> <span class="n">network_input</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span>
@@ -563,6 +571,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 \end{align} %]]></script>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step_IV_update_parameters</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight_gradients</span><span class="p">,</span> <span class="n">bias_gradients</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
     <span class="k">if</span> <span class="s">'w_2'</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>  <span class="c1"># multi-layer network
@@ -596,7 +605,9 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><br /></p>
 
 <p>We then perturb these observations by adding Normally-distributed noise. To generate target variables, we categorize each observations by applying one of logic operators described in <strong><em>Figure 7</em></strong>) to the original (no-noisy) coordinates.</p>
+
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generate_classification_data</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">n_obs_per_class</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
     <span class="s">"""Generates training data for all demos
@@ -668,6 +679,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p>With training data in hand, we then train the network with the noisy inputs and binary categories targets using the gradient descent / backpropagation algorithm.<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
 
@@ -846,6 +858,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p>Below we visualize the progress of the model learning as its trained on the logical <code class="language-plaintext highlighter-rouge">OR</code> classification dataset. The code for the classification visualization is here:</p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.animation</span>
@@ -914,6 +927,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 8:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">OR</code> function using a single-layer ANN (aka “perceptron”). Network architecture includes a single sigmoid output encoding the class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'OR'</span>
@@ -950,6 +964,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 9:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">AND</code> function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'AND'</span>
@@ -990,6 +1005,8 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 10:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">XOR</code> function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be cannot be separated with a linear decision function, the single layer network is unable to classify the points accurately (right).</em></p>
 
 <details>
+  <summary>Python Code</summary>
+
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'XOR'</span>
 <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
@@ -1025,6 +1042,8 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 11:</em></strong> <em>Learning the logical <code class="language-plaintext highlighter-rouge">XOR</code> function using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units and a single sigmoid output unit encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). The multi-layer network is able to capture a linear decision function, and is thus able to classify the points accurately (right).</em></p>
 
 <details>
+  <summary>Python Code</summary>
+
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'XOR'</span>
 <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run_ann_training_simulation</span><span class="p">(</span>
@@ -1062,6 +1081,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 12:</em></strong> <em>Nonlinear classification using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units, and a single sigmoid output encoding the class. Colormap indicates the probability that an area in the 2D map will be associated with a positive (black) or negative (white) class.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'RING'</span>
@@ -1096,6 +1116,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p>where <script type="math/tex">f(\mathbf{x})</script> is a nonlinear data-generating function and <script type="math/tex">\mathbf \epsilon</script> is Normally-distributed noise. We then construct a two-layered network with <script type="math/tex">\text{tanh}</script> activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.</p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">visualize_regression_learning</span><span class="p">(</span><span class="n">problem_type</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">,</span> <span class="n">prediction_history</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">,</span> <span class="n">biases_history</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -1165,6 +1186,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 13:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">sin</code> function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs <script type="math/tex">a_{j}^{(1)}w_{jk} + b_k</script> that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation <script type="math/tex">a^{(l)}</script> to indicate activations in the <script type="math/tex">l</script>-th hidden layer.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'SIN'</span>
@@ -1204,6 +1226,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <p><strong><em>Figure 14:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">abs</code> function (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs <script type="math/tex">a_{j}^{(1)}w_{jk} + b_k</script> that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation <script type="math/tex">a^{(l)}</script> to indicate activations in the <script type="math/tex">l</script>-th hidden layer..</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N_HIDDEN_UNITS</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">PROBLEM_TYPE</span> <span class="o">=</span> <span class="s">'ABS'</span>

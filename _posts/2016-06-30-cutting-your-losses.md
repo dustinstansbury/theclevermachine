@@ -68,7 +68,7 @@ has been fit to the data. The model parameters $$\beta_1$$ (the slope of the lin
 
 ***Figure 1***: *2-dimensional dataset with a Linear Regression model fit. Parameters are fit by minimizing the SSE loss function*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 import numpy as np
@@ -122,7 +122,7 @@ A helpful interpretation of the SSE loss function is demonstrated in ***Figure 2
 
 ***Figure 2***: *The SEE loss that results from the Least Squares Solution (total red area) gives the RSS; or the minimum amount of variance that cannot be explained by a linear model*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 lss_loss = RSS = round(sum((y - linear_model_function(x))**2), 1)
@@ -197,7 +197,7 @@ Now, imagine that instead of modeling the data with the full linear model depict
 
 ***Figure 3***: *The SSE loss that results from a bias-only model (total green area) gives the TSS, which can be thought of as the (unscaled) variance of the data set's output variables*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 # offset parameter of LSS solution is the mean of outputs
@@ -253,7 +253,7 @@ In the case of linear regression, $$A=\mathbf y$$ and $$B=f(\mathbb{x})$$. In th
 3. Verifying the CC returned by the scipy fitting procedure
 
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 lss_loss = RSS = round(sum((y - linear_model_function(x))**2), 1)
@@ -294,7 +294,7 @@ We can gain some additional insight to the importance of minimizing the SSE loss
 
 ***Figure 4***: *Modeling linear regression as a physical system of a bar (linear model function $$f(\mathbf x)$$) suspended by the force of multiple springs (model errors $$\mathbf e$$)*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 # Plot Error as physical system

@@ -28,7 +28,7 @@ No matter the type of information $$X$$ encodes, it will have a [*matrix rank*](
 ***Figure 1: Matrix Rank and Reconstruction.***
 ***Left:** a full-column-rank matrix $$X$$. **Middle:** a matrix $$\tilde X$$ with redundant columns formed by scaling and concatenating columns of $$X$$. **Right**: exact reconstruction of $$\tilde X$$ using a rank $$k=r=4$$ singular value decomposition.*
 
-<details>
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 import matplotlib.pyplot as plt
@@ -163,7 +163,8 @@ SVD is great because the singular vectors and values are rank-ordered in such a 
 </center>
 
 ***Figure 3: Singular Value Decomposition of an image $$X$$.*** ***Left:** A Grayscale image can be interpreted as a matrix $$X$$. **Center:** the singular values (blue) and their log (red) as a function of rank $$k.$$ Singular values decrease exponentially with rank, with earlier singular values being much larger than later ones. **Right:** The total information about $$X$$ encoded in all the singular values up to $$k.$$ A majority of information is encoded in the first singular vectors returned by SVD.*
-<details>
+
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 # Load image
@@ -247,7 +248,7 @@ Using roughly 50% of the data required to store $$X$$ ($$k=32)$$ provides around
 
 ***Figure 4: Image Compression via LRA/SVD.*** ***Top Left** Matrix $$X$$ encodes an image that we reconstruct using an increasing number of left singular vectors provided by SVD. **Second Column:** The approximation $$\hat{X}_k$$ of image $$X$$ using the first $$k$$ most-informative left singular vectors. **Third column:** The spatial reconstruction error using approximation $$\hat{X}_k$$. **Right Column:** displays data compression information for each row. Information includes the percentage of original image size used to represent the approximation, as well as the amount of information about $$X$$ contained in the approximation.*
 
-<details>
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 ## Image Reconstruction

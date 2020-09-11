@@ -10,7 +10,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
   </script>
   
-  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css">
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>SVD and Data Compression Using Low-rank Matrix Approximation | The Clever Machine</title>
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="SVD and Data Compression Using Low-rank Matrix Approximation" />
@@ -110,6 +111,7 @@
 <em><strong>Left:</strong> a full-column-rank matrix <script type="math/tex">X</script>. <strong>Middle:</strong> a matrix <script type="math/tex">\tilde X</script> with redundant columns formed by scaling and concatenating columns of <script type="math/tex">X</script>. <strong>Right</strong>: exact reconstruction of <script type="math/tex">\tilde X</script> using a rank <script type="math/tex">k=r=4</script> singular value decomposition.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
@@ -241,7 +243,9 @@ k < r %]]></script> then <strong><em>Equation 3</em></strong> provides a LRA of 
 </center>
 
 <p><strong><em>Figure 3: Singular Value Decomposition of an image <script type="math/tex">X</script>.</em></strong> <em><strong>Left:</strong> A Grayscale image can be interpreted as a matrix <script type="math/tex">X</script>. <strong>Center:</strong> the singular values (blue) and their log (red) as a function of rank <script type="math/tex">k.</script> Singular values decrease exponentially with rank, with earlier singular values being much larger than later ones. <strong>Right:</strong> The total information about <script type="math/tex">X</script> encoded in all the singular values up to <script type="math/tex">k.</script> A majority of information is encoded in the first singular vectors returned by SVD.</em></p>
+
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Load image
 </span><span class="n">img</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">"../assets/images/svd-data-compression/cameraman.png"</span><span class="p">)</span>
@@ -324,6 +328,7 @@ k < r %]]></script> then <strong><em>Equation 3</em></strong> provides a LRA of 
 <p><strong><em>Figure 4: Image Compression via LRA/SVD.</em></strong> <em><strong>Top Left</strong> Matrix <script type="math/tex">X</script> encodes an image that we reconstruct using an increasing number of left singular vectors provided by SVD. <strong>Second Column:</strong> The approximation <script type="math/tex">\hat{X}_k</script> of image <script type="math/tex">X</script> using the first <script type="math/tex">k</script> most-informative left singular vectors. <strong>Third column:</strong> The spatial reconstruction error using approximation <script type="math/tex">\hat{X}_k</script>. <strong>Right Column:</strong> displays data compression information for each row. Information includes the percentage of original image size used to represent the approximation, as well as the amount of information about <script type="math/tex">X</script> contained in the approximation.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Image Reconstruction
 </span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>

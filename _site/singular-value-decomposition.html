@@ -10,7 +10,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
   </script>
   
-  <link rel="stylesheet" href="/theclevermachine/assets/main.css"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css">
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Singular Value Decomposition: The Swiss Army Knife of Linear Algebra | The Clever Machine</title>
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Singular Value Decomposition: The Swiss Army Knife of Linear Algebra" />
@@ -186,7 +187,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 
 <p>OK, we’ve written down a bunch of equations that mathematically define the components of SVD and how they related to the input matrix <script type="math/tex">M</script>. Now, let’s make these derived components more tangible with some visualizations and code.</p>
 
-<p><strong><em>Figures 1-3</em></strong> below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the “▶︎ Details” button. <strong><em>Figure 1</em></strong> demonstrates the results for a square matrix.</p>
+<p><strong><em>Figures 1-3</em></strong> below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the “▶︎ Python Code” button. <strong><em>Figure 1</em></strong> demonstrates the results for a square matrix.</p>
 
 <hr />
 <center>
@@ -199,6 +200,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 <p><strong><em>Figure 1:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a square matrix <script type="math/tex">M</script>,  where <script type="math/tex">m=n</script></em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -305,6 +307,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 <p><strong><em>Figure 2:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a tall matrix <script type="math/tex">M</script>, where <script type="math/tex">m>n</script>.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">visualize_svd</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">fig_height</span><span class="o">=</span><span class="mf">4.5</span><span class="p">)</span>
 </code></pre></div>  </div>
@@ -328,6 +331,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 m<n %]]></script>.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">visualize_svd</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">fig_height</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>  </div>
@@ -358,6 +362,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <p><strong><em>Figure 4, Singular Vectors provide an orthonormal basis:</em></strong>  <em>The <strong>left column</strong> shows the <script type="math/tex">U</script> and <script type="math/tex">V^T</script> that result from running SVD on a random <script type="math/tex">[m \times n] = [10 \times 5]</script> matrix <script type="math/tex">M</script>. The <strong>middle column</strong> plots the <script type="math/tex">L_2</script> norm calculated along the singular vectors (columns) of each matrix; the singular vectors all exhibit unit norm. The <strong>right column</strong> shows the inner product of each matrix with itself; the inner product is the identity matrix, demonstrating the orthogonality of the singular vectors.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">matrix_column_l2_norm</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
     <span class="s">"""Returns the L2 norm of each column of matrix M, """</span>
@@ -448,6 +453,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <p><strong><em>Figure 5, The relationship between SVD and Eigenvalue Decomposition:</em></strong>  <em>The <strong>top row</strong> demonstrates the equivalence between singular vectors <script type="math/tex">U</script> and the eigenvalues of <script type="math/tex">MM^T</script>. The <strong>middle row</strong> demonstrates the equivalence between singular vectors <script type="math/tex">V</script> and the eigenvalues of <script type="math/tex">M^TM</script>. The <strong>bottom row</strong> demonstrates how the singular values are equivalent to the square root of the eigenvalues of either <script type="math/tex">MM^T</script> or <script type="math/tex">M^TM</script>.</em></p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">evd</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
     <span class="s">"""Returns the Eigenvalue Decomposition of M (via numpy), with eigenvectors
@@ -528,6 +534,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <p><strong><em>Figure 6, Visualization of SVD Operations:</em></strong> <strong>Upper Left</strong>: A 2D data set, distributed uniformly between <script type="math/tex">(-.5, .5)</script>. Each data point is colored by its relative horizontal location in the 2D coordinate system. <strong>Center</strong>: The data after being transformed by matrix <script type="math/tex">M</script>. We see that <script type="math/tex">M</script> shears and flips the data about the horizontal axis. <strong>Bottom Left</strong>: The orthogonal matrix <script type="math/tex">V^T</script> <strong>rotates</strong> the original data into a new coordinate system. <strong>Bottom Right</strong>: The diagonal matrix <script type="math/tex">S</script> <strong>stretches</strong> the data along each of the primary axes in the new coordinate system. The amount of stretch is prescribed by the square root of the eigenvalues of <script type="math/tex">M^TM</script> (or alternatively <script type="math/tex">MM^T</script>)). <strong>Upper Right</strong>: The orthogonal matrix <script type="math/tex">U</script> <strong>rotates the data back</strong> into the original coordinate system. We can see that the cascade of operations <script type="math/tex">U S V^T = M</script>.</p>
 
 <details>
+  <summary>Python Code</summary>
 
   <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Generate random observations matrix (uniform distribution)
 </span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>  <span class="c1"># Repeatability

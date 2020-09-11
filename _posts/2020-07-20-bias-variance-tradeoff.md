@@ -45,7 +45,7 @@ Below we define the function $$f(x)$$ and display it, then draw a few observatio
 ***Figure 1***: *A data-generating function $$f(x)$$ and some noisy samples $$y$$. The samples exibit a noise variance $$\sigma_{\epsilon}^2=1$$* 
 
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 # Frontmatter
@@ -117,7 +117,7 @@ Below we estimate the parameters of three polynomial model functions of increasi
 ***Figure 2***: *Fitting various polynomial estimators $$g_D(x)$$ fit to noisy samples $$y$$, for $$D = (1, 3, 10)$$*.
 
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 plot_fx_data(y)
@@ -166,7 +166,7 @@ Here we perform such an analyses, sampling 50 independent data sets according to
 ***Figure 3***: *Fitting various polynomial estimators $$g_D(x)$$ fit to noisy samples $$y$$, for $$D = (1, 3, 10)$$*.
 
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 from collections import defaultdict
@@ -329,7 +329,7 @@ We then fit the parameters for estimators of varying complexity. Complexity is v
 ***Figure 4***: *(Left) Demonstration of how estimator bias and variance contribute to the mean squared error on the Testing Set. The Testing Set error (dark red) can be broken down into a three components: the squared bias (blue) of the estimator, the estimator variance (green), and the noise variance $$\sigma_{noise}^2$$ (red). The "best" model (polynomial degree $$D=3$$) has the optimal balance of low bias and low variance. Note that the noise variance is considered a lower bound on the Testing Set error, as it cannot be accounted for by any model. (Right) Demonstration of overfitting when the model complexity suprasses the optimal bias-variance tradeoff. Models with a complexity above $$D=3$$ are able to fit the Training Set data better, but at the expense of not generalizing to the Testing Set, resulting in increasing generalization error.*
 
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 np.random.seed(124)

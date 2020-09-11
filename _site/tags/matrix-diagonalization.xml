@@ -3,7 +3,7 @@
     <title>The Clever Machine - matrix-diagonalization</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsmatrix-diagonalization.html"/>
-    <updated>2020-08-17T08:48:54-07:00</updated>
+    <updated>2020-09-11T10:58:08-07:00</updated>
     <id>/theclevermachinematrix-diagonalization.html</id>
 
     <author>
@@ -120,7 +120,7 @@ MM^T &amp;= (USV^T)(USV^T)^T \\
 
 &lt;p&gt;OK, we’ve written down a bunch of equations that mathematically define the components of SVD and how they related to the input matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;. Now, let’s make these derived components more tangible with some visualizations and code.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figures 1-3&lt;/em&gt;&lt;/strong&gt; below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the “▶︎ Details” button. &lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt; demonstrates the results for a square matrix.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Figures 1-3&lt;/em&gt;&lt;/strong&gt; below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the “▶︎ Python Code” button. &lt;strong&gt;&lt;em&gt;Figure 1&lt;/em&gt;&lt;/strong&gt; demonstrates the results for a square matrix.&lt;/p&gt;
 
 &lt;hr /&gt;
 &lt;center&gt;
@@ -133,6 +133,7 @@ MM^T &amp;= (USV^T)(USV^T)^T \\
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 1:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Visualization of &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; for Singular Value Decomposition of a square matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;,  where &lt;script type=&quot;math/tex&quot;&gt;m=n&lt;/script&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
@@ -239,6 +240,7 @@ MM^T &amp;= (USV^T)(USV^T)^T \\
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 2:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;Visualization of &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; for Singular Value Decomposition of a tall matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;m&gt;n&lt;/script&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;visualize_svd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fig_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;4.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
@@ -262,6 +264,7 @@ MM^T &amp;= (USV^T)(USV^T)^T \\
 m&lt;n %]]&gt;&lt;/script&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;visualize_svd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fig_height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
@@ -292,6 +295,7 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 4, Singular Vectors provide an orthonormal basis:&lt;/em&gt;&lt;/strong&gt;  &lt;em&gt;The &lt;strong&gt;left column&lt;/strong&gt; shows the &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt; that result from running SVD on a random &lt;script type=&quot;math/tex&quot;&gt;[m \times n] = [10 \times 5]&lt;/script&gt; matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;. The &lt;strong&gt;middle column&lt;/strong&gt; plots the &lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt; norm calculated along the singular vectors (columns) of each matrix; the singular vectors all exhibit unit norm. The &lt;strong&gt;right column&lt;/strong&gt; shows the inner product of each matrix with itself; the inner product is the identity matrix, demonstrating the orthogonality of the singular vectors.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;matrix_column_l2_norm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Returns the L2 norm of each column of matrix M, &quot;&quot;&quot;&lt;/span&gt;
@@ -382,6 +386,7 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 5, The relationship between SVD and Eigenvalue Decomposition:&lt;/em&gt;&lt;/strong&gt;  &lt;em&gt;The &lt;strong&gt;top row&lt;/strong&gt; demonstrates the equivalence between singular vectors &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; and the eigenvalues of &lt;script type=&quot;math/tex&quot;&gt;MM^T&lt;/script&gt;. The &lt;strong&gt;middle row&lt;/strong&gt; demonstrates the equivalence between singular vectors &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; and the eigenvalues of &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt;. The &lt;strong&gt;bottom row&lt;/strong&gt; demonstrates how the singular values are equivalent to the square root of the eigenvalues of either &lt;script type=&quot;math/tex&quot;&gt;MM^T&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;evd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;Returns the Eigenvalue Decomposition of M (via numpy), with eigenvectors
@@ -462,6 +467,7 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Figure 6, Visualization of SVD Operations:&lt;/em&gt;&lt;/strong&gt; &lt;strong&gt;Upper Left&lt;/strong&gt;: A 2D data set, distributed uniformly between &lt;script type=&quot;math/tex&quot;&gt;(-.5, .5)&lt;/script&gt;. Each data point is colored by its relative horizontal location in the 2D coordinate system. &lt;strong&gt;Center&lt;/strong&gt;: The data after being transformed by matrix &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt;. We see that &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; shears and flips the data about the horizontal axis. &lt;strong&gt;Bottom Left&lt;/strong&gt;: The orthogonal matrix &lt;script type=&quot;math/tex&quot;&gt;V^T&lt;/script&gt; &lt;strong&gt;rotates&lt;/strong&gt; the original data into a new coordinate system. &lt;strong&gt;Bottom Right&lt;/strong&gt;: The diagonal matrix &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; &lt;strong&gt;stretches&lt;/strong&gt; the data along each of the primary axes in the new coordinate system. The amount of stretch is prescribed by the square root of the eigenvalues of &lt;script type=&quot;math/tex&quot;&gt;M^TM&lt;/script&gt; (or alternatively &lt;script type=&quot;math/tex&quot;&gt;MM^T&lt;/script&gt;)). &lt;strong&gt;Upper Right&lt;/strong&gt;: The orthogonal matrix &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; &lt;strong&gt;rotates the data back&lt;/strong&gt; into the original coordinate system. We can see that the cascade of operations &lt;script type=&quot;math/tex&quot;&gt;U S V^T = M&lt;/script&gt;.&lt;/p&gt;
 
 &lt;details&gt;
+  &lt;summary&gt;Python Code&lt;/summary&gt;
 
   &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Generate random observations matrix (uniform distribution)
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Repeatability

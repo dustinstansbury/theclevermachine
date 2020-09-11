@@ -58,7 +58,7 @@ which outputs values $$a_{logistic} \in (0,1)$$. When the network outputs use th
 ***Figure 2:*** Common activation functions functions used in artificial neural, along with their derivatives
 
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 import numpy as np
@@ -196,7 +196,7 @@ Now let’s say we want this simple network to learn the identity function: give
 
 ***Figure 4:*** *Dynamics of a simple, single-layer neural network. The network's task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface $$E(\mathbf w)$$ for the task, as a function of the single model parameter, $$w_1$$ The network's error is low when $$w_1$$ large and positive magnitude and high when $$w_1$$ is negative*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 from mpl_toolkits.mplot3d import Axes3D
@@ -294,7 +294,7 @@ Now, if we vary both $$w_1$$ and $$w_2$$, we obtain the error surface in right o
 
 ***Figure 5:*** *Dynamics of a multi-layer neural network. The network's task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface $$E(\mathbf w)$$ for the task, as a function of the model parameters, $$w_1$$ and $$w_2$$. The network's error is low when both $$w_1$$ and $$w_2$$ have large positive magnitudes, and and high when the weights are negative.*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def two_layer_network_predict(w1, w2, target_value):
@@ -398,7 +398,8 @@ The formal calculations behind the backpropagation algorithm can be somewhat mat
 <br>
 
 ***Step I*** of the backpropagation algorithm is to forward-propagate the observed input forward through the network layers in order to provide a prediction for the current target. This first step of the backpropagation algorithm is demonstrated in ***Figure 6-I***. Note that in the figure $$a_k$$ could be considered network output (for a network with one hidden layer) or the output of a hidden layer that projects the remainder of the network (in the case of a network with more than one hidden layer). For this discussion, however, we assume that the index $$k$$ is associated with the output layer of the network, and thus each of the network outputs is designated by $$a_k$$. Also note that when implementing this forward-propagation step, we should keep track of the feed-forward pre-activations $$z_l$$ and activations $$a_l$$ for all layers $$l$$, as these can be used to efficiently calculate backpropagated errors and error function gradients.
-<details >
+
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def step_I_forwardprop(network_input, weights, biases, g_activation):
@@ -449,7 +450,7 @@ $$
 
 For networks that have more than one hidden layer, this error backpropagation procedure can continue for layers $$j-1, j-2, ...$$, etc.
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def step_II_backprop(target, a_output, z_output, z_hidden, weights, g_activation_prime):
@@ -481,7 +482,7 @@ $$
 \frac{\partial E}{\partial b_{l}} = (1)\delta_l = \delta_l
 $$
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def step_III_gradient_calculation(
@@ -511,7 +512,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 \end{align}
 $$
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def step_IV_update_parameters(weights, biases, weight_gradients, bias_gradients, learning_rate):
@@ -547,7 +548,8 @@ Here we go over an example of training a single-layered neural network to perfor
 <br>
 
 We then perturb these observations by adding Normally-distributed noise. To generate target variables, we categorize each observations by applying one of logic operators described in ***Figure 7***) to the original (no-noisy) coordinates.  
-<details> 
+
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def generate_classification_data(problem_type, n_obs_per_class=30):
@@ -619,7 +621,7 @@ def generate_regression_data(problem_type='SIN', n_obs=100):
 
 With training data in hand, we then train the network with the noisy inputs and binary categories targets using the gradient descent / backpropagation algorithm.[^5]
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 from copy import copy
@@ -799,7 +801,7 @@ def run_ann_training_simulation(
 
 Below we visualize the progress of the model learning as its trained on the logical `OR` classification dataset. The code for the classification visualization is here:
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 from matplotlib import pyplot as plt
@@ -868,7 +870,7 @@ def visualize_classification_learning(problem_type, loss_history, prediction_his
 
 ***Figure 8:*** *Learning the logical `OR` function using a single-layer ANN (aka "perceptron"). Network architecture includes a single sigmoid output encoding the class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 N_HIDDEN_UNITS = 0
@@ -905,7 +907,7 @@ visualize_classification_learning(
 
 ***Figure 9:*** *Learning the logical `AND` function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be separated with a linear decision function, the single layer network is able to classify the points with low error (right).*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 N_HIDDEN_UNITS = 0
@@ -947,7 +949,8 @@ Below we attempt to train the single-layer network to learn the `XOR` operator. 
 
 ***Figure 10:*** *Learning the logical `XOR` function using a single-layer ANN. Network architecture includes a single sigmoid output encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). Because the classes can be cannot be separated with a linear decision function, the single layer network is unable to classify the points accurately (right).*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
+
 ```python
 N_HIDDEN_UNITS = 0
 PROBLEM_TYPE = 'XOR'
@@ -983,7 +986,8 @@ Below we instead train a two-layer (i.e. single-hidden-layer) neural network on 
 
 ***Figure 11:*** *Learning the logical `XOR` function using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units and a single sigmoid output unit encoding the binary class. (Left) The colormap indicates the probability that a location in the 2D map will be associated with a positive (black) or negative class (white). The multi-layer network is able to capture a linear decision function, and is thus able to classify the points accurately (right).*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
+
 ```python
 N_HIDDEN_UNITS = 4
 PROBLEM_TYPE = 'XOR'
@@ -1022,7 +1026,7 @@ visualize_classification_learning(
 ***Figure 12:*** *Nonlinear classification using a multi-layer ANN. Network architecture includes a hidden layer with 4 sigmoid units, and a single sigmoid output encoding the class. Colormap indicates the probability that an area in the 2D map will be associated with a positive (black) or negative (white) class.*
 
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 N_HIDDEN_UNITS = 4
@@ -1060,7 +1064,7 @@ $$
 
 where $$f(\mathbf{x})$$ is a nonlinear data-generating function and $$\mathbf \epsilon$$ is Normally-distributed noise. We then construct a two-layered network with $$\text{tanh}$$ activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def visualize_regression_learning(problem_type, loss_history, prediction_history, weights_history, biases_history, outfile=None):
@@ -1132,7 +1136,7 @@ def visualize_regression_learning(problem_type, loss_history, prediction_history
 
 ***Figure 13:*** *Nonlinear regression using a multi-layer ANN. The task is to learn the noisy `sin` function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 `tanh` units, and a single `linear` output unit. (Left subpanel) The weighted hidden unit outputs $$a_{j}^{(1)}w_{jk} + b_k$$ that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation $$a^{(l)}$$ to indicate activations in the $$l$$-th hidden layer.*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 N_HIDDEN_UNITS = 3
@@ -1172,7 +1176,7 @@ The training procedure for $$f(x): \sin(x) + 2.5$$ is visualized in the left plo
 
 ***Figure 14:*** *Nonlinear regression using a multi-layer ANN. The task is to learn the noisy `abs` function (magenta datapoints). Network architecture includes a hidden layer with 3 `tanh` units, and a single `linear` output unit. (Left subpanel) The weighted hidden unit outputs $$a_{j}^{(1)}w_{jk} + b_k$$ that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation $$a^{(l)}$$ to indicate activations in the $$l$$-th hidden layer..*
 
-<details> 
+<details><summary markdown='span'>Python Code</summary>
     
 ```python
 N_HIDDEN_UNITS = 3

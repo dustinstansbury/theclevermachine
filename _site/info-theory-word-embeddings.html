@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  
+  <link rel="stylesheet" href="/theclevermachine/assets/main.css">
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra | The Clever Machine</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra" />
+<meta name="author" content="Dustin Stansbury" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition." />
+<meta property="og:description" content="Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition." />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings" />
+<meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-11T00:00:00-07:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings","description":"Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition.","@type":"BlogPosting","headline":"Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra","dateModified":"2020-09-11T00:00:00-07:00","datePublished":"2020-09-11T00:00:00-07:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
+
+  
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/theclevermachine/">The Clever Machine</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-09-11T00:00:00-07:00" itemprop="datePublished">Sep 11, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+        
+        
+          
+              <a href="/theclevermachine/tags/natural-language-processing.html">natural-language-processing</a>
+              , 
+          
+              <a href="/theclevermachine/tags/word-embeddings.html">word-embeddings</a>
+              , 
+          
+              <a href="/theclevermachine/tags/information-theory.html">information-theory</a>
+              , 
+          
+              <a href="/theclevermachine/tags/pointwise-mutual-information.html">pointwise-mutual-information</a>
+              , 
+          
+              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
+              , 
+          
+              <a href="/theclevermachine/tags/singular-value-decomposition.html">singular-value-decomposition</a>
+              
+          
+        
+
+      </span></p>
+
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like <a href="https://en.wikipedia.org/wiki/Word2vec">word2vec</a>, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, <a href="/theclevermachine/singular-value-decomposition">Singular Value Decomposition</a>.</p>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>Building computational systems that can interact naturally with humans requires computers to be able to process natural language, i.e. words. Words carry information about real-world, semantic entities, actions, or notions. However, computers do not operate in the space of semantics, but instead employ numerical operations. Therefore in order to build useful computer-human-language interfaces, we need a way of numerically representing words and their semantics.</p>
+
+<p>The classic way of representing a word numerically is to use a “1-of-<script type="math/tex">K</script>” or “one-hot” encoding (<strong><em>Figure 1, Top Left</em></strong>). This encoding uses a sparse vector of length-<script type="math/tex">K</script>, representing each of the words in a length-<script type="math/tex">K</script> vocabulary. The vector is filled with zeros except a single value of one located at the index associated with the represented word. One can think of the 1-of-<script type="math/tex">K</script> encoding acting like a vectorized indicator variable for the presence of a word.</p>
+
+<p>This 1-of-<script type="math/tex">K</script> encoding is simple and provides an orthogonal set of features to represent words. Consequently it has been the backbone of many NLP models for decades. However, 1-of-<script type="math/tex">K</script> encoding can be inefficient in that the cardinality of the feature space can become quite large for large vocabularies, quickly running into the curse of dimensionality that makes so many machine learning problems ill-posed, or require tons of observations to obtain good parameter estimates. Additionally, the 1-of-<script type="math/tex">K</script> encoding carries little semantic information about the vocabulary it represents.</p>
+
+<h1 id="enter-word-embeddings">Enter Word Embeddings</h1>
+
+<p>In recent years, a more compact alternative to 1-of-<script type="math/tex">K</script> encoding, which carries more semantic information, has been to use word embeddings. Rather than large, sparse vectors, word embeddings provide for each word a <em>dense</em> vector with length that is generally orders of magnitude smaller than the 1-of-<script type="math/tex">K</script> encoding (generally on the order of a few hundred dimensions or less).</p>
+
+<p>There are a number of ways to derive dense word embeddings, but by far most common approach is to use the word2vec algorithm. This post won’t go into the details of word2vec, but basic ideas goes like this: The word2vec algorithm trains a <a href="/theclevermachine/a-gentle-introduction-to-neural-networks">neural network</a> that is optimized on a corpus of sentences.  Given a query word <script type="math/tex">w</script> sampled from one of the corpus sentences, the network’s task is to predict each of the words <script type="math/tex">c</script> that are located within a context window <script type="math/tex">C</script> surrounding the query word (<strong><em>Figure 1, Right</em></strong>). 
+<br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/svd-word-embeddings/word-vectors.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 1, Various methods for representing words numerically</em></strong>. <em><strong>Top Left</strong>, “1-of-<script type="math/tex">K</script>” encoding represents each word as a sparse vector of <script type="math/tex">K</script> entries with only a single one-valued entry indicating the presence of a particular word. <strong>Right</strong>, The word2vec algorithm trains a two-layer neural network to predict, given a sentence and a query word from that sentence <script type="math/tex">w</script>, the words <script type="math/tex">c</script> located within a context window <script type="math/tex">C</script> surrounding <script type="math/tex">w</script>. <strong>Bottom Left</strong>, Once the neural network has been optimized, each row of the <script type="math/tex">K \times D</script> weight matrix in the first hidden layer of the neural network <script type="math/tex">\beta_{embedding}</script> provides a dense vector representation for each of the <script type="math/tex">K</script> words in the vocabulary.</em></p>
+
+<hr />
+<p><b></b></p>
+
+<p>The input to the neural network is the 1-of-<script type="math/tex">K</script> representation of the query word and each of the target context words are represented as, you guessed it 1-of-<script type="math/tex">K</script> encodings. For each query word there are <script type="math/tex">\mid C \mid - 1</script> classification targets, one for each context word <script type="math/tex">c</script>. The neural network uses a hidden layer comprised of <script type="math/tex">D</script> units, and thus there is a matrix of parameters <script type="math/tex">\beta_{embedding} \in \mathbb{R}^{K \times D}</script> that linearly maps each word into a latent space of size <script type="math/tex">D \ll K</script>. After the network has converged, each row of the first layer of weights <script type="math/tex">\beta_{embedding}</script> provides for each word a dense embedding vector representation of size <script type="math/tex">D</script>, rather than <script type="math/tex">K</script> (<strong><em>Figure 1, Bottom Left</em></strong>).</p>
+
+<p>It turns out that the resulting word embedding vectors capture rich semantic information about the words in the corpus. In particular, words that are semantically similar occupy nearby locations in the <script type="math/tex">D</script>-dimensional space (<strong><em>Figure 1, Bottom Left</em></strong>). Additionally, semantic relationships amongst words are encoded by displacements in the embedding space.</p>
+
+<h1 id="calculating-information-theoretic-word-embeddings-with-svd">Calculating Information-theoretic Word Embeddings with SVD</h1>
+
+<p>Calculating word embeddings using the word2vec algorithm requires building and training a neural network, which in turn involves a <a href="/theclevermachine/derivation-backpropagation">considerable amount of calculus</a> necessary for gradient-based parameter optimization. It turns out that there is a simpler way to calculate equivalent word vectors using a little information theory and linear algebra.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> Before digging into this method, let’s first introduce a few basic concepts.</p>
+
+<h4 id="marginal-and-joint-probabilities">Marginal and Joint Probabilities</h4>
+
+<p>The foundation of information theory is probability, and specifically relevant for this post, marginal and joint probabilities. The <em>marginal probability</em> of a word <script type="math/tex">p(w_i)</script> within a corpus of text is simply the number of times the word occurs <script type="math/tex">N(w_i)</script> divided by the total number of word occurrences in the corpus <script type="math/tex">\sum_k N(w_k)</script>:</p>
+
+<script type="math/tex; mode=display">p(w_i) = \frac{N(w_i)}{\sum_k N(w_k)} \tag{1}</script>
+
+<p>In this post we refer to <script type="math/tex">N(w_i)</script> as <em>unigram frequency</em>, as it is a count of the number of times a single word, or “unigram”, occurs in the corpus.</p>
+
+<details>
+  <summary>Unigram Frequency Python Code</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="k">class</span> <span class="nc">UnigramFrequencies</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""Simple Unigram frequency calculator.
+    Parameters
+    ----------
+    documents : list[list[str]]
+        A list of documents, each document being a list of strings
+    """</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">documents</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">documents</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">tok</span><span class="p">:</span> <span class="n">indx</span> <span class="k">for</span> <span class="n">indx</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span><span class="p">.</span><span class="n">keys</span><span class="p">())}</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">idx_to_token</span> <span class="o">=</span> <span class="p">{</span><span class="n">indx</span><span class="p">:</span> <span class="n">tok</span> <span class="k">for</span> <span class="n">tok</span><span class="p">,</span> <span class="n">indx</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">idx_to_token</span><span class="p">[</span><span class="n">item</span><span class="p">]]</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">f"type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="si">}</span><span class="s"> not supported"</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<p>The <em>joint probability</em> of word <script type="math/tex">w_i</script> and another word <script type="math/tex">w_j, j\neq i</script> is simply the number of times the words co-occur <script type="math/tex">N(w_i, w_j)</script> divided by the total number of words:</p>
+
+<script type="math/tex; mode=display">p(w_i, w_j) = \frac{N(w_i, w_j)}{\sum_k N(w_k)} \tag{2}</script>
+
+<p>There are many possible definitions of co-occurrence, but in this post we’ll use <em>skipgram frequencies</em> to define co-occurrence. Skipgrams define the joint frequency function <script type="math/tex">N(w_i, w_j) = N(w_i, c_{t \pm l})</script> as the number of times the context word <script type="math/tex">c_{q \pm l}</script> occurs within a context window <script type="math/tex">C</script> that surrounds the target/query word <script type="math/tex">w_i</script>; <script type="math/tex">t</script> being the token index of the query word and <script type="math/tex">l</script> being the number of steps preceding or following the query word within the context window (<strong><em>Figure 2, Top Left</em></strong>). This is reminiscent of the context words being individual classification targets in the word2vec approach (<strong><em>Figure 1, Right</em></strong>), but in this case we simply tally up counts of the context words, rather than try to build a classifier to predict the occurrence of the context words.</p>
+
+<details>
+  <summary>Skipgram Frequency Python Code</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SkipgramFrequencies</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""Simple skipgrams frequency calculator
+
+    Parameters
+    ----------
+    documents : list[list[str]]
+        A list of documents, each document being a list of strings
+    backward_window_size : int
+        The number of words to the left used to define the context window
+    forward_window_size : int
+        The number of words to the right used to define the context window
+    """</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">documents</span><span class="p">,</span>
+        <span class="n">backward_window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">forward_window_size</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">backward_window_size</span> <span class="o">=</span> <span class="n">backward_window_size</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">forward_window_size</span> <span class="o">=</span> <span class="n">forward_window_size</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">skipgram_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+
+        <span class="c1"># Independent word frequencies
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">unigrams</span> <span class="o">=</span> <span class="n">UnigramFrequencies</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+
+        <span class="c1"># Conditional word-context frequencies
+</span>        <span class="k">for</span> <span class="n">doc_idx</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">documents</span><span class="p">):</span>
+            <span class="n">token_idxs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">]</span>
+            <span class="n">n_document_tokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_idxs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">token_idx</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">token_idxs</span><span class="p">):</span>
+                <span class="n">context_window_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">token_idx</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">backward_window_size</span><span class="p">)</span>
+                <span class="n">context_window_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_document_tokens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">token_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">forward_window_size</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">context_idxs</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">context_idx</span> <span class="k">for</span> <span class="n">context_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">context_window_start</span><span class="p">,</span><span class="n">context_window_end</span><span class="p">)</span> 
+                    <span class="k">if</span> <span class="n">context_idx</span> <span class="o">!=</span> <span class="n">token_idx</span>
+                <span class="p">]</span>
+                <span class="k">for</span> <span class="n">context_idx</span> <span class="ow">in</span> <span class="n">context_idxs</span><span class="p">:</span>
+                    <span class="n">skipgram</span> <span class="o">=</span> <span class="p">(</span><span class="n">token_idxs</span><span class="p">[</span><span class="n">token_idx</span><span class="p">],</span> <span class="n">token_idxs</span><span class="p">[</span><span class="n">context_idx</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="p">.</span><span class="n">skipgram_counts</span><span class="p">[</span><span class="n">skipgram</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">idx_to_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">unigrams</span><span class="p">.</span><span class="n">idx_to_token</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">token_to_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">unigrams</span><span class="p">.</span><span class="n">token_to_idx</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<h4 id="pointwise-mutual-information">Pointwise Mutual information</h4>
+
+<p>Given the marginal and joint probabilities <script type="math/tex">p(w_i)</script> and <script type="math/tex">p(w_i, w_j)</script>, we can calculate some powerful information-theoretic quantities. Of particular interest is the <a href="https://en.wikipedia.org/wiki/Pointwise_mutual_information">Pointwise Mutual Information (PMI)</a>:</p>
+
+<script type="math/tex; mode=display">PMI(w_i, w_j) = \log \frac{p(w_i, w_j)}{p(w_i) p(w_j)} \tag{3}</script>
+
+<p>The PMI matrix offers an intuitive and straight-forward means for calculating associations between words in a corpus: each row gives the amount of information shared between a word and all other words in the corpus. Intuitively, the PMI matrix represents <em>the amount of association between two words</em>. If the two words are independent–i.e. not associated–then the PMI is zero.</p>
+
+<p>Computationally, the PMI is just the log of the joint probability for two words, after being rescaled by the marginal probabilities for each word. Normalizing the joint probability of the two words by the product of their marginal probabilities generates more nuanced representation of their co-occurrence when compared to the raw co-occurrence frequencies. This can be seen in <strong><em>Figure 2, Top Row</em></strong>–the PMI has more small-scale structure thatn the basic skipgram frequency matrix.</p>
+
+<details>
+  <summary>PMI Python Code</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+
+<span class="k">def</span> <span class="nf">calculate_pairwise_frequency_matrix</span><span class="p">(</span><span class="n">skipgrams</span><span class="p">,</span> <span class="n">recalculate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="s">"""Given a SkipgramFrequencies instance, returns the associated
+    pairwise frequency counts as a sparse matrix
+    """</span>
+    <span class="n">row_idxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">col_idxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">matrix_values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">token_idx_1</span><span class="p">,</span> <span class="n">token_idx_2</span><span class="p">),</span> <span class="n">skipgram_count</span> <span class="ow">in</span> <span class="n">skipgrams</span><span class="p">.</span><span class="n">skipgram_counts</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">row_idxs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">token_idx_1</span><span class="p">)</span>
+        <span class="n">col_idxs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">token_idx_2</span><span class="p">)</span>
+        <span class="n">matrix_values</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">skipgram_count</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_pmi_matrix</span><span class="p">(</span><span class="n">skipgrams</span><span class="p">,</span> <span class="n">enforce_positive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">recalculate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="s">"""Given a SkipgramFrequencies instance, returns the associated pointwise
+    mutual information (PMI) matrix in sparse (CSR) format
+    """</span>
+    <span class="c1"># Get frequency matrix
+</span>    <span class="n">frequency_matrix</span> <span class="o">=</span> <span class="n">calculate_pairwise_frequency_matrix</span><span class="p">(</span><span class="n">skipgrams</span><span class="p">)</span>
+
+    <span class="c1"># Precalculate some resusable things
+</span>    <span class="n">n_skipgrams</span> <span class="o">=</span> <span class="n">frequency_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
+    <span class="n">word_sums</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequency_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)).</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">context_sums</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequency_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)).</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="c1"># Sparse matrix components
+</span>    <span class="n">row_idxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">col_idxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">matrix_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">skipgram_word_idx</span><span class="p">,</span> <span class="n">skipgram_context_idx</span><span class="p">),</span> <span class="n">skipgram_count</span> <span class="ow">in</span> <span class="n">skipgrams</span><span class="p">.</span><span class="n">skipgram_counts</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># p(w, c)
+</span>        <span class="n">join_probability</span> <span class="o">=</span> <span class="n">skipgram_count</span> <span class="o">/</span> <span class="n">n_skipgrams</span>
+
+        <span class="c1"># p(w)
+</span>        <span class="n">n_word</span> <span class="o">=</span> <span class="n">context_sums</span><span class="p">[</span><span class="n">skipgram_word_idx</span><span class="p">]</span>
+        <span class="n">p_word</span> <span class="o">=</span> <span class="n">n_word</span> <span class="o">/</span> <span class="n">n_skipgrams</span>
+
+        <span class="c1"># p(c)
+</span>        <span class="n">n_context</span> <span class="o">=</span> <span class="n">word_sums</span><span class="p">[</span><span class="n">skipgram_context_idx</span><span class="p">]</span>
+        <span class="n">p_context</span> <span class="o">=</span> <span class="n">n_context</span> <span class="o">/</span> <span class="n">n_skipgrams</span> 
+    
+        <span class="c1"># Pointwise mututal information = log[p(w, c) / p(w)p(c)]
+</span>        <span class="n">pmi</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">join_probability</span> <span class="o">/</span> <span class="p">(</span><span class="n">p_word</span> <span class="o">*</span> <span class="n">p_context</span><span class="p">))</span>
+        
+        <span class="c1"># Update sparse matrix entries
+</span>        <span class="n">row_idxs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">skipgram_word_idx</span><span class="p">)</span>
+        <span class="n">col_idxs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">skipgram_context_idx</span><span class="p">)</span>
+        <span class="n">matrix_values</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">pmi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">csr_matrix</span><span class="p">((</span><span class="n">matrix_values</span><span class="p">,</span> <span class="p">(</span><span class="n">row_idxs</span><span class="p">,</span> <span class="n">col_idxs</span><span class="p">)))</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<h4 id="information-theoretic-word-embeddings">Information-theoretic Word Embeddings</h4>
+
+<p>The PMI matrix is a square, <script type="math/tex">K \times K</script> matrix. Therefore, if we have a large vocabulary, the PMI matrix can be quite large (though likely sparse). We’ve discussed in a <a href="/theclevermachine/svd-data-compression">previous post how Singular Value Decomposition (SVD) can be used to compress large matrices</a>. If we apply SVD to the PMI matrix, using a low-rank approximation with <script type="math/tex">D \ll K</script>, we can compute a compact representation of the word association information captured by the PMI matrix. Specifically, we use the left singular vectors <script type="math/tex">U</script>, rescaled by the square root of the singular values <script type="math/tex">S</script> returned by the SVD (<strong><em>Figure 2, Bottom Row</em></strong>).<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+
+<details>
+  <summary>Word Embeddings Python Code</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">TruncatedSVD</span>
+
+<span class="k">def</span> <span class="nf">calculate_word_vectors</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">n_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+    <span class="s">"""Calculates word embedding vectors as the left singular vectors of
+    Singular Value Decomposition of the Pointwise Mutual Information Matrix.
+    Singular vectors are rescaled by the inverse of the eigenvalues of the
+    PMI correlation matrix
+    """</span>
+    <span class="c1"># Get PMI matrix
+</span>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">SkipgramFrequencies</span><span class="p">):</span>
+        <span class="n">pmi_matrix</span> <span class="o">=</span> <span class="n">calculate_pmi_matrix</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">):</span>
+        <span class="n">pmi_matrix</span> <span class="o">=</span> <span class="n">stats</span>
+
+    <span class="c1"># Alternatively, we could use scipy.sparse.linalg.svds / arpack algorithm,
+</span>    <span class="c1"># but the Halko (2009) algorithm used by default generally scales better
+</span>    <span class="c1"># on a laptop.
+</span>    <span class="n">svd</span> <span class="o">=</span> <span class="n">TruncatedSVD</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_dim</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># Use left singular vectors of PMI, scaled by eigenvalues as embeddings
+</span>    <span class="n">U</span> <span class="o">=</span> <span class="n">svd</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">pmi_matrix</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">svd</span><span class="p">.</span><span class="n">singular_values_</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+
+<p><br /></p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="700" src="assets/images/svd-word-embeddings/svd-embeddings-example.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 2, Information-theoretic Word Embeddings from PMI and SVD</em></strong>. <em><strong>Top Row</strong>: Unigram frequencies and a <script type="math/tex">K \times K</script> Skipgram frequency matrix are calculated based a corpus of sentences and a predefined context window <script type="math/tex">C</script>. In this example <script type="math/tex">K=9</script> is the size of the vocabulary in the corpus. These frequencies are used to calculate a PMI matrix via <strong>Equation 3. Bottom Row</strong>: Truncated SVD with <script type="math/tex">D \ll K</script> is applied to the PMI matrix, returning low-rank left singular vectors <script type="math/tex">U</script> and singular values <script type="math/tex">S</script>. In this toy example <script type="math/tex">D=3</script>. The low-rank left singular vectors are rescaled by the square root of the singular values to return a compressed representation of the PMI matrix of size <script type="math/tex">K \times D</script>. Each row of this low-rank matrix provides an embedding vector for each of the <script type="math/tex">K</script> words in the vocabulary (Right).</em></p>
+
+<details>
+  <summary>Python Code Used to Generate Figure 2</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">toy_corpus</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">'the slow dog chased the fat cat'</span><span class="p">,</span>
+    <span class="s">'the dog likes bones'</span><span class="p">,</span>
+    <span class="s">'the cat likes tuna'</span>
+<span class="p">]</span>
+<span class="n">toy_corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">toy_corpus</span><span class="p">]</span>
+
+<span class="c1"># Calcualte the skipgram frequency matrix
+</span><span class="n">toy_skigrams</span> <span class="o">=</span> <span class="n">SkipgramFrequencies</span><span class="p">(</span><span class="n">toy_corpus</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">toy_frequency_matrix</span> <span class="o">=</span> <span class="n">calculate_pairwise_frequency_matrix</span><span class="p">(</span><span class="n">toy_skigrams</span><span class="p">)</span>
+
+<span class="c1"># Calculate the PMI matrix
+</span><span class="n">toy_pmi_matrix</span> <span class="o">=</span> <span class="n">calculate_pmi_matrix</span><span class="p">(</span><span class="n">toy_skigrams</span><span class="p">)</span>
+
+<span class="c1"># Calculate embeddings
+</span><span class="n">n_embedding_dims</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># D
+</span>
+<span class="c1"># Calculate associated SVD (redundant, but meh)
+</span><span class="n">U</span><span class="p">,</span> <span class="n">S_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">toy_pmi_matrix</span><span class="p">.</span><span class="n">todense</span><span class="p">())</span>
+
+<span class="c1"># Truncate at D
+</span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_embedding_dims</span><span class="p">,</span> <span class="n">n_embedding_dims</span><span class="p">))</span>
+<span class="n">np</span><span class="p">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">S_</span><span class="p">[:</span><span class="n">n_embedding_dims</span><span class="p">])</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_embedding_dims</span><span class="p">]</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:</span><span class="n">n_embedding_dims</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">toy_embeddings</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">S</span> <span class="o">**</span> <span class="p">.</span><span class="mi">5</span>
+
+<span class="c1"># Visualizations
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1">## Frequency matrix
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">toy_frequency_matrix</span><span class="p">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tics</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">toy_skigrams</span><span class="p">.</span><span class="n">idx_to_token</span><span class="p">))</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">toy_skigrams</span><span class="p">.</span><span class="n">idx_to_token</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">tics</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">tics</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">tics</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Skipgram Frequency"</span><span class="p">)</span>
+
+<span class="c1">## PMI Matrix
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">toy_pmi_matrix</span><span class="p">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">tics</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">tics</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Pointwise Mutual Information (PMI)"</span><span class="p">)</span>
+
+<span class="c1">## Left singular vectors
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'$U$'</span><span class="p">)</span>
+
+<span class="c1">## Singular values
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$S$"</span><span class="p">)</span>
+
+<span class="c1">## Right singular vectors
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"$V^T$"</span><span class="p">)</span>
+
+<span class="c1">## Resulting embeddings
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">toy_embeddings</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Embeddings: $U(S^{1/2})$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">)</span>
+
+<span class="c1">## Clear unused axes
+</span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+<hr />
+
+<p><br /></p>
+
+<p>This information-theoretic/linear algebra method provides word embeddings that are analogous to those calculated using word2vec.<sup id="fnref:1:1"><a href="#fn:1" class="footnote">1</a></sup> Like word2vec embeddings, these information-theoretic embeddings provide a numerical representation that carries semantic information: similar words occupy similar locations in the embedding space, and directionality within the space conveys semantic meaning (<strong><em>Figure 3</em></strong>).</p>
+
+<p>Note that this idea isn’t all that novel. Similar approaches, for example applying SVD directly to the co-occurrence matrix (rather than the PMI matrix), have been used since the 1990s in algorithms like Latent Semantic Indexing to provide word embeddings.<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup> However, given the current popularity in deep learning and predictive methods, simpler frequency-based and linear algebra-based methods like LSA and the method proposed here have received a lot less attention recently.</p>
+
+<p><b></b></p>
+
+<h3 id="demo-analyzing-the-20newsgroup-data-set">Demo: Analyzing the 20Newsgroup Data Set</h3>
+
+<p>As a proof of concept, let’s calculate some word embeddings on some real data using the proposed method. For this demo we’ll analyze the <a href="https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html">20Newsgroups dataset</a>, which is easily accessible in <a href="https://scikit-learn.org">scikit-learn</a>.</p>
+
+<p>First we load in the data and do some basic preprocessing, including tokenization and stopword and punctuation removal using <a href="https://www.nltk.org/">nltk</a>. This will give a corpus of tokens that we can analyze using the steps outlined above.</p>
+
+<details>
+  <summary>Python Code to Load and Preprocess 20Newsgroup Dataset</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">punctuation</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
+<span class="n">STOPWORDS</span> <span class="o">=</span> <span class="n">stopwords</span><span class="p">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
+<span class="n">PUNCTUATION</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">punctuation</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">valid_token</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="s">"""Basic token filtering for 20 Newgroup task. Results in cleaner embeddings
+    and faster convergence. Removes stopwords and any punctuation
+    """</span>
+    <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">STOPWORDS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">t</span> <span class="ow">in</span> <span class="n">PUNCTUATION</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">token</span><span class="p">)]):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">document</span><span class="p">):</span>
+    <span class="s">"""Simple preprocessing"""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">document</span><span class="p">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">if</span> <span class="n">valid_token</span><span class="p">(</span><span class="n">w</span><span class="p">)]</span>
+
+<span class="c1"># For dataset details, see https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s">'all'</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="p">(</span><span class="s">'headers'</span><span class="p">,</span> <span class="s">'footers'</span><span class="p">))</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">preprocess</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">data</span><span class="p">]</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<p>From this corpus data we’ll:</p>
+<ol>
+  <li>calculate the unigram and skipgram frequencies, followed by</li>
+  <li>calculating the associated PMI matrix, followed by</li>
+  <li>calculating the associated word embeddings via SVD.</li>
+</ol>
+
+<p>For this example we’ll use an embedding dimensionality of <script type="math/tex">D=256</script>. Notice in the code below that using this dimensionality reduces the PMI matrix from a size of roughly 20k by 20k to a size of 20k by 256, an almost 100x reduction in entries (when in dense format).</p>
+
+<details>
+  <summary>Python Code For Calculating 20Newsgroup Word Embeddings</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 1. Calculate unigram / skipgram frequencies of the corpus
+</span><span class="n">skipgram_frequencies</span> <span class="o">=</span> <span class="n">SkipgramFrequencies</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+
+<span class="c1"># 2. Calculate associated PMI matrix
+</span><span class="n">pmi_matrix</span> <span class="o">=</span> <span class="n">calculate_pmi_matrix</span><span class="p">(</span><span class="n">skipgram_frequencies</span><span class="p">)</span>
+
+<span class="c1"># 3. Calculate the embedding matrix with D=256
+</span><span class="n">embeddings_matrix</span> <span class="o">=</span> <span class="n">calculate_word_vectors</span><span class="p">(</span><span class="n">pmi_matrix</span><span class="p">,</span> <span class="n">n_dim</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">embeddings_matrix</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># (19699, 256)
+</span></code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<p>In <strong><em>Figure 3</em></strong> below we visualize the semantic representation of the embedding vectors calculated from the 20Newsgroup corpus by plotting a few query words (red) along with words with the 20 most similar embedding vectors (gray), as measured by cosine similarity. For the visualization we use first two dimensions of the embedding space. We can see that words that are nearby in the embedding space are generally semantically similar.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="800" src="assets/images/svd-word-embeddings/most-similar.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 3, Visualization of information-theoretic embedding vectors derived from the Newsgroup20 data set.</em></strong> <em>Each subpanel plots a query word (red) and the top 20 words with embedding vectors that have the smallest cosine distance from the embedding vector of the query. Word embedding vectors encode semantic relationships amongst words.</em></p>
+
+<details>
+  <summary>Python Code Used to Generate Figure 3</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cosine</span> <span class="k">as</span> <span class="n">cosine_similarity</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="k">class</span> <span class="nc">MatrixNearestNeighborsIndex</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""Simple nearest neighbors index based on a pre-calculated matrix of
+    item vectors.
+    
+    Parameters
+    -----------
+    matrix : ndarry or sparse array
+        n_items x n_dims matrix of item represation
+    idx_to_token : dict
+        Mapping between matrix row indices and tokens
+    token_to_idx : dict
+        Mapping between tokens and matrix row indices
+        
+    Notes
+    -----
+    For simplicity, we could probably infer token_to_idx from idx_to_token,
+    but meh
+    """</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">idx_to_token</span><span class="p">,</span> <span class="n">token_to_idx</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">idx_to_token</span> <span class="o">=</span> <span class="n">idx_to_token</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span> <span class="o">=</span> <span class="n">token_to_idx</span>
+    
+    <span class="k">def</span> <span class="nf">most_similar_from_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_label</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_self</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">query_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">query_label</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">most_similar_from_index</span><span class="p">(</span><span class="n">query_idx</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">return_self</span><span class="o">=</span><span class="n">return_self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">most_similar_from_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_idx</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">return_self</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">query_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_vector_from_index</span><span class="p">(</span><span class="n">query_idx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">most_similar_from_vector</span><span class="p">(</span><span class="n">query_vector</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">query_idx</span><span class="o">=</span><span class="n">query_idx</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">return_self</span> <span class="k">else</span> <span class="bp">None</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">most_similar_from_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">query_idx</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">):</span>
+            <span class="n">sims</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">).</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sims</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">query_vector</span><span class="p">)</span>
+
+        <span class="n">sim_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">sims</span><span class="p">)[:</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">sim_idxs</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">sim_idxs</span> <span class="k">if</span> <span class="p">(</span><span class="n">query_idx</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">query_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">idx</span> <span class="o">!=</span> <span class="n">query_idx</span><span class="p">))]</span>
+        <span class="n">sim_word_scores</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">self</span><span class="p">.</span><span class="n">idx_to_token</span><span class="p">[</span><span class="n">sim_idx</span><span class="p">],</span> <span class="n">sims</span><span class="p">[</span><span class="n">sim_idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">sim_idx</span> <span class="ow">in</span> <span class="n">sim_idxs</span><span class="p">[:</span><span class="n">n</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">sim_word_scores</span>
+
+    <span class="k">def</span> <span class="nf">get_vector_from_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="n">query_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_vector_from_index</span><span class="p">(</span><span class="n">query_idx</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">get_vector_from_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_idx</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">getrow</span><span class="p">(</span><span class="n">query_idx</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">query_idx</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_vector_from_index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_vector_from_label</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">token_to_idx</span>
+
+<span class="c1"># Initialize an nn-index using our embedding vectors
+</span><span class="n">nns</span> <span class="o">=</span> <span class="n">MatrixNearestNeighborsIndex</span><span class="p">(</span>
+    <span class="n">embeddings_matrix</span><span class="p">,</span>
+    <span class="n">skipgram_frequencies</span><span class="p">.</span><span class="n">idx_to_token</span><span class="p">,</span>
+    <span class="n">skipgram_frequencies</span><span class="p">.</span><span class="n">token_to_idx</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_label</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'gray'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">'mlb'</span><span class="p">,</span> <span class="s">'religion'</span><span class="p">,</span> <span class="s">'ibm'</span><span class="p">,</span> <span class="s">'planet'</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="p">.</span><span class="n">ravel</span><span class="p">()):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">most_similar</span> <span class="o">=</span> <span class="n">nns</span><span class="p">.</span><span class="n">most_similar_from_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sim_label</span><span class="p">,</span> <span class="n">sim_score</span> <span class="ow">in</span> <span class="n">most_similar</span><span class="p">:</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">nns</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">nns</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">[</span><span class="n">sim_label</span><span class="p">]][:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">plot_label</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">sim_label</span><span class="p">)</span>
+
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">nns</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">nns</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">[</span><span class="n">label</span><span class="p">]][:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">plot_label</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'crimson'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">box</span><span class="p">(</span><span class="s">'on'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">f'Most similar words for various queries'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+</code></pre></div>  </div>
+</details>
+<hr />
+
+<p><br /></p>
+
+<p>A common demonstration of how embedding vectors encode semantic information is the “analogy” trick. The idea being that you can apply vector arithmetic to word embeddings to solve analogy tasks such as “King is to Queen as Man is to <strong>__</strong>”. These analogies would be solved by using vector arithmetic like so:</p>
+
+<script type="math/tex; mode=display">\text{embed}["king"] + \text{embed}["man"] = \text{embed}["queen"] + \text{embed}["woman"] \\
+\text{embed}["queen"] = \text{embed}["king"] + \text{embed}["man"] - \text{embed}["woman"]</script>
+
+<p>I’ve actually never been able to get these analogy tricks to work consistently, and it turns out this isn’t an uncommon experience.<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup> The size and statistical bias of the corpus used to calculate the embeddings will have a strong influence efficacy these vector arithmetic tricks, which require very similar frequency representations of words to derive similar vectors. Unless you get the <em>exact</em> alignments amongst vectors, you’ll likely not get these tricks to work consistently. This may work for some examples and not for others.</p>
+
+<p>We can still demonstrate the general mechanisms used to calculate these analogies, however. <strong><em>Figure 4</em></strong> below plots the words involved in the classic royalty analogy introduced above, along with a similar analogy, comparing “boy” to “man” and “girl” to “woman”. In the 20Newsgroup data set we have many more examples of “boy” and “girl” than “queen” in the corpus so we get more consistent results for those examples (it turns out “king” occurs a lot in the data set because it contains many religious, Christian posts that intermix the notion of kings, gods, etc). Specifically, the vectors encoding the displacement from “boy” to “man” and from “girl” to “woman” are nearly parallel and almost equal in length.</p>
+
+<hr />
+<center>
+    <br />
+    <div id="container">
+        <img width="500" src="assets/images/svd-word-embeddings/vector-analogy.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 4, Traversing the embedding space carries semantic information:</em></strong> <em>By definition of SVD the information-theoretic embedding space dimensions are rank-ordered by importance in terms of variance explained amongst the word associations. This allows the embedding space to be easily visualized without the need for dimensionality reduction techniques like PCA. Here we display the two most “important” two dimensions. Similar displacements within the embedding space carry similar semantic information for related words. For example moving from “boy” to “man” (green line) is a very similar vector displacement as moving from “girl” to “woman” (red line). The analogy “king/man” (blue) vs “queen/woman” (orange) analogy referenced in many word embedding papers is also demonstrated.</em></p>
+
+<details>
+  <summary>Python Code Used to Generate Figure 4</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">plot_embeddings</span><span class="p">(</span><span class="n">sims</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+        <span class="n">xys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+            <span class="n">label_idx</span> <span class="o">=</span> <span class="n">sims</span><span class="p">.</span><span class="n">token_to_idx</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">sims</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">label_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">sims</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="n">label_idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        
+            <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="n">xys</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xys</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">xys</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">xys</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">xys</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]])</span>
+            
+    <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'First 2-dimensions of Embedding Space'</span><span class="p">)</span>
+    
+<span class="n">plot_embeddings</span><span class="p">(</span><span class="n">nns</span><span class="p">,</span> <span class="p">[(</span><span class="s">'king'</span><span class="p">,</span> <span class="s">'man'</span><span class="p">),</span> <span class="p">(</span><span class="s">'queen'</span><span class="p">,</span> <span class="s">'woman'</span><span class="p">),</span> <span class="p">(</span><span class="s">'prince'</span><span class="p">,</span> <span class="s">'boy'</span><span class="p">),</span> <span class="p">(</span><span class="s">'princess'</span><span class="p">,</span> <span class="s">'girl'</span><span class="p">)])</span>
+
+</code></pre></div>  </div>
+</details>
+<hr />
+
+<p><b></b></p>
+
+<p>Another way to demonstrate the representation capacity of our word embeddings is to see if we can build an accurate predictive model using these embeddings as machine learning feature vectors. The 20Newsgroups dataset is comprised of approximately 18,000 posts categorized into 20 topics. Below we build a 20-way classifier that predicts the topic of each post based on the average embedding vector calculated across all words in each post.</p>
+
+<details>
+  <summary>Python Code For Training the 20Newgroup Classifier</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="k">def</span> <span class="nf">featurize_document</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">nearest_neighbors</span><span class="p">):</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">nearest_neighbors</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">document</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nearest_neighbors</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">vectors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">vectors</span><span class="p">).</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="p">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">featurize_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">nearest_neighbors</span><span class="p">):</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">featurize_document</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">nearest_neighbors</span><span class="p">)</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+
+<span class="c1"># Featurize the text using our embeddings
+</span><span class="n">features</span> <span class="o">=</span> <span class="n">featurize_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">nns</span><span class="p">)</span>
+
+<span class="c1"># Get train/test sets
+</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span><span class="p">.</span><span class="n">target</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">.</span><span class="n">target</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="c1"># Fit a Logistic regression classifer
+</span><span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s">'sag'</span><span class="p">).</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Get testing set performance
+</span><span class="n">pred_test</span> <span class="o">=</span> <span class="n">clf</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Keep copy of actual performance around for plotting effect of training
+# set size (Figure 5)
+</span><span class="n">class_report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span>
+    <span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">,</span>
+    <span class="n">target_names</span><span class="o">=</span><span class="n">dataset</span><span class="p">.</span><span class="n">target_names</span><span class="p">,</span>
+    <span class="n">output_dict</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">dataset</span><span class="p">.</span><span class="n">target_names</span><span class="p">))</span>
+</code></pre></div>  </div>
+</details>
+
+<p><b></b></p>
+
+<p>The classifier’s <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html">performance</a> on all 20 categories is printed below:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                          <span class="n">precision</span>    <span class="n">recall</span>  <span class="n">f1</span><span class="o">-</span><span class="n">score</span>   <span class="n">support</span>
+
+             <span class="n">alt</span><span class="p">.</span><span class="n">atheism</span>       <span class="mf">0.60</span>      <span class="mf">0.65</span>      <span class="mf">0.62</span>       <span class="mi">186</span>
+           <span class="n">comp</span><span class="p">.</span><span class="n">graphics</span>       <span class="mf">0.67</span>      <span class="mf">0.65</span>      <span class="mf">0.66</span>       <span class="mi">248</span>
+ <span class="n">comp</span><span class="p">.</span><span class="n">os</span><span class="p">.</span><span class="n">ms</span><span class="o">-</span><span class="n">windows</span><span class="p">.</span><span class="n">misc</span>       <span class="mf">0.63</span>      <span class="mf">0.72</span>      <span class="mf">0.67</span>       <span class="mi">228</span>
+<span class="n">comp</span><span class="p">.</span><span class="n">sys</span><span class="p">.</span><span class="n">ibm</span><span class="p">.</span><span class="n">pc</span><span class="p">.</span><span class="n">hardware</span>       <span class="mf">0.73</span>      <span class="mf">0.64</span>      <span class="mf">0.68</span>       <span class="mi">241</span>
+   <span class="n">comp</span><span class="p">.</span><span class="n">sys</span><span class="p">.</span><span class="n">mac</span><span class="p">.</span><span class="n">hardware</span>       <span class="mf">0.74</span>      <span class="mf">0.75</span>      <span class="mf">0.74</span>       <span class="mi">230</span>
+          <span class="n">comp</span><span class="p">.</span><span class="n">windows</span><span class="p">.</span><span class="n">x</span>       <span class="mf">0.79</span>      <span class="mf">0.72</span>      <span class="mf">0.75</span>       <span class="mi">262</span>
+            <span class="n">misc</span><span class="p">.</span><span class="n">forsale</span>       <span class="mf">0.70</span>      <span class="mf">0.74</span>      <span class="mf">0.72</span>       <span class="mi">232</span>
+               <span class="n">rec</span><span class="p">.</span><span class="n">autos</span>       <span class="mf">0.85</span>      <span class="mf">0.80</span>      <span class="mf">0.83</span>       <span class="mi">251</span>
+         <span class="n">rec</span><span class="p">.</span><span class="n">motorcycles</span>       <span class="mf">0.83</span>      <span class="mf">0.84</span>      <span class="mf">0.83</span>       <span class="mi">255</span>
+      <span class="n">rec</span><span class="p">.</span><span class="n">sport</span><span class="p">.</span><span class="n">baseball</span>       <span class="mf">0.90</span>      <span class="mf">0.92</span>      <span class="mf">0.91</span>       <span class="mi">286</span>
+        <span class="n">rec</span><span class="p">.</span><span class="n">sport</span><span class="p">.</span><span class="n">hockey</span>       <span class="mf">0.94</span>      <span class="mf">0.94</span>      <span class="mf">0.94</span>       <span class="mi">258</span>
+               <span class="n">sci</span><span class="p">.</span><span class="n">crypt</span>       <span class="mf">0.82</span>      <span class="mf">0.82</span>      <span class="mf">0.82</span>       <span class="mi">250</span>
+         <span class="n">sci</span><span class="p">.</span><span class="n">electronics</span>       <span class="mf">0.66</span>      <span class="mf">0.68</span>      <span class="mf">0.67</span>       <span class="mi">256</span>
+                 <span class="n">sci</span><span class="p">.</span><span class="n">med</span>       <span class="mf">0.85</span>      <span class="mf">0.86</span>      <span class="mf">0.85</span>       <span class="mi">242</span>
+               <span class="n">sci</span><span class="p">.</span><span class="n">space</span>       <span class="mf">0.86</span>      <span class="mf">0.82</span>      <span class="mf">0.84</span>       <span class="mi">260</span>
+  <span class="n">soc</span><span class="p">.</span><span class="n">religion</span><span class="p">.</span><span class="n">christian</span>       <span class="mf">0.70</span>      <span class="mf">0.81</span>      <span class="mf">0.75</span>       <span class="mi">227</span>
+      <span class="n">talk</span><span class="p">.</span><span class="n">politics</span><span class="p">.</span><span class="n">guns</span>       <span class="mf">0.66</span>      <span class="mf">0.78</span>      <span class="mf">0.71</span>       <span class="mi">224</span>
+   <span class="n">talk</span><span class="p">.</span><span class="n">politics</span><span class="p">.</span><span class="n">mideast</span>       <span class="mf">0.87</span>      <span class="mf">0.87</span>      <span class="mf">0.87</span>       <span class="mi">224</span>
+      <span class="n">talk</span><span class="p">.</span><span class="n">politics</span><span class="p">.</span><span class="n">misc</span>       <span class="mf">0.73</span>      <span class="mf">0.64</span>      <span class="mf">0.68</span>       <span class="mi">223</span>
+      <span class="n">talk</span><span class="p">.</span><span class="n">religion</span><span class="p">.</span><span class="n">misc</span>       <span class="mf">0.47</span>      <span class="mf">0.33</span>      <span class="mf">0.39</span>       <span class="mi">129</span>
+
+                <span class="n">accuracy</span>                           <span class="mf">0.76</span>      <span class="mi">4712</span>
+               <span class="n">macro</span> <span class="n">avg</span>       <span class="mf">0.75</span>      <span class="mf">0.75</span>      <span class="mf">0.75</span>      <span class="mi">4712</span>
+            <span class="n">weighted</span> <span class="n">avg</span>       <span class="mf">0.76</span>      <span class="mf">0.76</span>      <span class="mf">0.76</span>      <span class="mi">4712</span>
+</code></pre></div></div>
+
+<p>Not too shabby for a super-simple embedding-based classifier! This demonstrates the ability of our 256-dimensional word embedding vectors to capture useful information in text to aid in accurate text classification.</p>
+
+<p>You may notice that we do a lot better on some categories (e.g. <code class="language-plaintext highlighter-rouge">rec.sport.hockey</code>) than other categories (e.g. <code class="language-plaintext highlighter-rouge">talk.religion.misc</code>). This could be due a few things:</p>
+
+<ol>
+  <li>a few key words capturing a majority of the semantic information in the associated topic</li>
+  <li>very consistent posts, with a few, semantically similar words that are highly predictive of the topic</li>
+  <li>simply the number of observations available in the training set for each topic</li>
+</ol>
+
+<p>I was curious about the third point, so decided in <strong><em>Figure 5</em></strong> to plot the testing set F1-score against the number of training set observations used to fit the classifier. It turns out, unsurprisingly, that there is a strong correlation with the amount of training data for a category and the performance of the classifier for that category.</p>
+
+<h2><br /></h2>
+<center>
+    <br />
+    <div id="container">
+        <img width="600" src="assets/images/svd-word-embeddings/20newsgroup-performance.png" />
+    </div>
+</center>
+
+<p><strong><em>Figure 5 Performance of Simple Classifier Using Our Embeddings:</em></strong> <em>blah</em></p>
+
+<details>
+  <summary>Python Code Used to Generate Figure 5</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Get number of training observations associates with each category
+</span><span class="n">n_training_observations</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">n_training_observations_per_category</span> <span class="o">=</span> <span class="p">{</span><span class="n">dataset</span><span class="p">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span> <span class="n">n_training_observations</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">n_training_observations</span><span class="p">.</span><span class="n">keys</span><span class="p">()}</span>
+
+<span class="c1"># Plot relationship between Test Set F1 and # of training observations per category
+</span><span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">class_report</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'weighted avg'</span><span class="p">,</span> <span class="s">'macro avg'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">):</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_training_observations_per_category</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s">'f1-score'</span><span class="p">],</span> <span class="s">'o'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">n_training_observations_per_category</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s">'f1-score'</span><span class="p">],</span> <span class="n">k</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'# of Training Observations'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'F1-score'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'tight'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">450</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([.</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Test Set Performance as Function</span><span class="se">\n</span><span class="s">of Category Training Set Size'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>    
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
+</code></pre></div>  </div>
+</details>
+<hr />
+
+<p><b></b></p>
+
+<p><strong><em>Figure 5</em></strong> shows a roughly linear relationship between training set sample size and the testing set F1-score of the classifier. This indicates that, at least in part, sample size is a large contributor to the classifier’s performance. Further error analysis would be required to discount the first two points (beyond the scope of this post).</p>
+
+<h3 id="wrapping-up">Wrapping Up</h3>
+
+<p>In this post we visited a method for calculating word embedding vectors using a classical, pre-deep-learning computational approach. Specifically we showed that with some simple frequency counts, a little information theory, and linear algebra (all methods available before the 1960s), we can derive numerical word representations that are on par with state-of-the art word embeddings that require recently-developed (well, at least since the 1980s 😉) deep learning methods.</p>
+
+<p>Some benefits to this method include:</p>
+
+<ul>
+  <li>For many out there (me included), the notion of identifying dimensions that optimize the covariance of co-occurrence statistics is way more intuitive (and less spooky/hand-wavy) than black-box models like the neural networks used in word2vec.</li>
+  <li>SVD returns the embedding vectors in rank-order. This helps prioritize, interpret, visualize the embedding space without the need of additional PCA or t-SNE dimensionality reduction.</li>
+  <li>No calculus required! (Not that there’s anything wrong with calculus, it’s just an extra discipline required to solve the same class of problems if using word2vec, or the like).</li>
+</ul>
+
+<p>This is just one of the many applications that leverage the versatility of linear algebra and the Singular Value Decomposition!</p>
+
+<hr />
+<hr />
+
+<h1 id="notes-and-references">Notes and References</h1>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>O. Levy and Y. Goldberg. (2014) Neural word embedding as implicit matrix factorization. Advances in Neural Information Processing Systems (27): 2177–2185. <a href="#fnref:1" class="reversefootnote">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote">&#8617;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:2">
+      <p>These are the eigenvalues associated with the row space of the (unscaled) covariance of PMI matrix <script type="math/tex">(PMI)^T(PMI)</script>. SVD applied to a symmetric matrix <script type="math/tex">M</script> returns in the left singular vectors <script type="math/tex">U</script> the eigenvectors associated with the row space of <script type="math/tex">MM^T = M^TM</script>. Likewise, since the PMI matrix is symmetric, the eigenvalues returned by SVD are also associated with the covariance of the PMI matrix. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>S. Deerwester, S. T. Dumais, G. W. Furnas, T. K. Landauer, and R. Harshman. (1990). Indexing by Latent Semantic Analysis. Journal of the American Society for Information Science. 41 (6): 391–407. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p><a href="https://hackingsemantics.xyz/2019/analogies/">On word analogies and negative results in NLP (2019), A. Rogers</a> <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'the-clever-machine'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/info-theory-word-embeddings" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/theclevermachine/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">The Clever Machine</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Dustin Stansbury, PhD</li><li><a class="u-email" href="mailto:[first_name][dot][last_name][at][google email][dotcom]">[first_name][dot][last_name][at][google email][dotcom]</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dustinstansbury"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dustinstansbury</span></a></li><li><a href="https://www.twitter.com/corrcoef"><svg class="svg-icon"><use xlink:href="/theclevermachine/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">corrcoef</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Musings on data and science</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

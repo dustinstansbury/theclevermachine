@@ -118,7 +118,7 @@ Note that when $$m \neq n$$, the diagonalizing matrix $$S$$ is not square as was
 
 OK, we've written down a bunch of equations that mathematically define the components of SVD and how they related to the input matrix $$M$$. Now, let's make these derived components more tangible with some visualizations and code.
 
-***Figures 1-3*** below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the "▶︎ Details" button. ***Figure 1*** demonstrates the results for a square matrix.
+***Figures 1-3*** below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the "▶︎ Python Code" button. ***Figure 1*** demonstrates the results for a square matrix.
 
 ---
 <center>
@@ -130,7 +130,7 @@ OK, we've written down a bunch of equations that mathematically define the compo
 
 ***Figure 1:*** *Visualization of $$U$$, $$S$$, and $$V$$ for Singular Value Decomposition of a square matrix $$M$$,  where $$m=n$$*
 
-<details>
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 import numpy as np
@@ -237,7 +237,7 @@ Another interesting thing to notice in ***Figure 1*** is that the main diagonal 
 
 ***Figure 2:*** *Visualization of $$U$$, $$S$$, and $$V$$ for Singular Value Decomposition of a tall matrix $$M$$, where $$m>n$$.*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 visualize_svd(8, 4, fig_height=4.5)
@@ -260,7 +260,7 @@ visualize_svd(8, 4, fig_height=4.5)
 
 ***Figure 3:*** *Visualization of $$U$$, $$S$$, and $$V$$ for Singular Value Decomposition of a wide matrix $$M$$, where $$m<n$$.*
 
-<details >
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 visualize_svd(4, 8, fig_height=3)
@@ -290,7 +290,7 @@ The formulation of SVD ensures that the columns of $$U$$ and $$V$$ form an ortho
 
 ***Figure 4, Singular Vectors provide an orthonormal basis:***  *The **left column** shows the $$U$$ and $$V^T$$ that result from running SVD on a random $$[m \times n] = [10 \times 5] $$ matrix $$M$$. The **middle column** plots the $$L_2$$ norm calculated along the singular vectors (columns) of each matrix; the singular vectors all exhibit unit norm. The **right column** shows the inner product of each matrix with itself; the inner product is the identity matrix, demonstrating the orthogonality of the singular vectors.*
 
-<details>
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def matrix_column_l2_norm(M):
@@ -380,7 +380,7 @@ When developing SVD above, we also established three properties relating SVD to 
 
 ***Figure 5, The relationship between SVD and Eigenvalue Decomposition:***  *The **top row** demonstrates the equivalence between singular vectors $$U$$ and the eigenvalues of $$MM^T$$. The **middle row** demonstrates the equivalence between singular vectors $$V$$ and the eigenvalues of $$M^TM$$. The **bottom row** demonstrates how the singular values are equivalent to the square root of the eigenvalues of either $$MM^T$$ or $$M^TM$$.*
 
-<details>
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 def evd(M):
@@ -461,7 +461,7 @@ OK, so we've been able to derive SVD, and visualize some of the key properties o
 
 ***Figure 6, Visualization of SVD Operations:*** **Upper Left**: A 2D data set, distributed uniformly between $$(-.5, .5)$$. Each data point is colored by its relative horizontal location in the 2D coordinate system. **Center**: The data after being transformed by matrix $$M$$. We see that $$M$$ shears and flips the data about the horizontal axis. **Bottom Left**: The orthogonal matrix $$V^T$$ **rotates** the original data into a new coordinate system. **Bottom Right**: The diagonal matrix $$S$$ **stretches** the data along each of the primary axes in the new coordinate system. The amount of stretch is prescribed by the square root of the eigenvalues of $$M^TM$$ (or alternatively $$MM^T$$)). **Upper Right**: The orthogonal matrix $$U$$ **rotates the data back** into the original coordinate system. We can see that the cascade of operations $$U S V^T = M$$.
 
-<details>
+<details><summary markdown='span'>Python Code</summary>
 
 ```python
 # Generate random observations matrix (uniform distribution)
