@@ -599,7 +599,7 @@ The number of possible applications of SVD is essentially limitless. In future p
 - Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression
 - Providing a robust and efficient method for executing Principal Components Analysis
 - Matrix completion used in recommendation systems
-- Calculating robust word embedding vectors used in Natural Language Process (NLP)
+- [Calculating robust word embedding vectors used in Natural Language Process (NLP)](/theclevermachine/info-theory-word-embeddings)
 - Image whitening to improve the efficieny of neural network trainig in Computer Vision
 - TBD
 

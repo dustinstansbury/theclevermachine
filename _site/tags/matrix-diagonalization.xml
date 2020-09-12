@@ -3,7 +3,7 @@
     <title>The Clever Machine - matrix-diagonalization</title>
     <link href="/theclevermachine" rel="self"/>
     <link href="tagsmatrix-diagonalization.html"/>
-    <updated>2020-09-11T10:58:08-07:00</updated>
+    <updated>2020-09-11T19:55:57-07:00</updated>
     <id>/theclevermachinematrix-diagonalization.html</id>
 
     <author>
@@ -607,7 +607,7 @@ m &lt; n %]]&gt;&lt;/script&gt;. Similar to the results for the “tall” matri
   &lt;li&gt;Calculating the pseudo-inverse of a non-square matrix and, related, providing the least squares solution to Linear Regression&lt;/li&gt;
   &lt;li&gt;Providing a robust and efficient method for executing Principal Components Analysis&lt;/li&gt;
   &lt;li&gt;Matrix completion used in recommendation systems&lt;/li&gt;
-  &lt;li&gt;Calculating robust word embedding vectors used in Natural Language Process (NLP)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/theclevermachine/info-theory-word-embeddings&quot;&gt;Calculating robust word embedding vectors used in Natural Language Process (NLP)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Image whitening to improve the efficieny of neural network trainig in Computer Vision&lt;/li&gt;
   &lt;li&gt;TBD&lt;/li&gt;
 &lt;/ul&gt;
