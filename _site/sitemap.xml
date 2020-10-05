@@ -49,6 +49,10 @@
 <lastmod>2020-09-11T00:00:00-07:00</lastmod>
 </url>
 <url>
+<loc>https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing</loc>
+<lastmod>2020-10-04T00:00:00-07:00</lastmod>
+</url>
+<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/about/</loc>
 </url>
 <url>
@@ -74,6 +78,9 @@
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/gradient-descent.html</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/hypothesis-testing.html</loc>
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/image-compression.html</loc>
@@ -118,6 +125,9 @@
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/ordinary-least-squares.html</loc>
 </url>
 <url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/p-hacking.html</loc>
+</url>
+<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/parameter-optimization.html</loc>
 </url>
 <url>
@@ -221,5 +231,11 @@
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/tags/pointwise-mutual-information.html</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/hypothesis-testing.html</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/tags/p-hacking.html</loc>
 </url>
 </urlset>
