@@ -136,11 +136,11 @@ plt.title(f"p-values of 'Soo close!' trials after adding {n_additional_samples} 
 
 To demonstrate how hacking *p*-values via *N* chasing inflates false positive rates, we take the "So close" (blue) trials from the simulation in ***Figure 1***, and add to each trial a random data point drawn from the $$H_0$$ distribution. We then re-run our two-sample *t*-tests and histogram the resulting *p*-values.
 
-***Figure 2*** shows the resulting distribution of hacked *p*-values. These trials originally exhibited a False Positive Rate of 0% (i.e. they did not fall into the $$p \le \alpha = 0.05$$ bin. However, these trials now exhibit a Type I error rate over 25% (red), nearly 5 times the expected false positive rate 5% (dark red line)! Just from adding a **single data point** to those trials!
+***Figure 2*** shows the resulting distribution of hacked *p*-values. These trials originally exhibited a False Positive Rate of 0% (i.e. they did not fall into the $$p \le \alpha = 0.05$$ bin). However, these trials now exhibit a Type I error rate over 25% (red), nearly 5 times the expected false positive rate 5% (dark red line)! Just from adding **a single data point** to those trials!
 
-Another piece of evidence suggesting that something has gone awry is that the distribution of *p*-values on these augmented trials is no longer uniform, but right-skewed. Thus the statistical test on these data is no longer unbiased, instead favoring lower p-values.
+Another piece of evidence suggesting that something has gone awry is that the distribution of *p*-values on these augmented trials is no longer uniform, but right-skewed. Thus the statistical test on these data is no longer unbiased, instead favoring lower *p*-values.
 
-The problem here is that we're adding information into the system by first calculating test statistics/*p*-values, interpreting those results, then adding more data and testing again. It turns out this is a flavor of statistical error known as the *Multiple Comparisons Problem.*[^1]
+The problem here is that we're adding information into the system by first calculating test statistics/*p*-values, interpreting the results, then deciding to add more data and test again. It turns out this is a flavor of statistical error known as the *Multiple Comparisons Problem.*[^1]
 
 It's worth noting that the simulation presented here is based on a pretty small sample size of $$N=10$$. Thus, adding a single data point has a much larger effect on Type I error rate than it might for larger sample sizes. However, the effect is consistent on larger $$N$$ as well if one is adding new samples to the experiment that are in proportion to $$N$$.
 
