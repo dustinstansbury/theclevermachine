@@ -174,7 +174,7 @@
     </div>
 </center>
 
-<p><strong><em>Figure 2, p-Hacking via N Chasing.</em></strong> <em>To simulate N Chasing, we take the “So close” (blue) trials in Figure 1 and add to each triall add a single, random data point drawn from <script type="math/tex">H_0</script> (<script type="math/tex">N_{hacked}=11</script>). The resulting distribution of p-values from running two-sample *t</em>-tests on the hacked datasets is shown. The distribution is no longer uniform–the sign of a ill-behaved statistical test. Additionally, the Type I error rate is around 25% (red bar), where we would expect false positives in around 5% of trials (dark red line).*</p>
+<p><strong><em>Figure 2, p-Hacking via N Chasing.</em></strong> <em>To simulate N Chasing, we take the “So close” (blue) trials in Figure 1 and add to each trial a single, random data point drawn from <script type="math/tex">H_0</script> (<script type="math/tex">N_{hacked}=11</script>). The resulting distribution of p-values from running two-sample t-tests on the hacked datasets is shown. The distribution is no longer uniform–the sign of a ill-behaved statistical test. Additionally, the Type I error rate is around 25% (red bar), where we would expect false positives in around 5% of trials (dark red line).</em></p>
 
 <details>
   <summary><b>Figure 2</b> Python Code</summary>
@@ -215,7 +215,7 @@
 
 <p>Another piece of evidence suggesting that something has gone awry is that the distribution of <em>p</em>-values on these augmented trials is no longer uniform, but right-skewed. Thus the statistical test on these data is no longer unbiased, instead favoring lower <em>p</em>-values.</p>
 
-<p>The problem here is that we’re adding information into the system by first calculating test statistics/<em>p</em>-values, interpreting the results, then deciding to add more data and test again. It turns out this is a flavor of statistical error known as the <em>Multiple Comparisons Problem.</em><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p>The problem here is that we’re adding information into the system by first calculating test statistics/<em>p</em>-values, interpreting the results, then deciding to add more data and testing again. It turns out that this is a flavor of statistical error known as the <em>Multiple Comparisons Problem.</em><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
 
 <p>It’s worth noting that the simulation presented here is based on a pretty small sample size of <script type="math/tex">N=10</script>. Thus, adding a single data point has a much larger effect on Type I error rate than it might for larger sample sizes. However, the effect is consistent on larger <script type="math/tex">N</script> as well if one is adding new samples to the experiment that are in proportion to <script type="math/tex">N</script>.</p>
 
