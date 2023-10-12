@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>A Gentle Introduction to Artificial Neural Networks | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="A Gentle Introduction to Artificial Neural Networks" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
@@ -24,8 +24,10 @@
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-07-13T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="A Gentle Introduction to Artificial Neural Networks" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks","description":"Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.","@type":"BlogPosting","headline":"A Gentle Introduction to Artificial Neural Networks","dateModified":"2020-07-13T00:00:00-07:00","datePublished":"2020-07-13T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-07-13T00:00:00-07:00","datePublished":"2020-07-13T00:00:00-07:00","description":"Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.","headline":"A Gentle Introduction to Artificial Neural Networks","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks"},"url":"https://dustinstansbury.github.io/theclevermachine/a-gentle-introduction-to-neural-networks"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -98,13 +100,13 @@
 
 <p>Another approach, kernel-based methods, transforms data non-linearly into an abstract space that measures distances between observations, then predicts new values or classes based on these distances. However, kernel methods generally involve constructing a kernel matrix that depends on the number of training observations and can thus be prohibitive for large data sets.</p>
 
-<p>Another class of models, the ones that are the focus of this post, are artificial neural networks (ANNs). ANNs are nonlinear models motivated by the physiological architecture of the nervous system. They involve a cascade of simple nonlinear computations that, when aggregated, can implement robust and complex nonlinear functions. In fact, depending on how they are constructed, ANNs can approximate any nonlinear function, making them a quite powerful class of models<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+<p>Another class of models, the ones that are the focus of this post, are artificial neural networks (ANNs). ANNs are nonlinear models motivated by the physiological architecture of the nervous system. They involve a cascade of simple nonlinear computations that, when aggregated, can implement robust and complex nonlinear functions. In fact, depending on how they are constructed, ANNs can approximate any nonlinear function, making them a quite powerful class of models<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
 
 <p>In recent years ANNs that use multiple stages of nonlinear computation (aka “deep learning”)  have been able obtain outstanding performance on an array of complex tasks ranging from visual object recognition to natural language processing. I find ANNs super interesting due to their computational power and their intersection with computational neuroscience.  However, I’ve found that most of the available tutorials on ANNs are either dense with formal details and contain little information about implementation or any examples, while others skip a lot of the mathematical detail and provide implementations that seem to come from thin air.  This post aims at giving a more complete overview of ANNs, including (varying degrees of) the math behind ANNs, how ANNs are implemented in code, and finally some toy examples that point out the strengths and weaknesses of ANNs.</p>
 
 <h1 id="single-layer-neural-networks">Single-layer Neural Networks</h1>
 
-<p>The simplest ANN (<strong><em>Figure 1</em></strong>) takes a set of observed inputs <script type="math/tex">\mathbf{a}=(a_1, a_2, ..., a_N)</script>, multiplies each of them by their own associated weight <script type="math/tex">\mathbf{w} = (w_1, w_2, ...w_N)</script> , and sums the weighted values to form a pre-activation <script type="math/tex">z</script>.  Oftentimes there is also a bias <script type="math/tex">b</script> that is tied to an input that is always +1 included in the preactivation calculation. The network then transforms the pre-activation using a nonlinear activation function <script type="math/tex">g(z)</script> to output a final activation <script type="math/tex">a_{\text{out}}</script>.</p>
+<p>The simplest ANN (<strong><em>Figure 1</em></strong>) takes a set of observed inputs \(\mathbf{a}=(a_1, a_2, ..., a_N)\), multiplies each of them by their own associated weight \(\mathbf{w} = (w_1, w_2, ...w_N)\) , and sums the weighted values to form a pre-activation \(z\).  Oftentimes there is also a bias \(b\) that is tied to an input that is always +1 included in the preactivation calculation. The network then transforms the pre-activation using a nonlinear activation function \(g(z)\) to output a final activation \(a_{\text{out}}\).</p>
 
 <hr />
 
@@ -120,15 +122,15 @@
 <hr />
 <p><b></b></p>
 
-<p>There are many options available for the form of the activation function <script type="math/tex">g(z)</script>, and the choice generally depends on the task we would like the network to perform. For instance, if the activation function is the identity function:</p>
+<p>There are many options available for the form of the activation function \(g(z)\), and the choice generally depends on the task we would like the network to perform. For instance, if the activation function is the identity function:</p>
 
-<script type="math/tex; mode=display">g_{\text{linear}}(z) = z</script>
+\[g_{\text{linear}}(z) = z\]
 
-<p>which outputs continuous values <script type="math/tex">a_{linear}\in (-\infty, \infty)</script>, then the network implements a linear model akin to used in standard linear regression. Another choice for the activation function is the logistic sigmoid:</p>
+<p>which outputs continuous values \(a_{linear}\in (-\infty, \infty)\), then the network implements a linear model akin to used in standard linear regression. Another choice for the activation function is the logistic sigmoid:</p>
 
-<script type="math/tex; mode=display">g_{\text{logistic}}(z) = \frac{1}{1+e^{-z}}</script>
+\[g_{\text{logistic}}(z) = \frac{1}{1+e^{-z}}\]
 
-<p>which outputs values <script type="math/tex">a_{logistic} \in (0,1)</script>. When the network outputs use the logistic sigmoid activation function, the network implements linear binary classification. Binary classification can also be implemented using the hyperbolic tangent function, <script type="math/tex">\text{tanh}(z)</script>, which outputs values <script type="math/tex">a_{\text{tanh}}\in (-1, 1)</script> (note that the classes must also be coded as either -1 or 1 when using <script type="math/tex">\text{tanh}</script>. Single-layered neural networks used for classification are often referred to as “perceptrons,” a name given to them when they were first developed in the late 1950s.</p>
+<p>which outputs values \(a_{logistic} \in (0,1)\). When the network outputs use the logistic sigmoid activation function, the network implements linear binary classification. Binary classification can also be implemented using the hyperbolic tangent function, \(\text{tanh}(z)\), which outputs values \(a_{\text{tanh}}\in (-1, 1)\) (note that the classes must also be coded as either -1 or 1 when using \(\text{tanh}\). Single-layered neural networks used for classification are often referred to as “perceptrons,” a name given to them when they were first developed in the late 1950s.</p>
 
 <hr />
 <center>
@@ -171,7 +173,7 @@
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">activation_functions</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
     <span class="c1"># Activation functions
 </span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">f"$g_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">(z)$"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s">"$g_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">(z)$"</span><span class="p">)</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
@@ -179,7 +181,7 @@
     
     <span class="c1"># Derivatives
 </span>    <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">f"$g_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">(z)$"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s">"$g_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">(z)$"</span><span class="p">)</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">()</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
@@ -193,15 +195,14 @@
 
 <hr />
 
-<p>To get a better idea of what these activation function do, their outputs for a given range of input values are plotted in the left of <strong><em>Figure 2</em></strong>. We see that the <script type="math/tex">\text{logistic}</script> and <script type="math/tex">\text{tanh }</script> activation functions (blue and green) have the quintessential sigmoidal “s” shape that saturates for inputs of large magnitude. This behavior makes them useful for categorization. The identity / linear activation (red), however forms a linear mapping between the input to the activation function, which makes it useful for predicting continuous values.</p>
+<p>To get a better idea of what these activation function do, their outputs for a given range of input values are plotted in the left of <strong><em>Figure 2</em></strong>. We see that the \(\text{logistic}\) and \(\text{tanh }\) activation functions (blue and green) have the quintessential sigmoidal “s” shape that saturates for inputs of large magnitude. This behavior makes them useful for categorization. The identity / linear activation (red), however forms a linear mapping between the input to the activation function, which makes it useful for predicting continuous values.</p>
 
 <p>A key property of these activation functions is that they are all smooth and differentiable. We’ll see later in this post why differentiability is important for training neural networks. The derivatives for each of these common activation functions are given by (for mathematical details on calculating these derivatives, see <a href="/theclevermachine/derivation-common-neural-network-activation-functions">this post</a> ):</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align} g'_{\text{linear}}(z) &= 1 \\  
-g'_{\text{logistic}}(z) &= g_{\text{logistic}}(z)(1- g_{\text{logistic}}(z)) \\ 
-g'_{\text{tanh}}(z) &= 1 - g_{\text{tanh}}^2(z) 
-\end{align} %]]></script>
+\[\begin{align} g'_{\text{linear}}(z) &amp;= 1 \\  
+g'_{\text{logistic}}(z) &amp;= g_{\text{logistic}}(z)(1- g_{\text{logistic}}(z)) \\ 
+g'_{\text{tanh}}(z) &amp;= 1 - g_{\text{tanh}}^2(z) 
+\end{align}\]
 
 <p>Each of the derivatives are plotted in the right of <strong><em>Figure 2</em></strong>. What is interesting about these derivatives is that they are either a constant (i.e. 1), or are can be defined in terms of the original function. This makes them extremely convenient for efficiently training neural networks, as we can implement the gradient using simple manipulations of the feed-forward states of the network.</p>
 
@@ -209,7 +210,7 @@ g'_{\text{tanh}}(z) &= 1 - g_{\text{tanh}}^2(z)
 
 <p>As was mentioned above, single-layered networks implement linear models, which doesn’t really help us if we want to model nonlinear phenomena. However, by considering the single layer network diagrammed in <strong><em>Figure 1</em></strong> to be a basic building block, we can construct more complicated networks, ones that perform powerful, nonlinear computations. <strong><em>Figure 3</em></strong> demonstrates this concept. Instead of a single layer of weights between inputs and output, we introduce a set of  single-layer networks between the two. This set of intermediate networks is often referred to as a “hidden” layer, as it doesn’t directly observe input or directly compute the output.</p>
 
-<p>By using a hidden layer, we form a <em>multi-layered ANN</em>. Though there are many different conventions for declaring the actual number of layers in a multi-layer network, for this discussion we will use the convention of the number of distinct sets of trainable weights as the number of layers. For example, the network in <strong><em>Figure 3</em></strong> would be considered a 2-layer ANN because it has two layers of weights: those connecting the inputs to the hidden layer <script type="math/tex">(w_{ij})</script>, and those connecting the output of the hidden layer to the output layer <script type="math/tex">(w_{jk})</script>.</p>
+<p>By using a hidden layer, we form a <em>multi-layered ANN</em>. Though there are many different conventions for declaring the actual number of layers in a multi-layer network, for this discussion we will use the convention of the number of distinct sets of trainable weights as the number of layers. For example, the network in <strong><em>Figure 3</em></strong> would be considered a 2-layer ANN because it has two layers of weights: those connecting the inputs to the hidden layer \((w_{ij})\), and those connecting the output of the hidden layer to the output layer \((w_{jk})\).</p>
 
 <hr />
 <center>
@@ -224,41 +225,40 @@ g'_{\text{tanh}}(z) &= 1 - g_{\text{tanh}}^2(z)
 <hr />
 <p><b></b></p>
 
-<p>Multi-layer neural networks form compositional functions that map the inputs nonlinearly to outputs. If we associate index <script type="math/tex">i</script> with the input layer, index <script type="math/tex">j</script> with the hidden layer, and index <script type="math/tex">k</script> with the output layer, then an output unit in the network diagrammed in <strong><em>Figure 3</em></strong> computes an output value <script type="math/tex">a_k</script> given and input <script type="math/tex">a_i</script> via the following compositional function:</p>
+<p>Multi-layer neural networks form compositional functions that map the inputs nonlinearly to outputs. If we associate index \(i\) with the input layer, index \(j\) with the hidden layer, and index \(k\) with the output layer, then an output unit in the network diagrammed in <strong><em>Figure 3</em></strong> computes an output value \(a_k\) given and input \(a_i\) via the following compositional function:</p>
 
-<script type="math/tex; mode=display">\begin{array}{rcl}a_{\text{out}} = a_k = g_k(b_k + \sum_jg_j(b_j + \sum_i a_i w_{ij})w_{jk}\end{array}</script>
+\[\begin{array}{rcl}a_{\text{out}} = a_k = g_k(b_k + \sum_jg_j(b_j + \sum_i a_i w_{ij})w_{jk}\end{array}\]
 
 <p>A breakdown of this function is as follows:</p>
 <ul>
-  <li><script type="math/tex">z_l</script> is the pre-activation values for the units in layer <script type="math/tex">l</script></li>
-  <li><script type="math/tex">g_l()</script> is the activation function for units in layer <script type="math/tex">l</script> (assuming the same function for all units)</li>
-  <li><script type="math/tex">a_l = g_l(z_l)</script> is the output activation for units in layer <script type="math/tex">l</script>.</li>
-  <li><script type="math/tex">w_{l-1, l}</script> are the parameters that weight the output messages of units feeding into layer <script type="math/tex">l</script> to the activation function of units for that layer.</li>
-  <li>The <script type="math/tex">b_l</script> term is the bias/DC offset for units in layer <script type="math/tex">l</script>.</li>
+  <li>\(z_l\) is the pre-activation values for the units in layer \(l\)</li>
+  <li>\(g_l()\) is the activation function for units in layer \(l\) (assuming the same function for all units)</li>
+  <li>\(a_l = g_l(z_l)\) is the output activation for units in layer \(l\).</li>
+  <li>\(w_{l-1, l}\) are the parameters that weight the output messages of units feeding into layer \(l\) to the activation function of units for that layer.</li>
+  <li>The \(b_l\) term is the bias/DC offset for units in layer \(l\).</li>
 </ul>
 
 <p>As with the single-layered ANN, the choice of activation function for the output layer will depend on the task that we would like the network to perform (i.e. categorization or regression), and follows similar rules outlined above. However, it is generally desirable for the hidden units to have nonlinear activation functions (e.g. logistic sigmoid or tanh). This is because multiple layers of linear computations can be equally formulated as a single layer of linear computations. Thus using linear activations for the hidden layers doesn’t buy us much. However, as we’ll see shortly, using linear activations for the output unit activation function, while in conjunction with nonlinear activations for the hidden units, allows the network to perform nonlinear regression.</p>
 
 <h1 id="-training-neural-networks--gradient-descent"><a name="training-networks-and-gradient-descent"></a> Training neural networks &amp; gradient descent</h1>
 
-<p>Training neural networks involves determining the model parameters  <script type="math/tex">\theta = \{\mathbf{w}, \mathbf{b}\}</script> that minimize the errors the network makes. This first requires that we have a way of quantifying error. A standard way of quantifying error is to take the squared difference between the network output and the target value:<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+<p>Training neural networks involves determining the model parameters  \(\theta = \{\mathbf{w}, \mathbf{b}\}\) that minimize the errors the network makes. This first requires that we have a way of quantifying error. A standard way of quantifying error is to take the squared difference between the network output and the target value:<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
 
-<script type="math/tex; mode=display">\begin{array}{rcl}E = \frac{1}{2}(\text{output} - \text{target})^2\end{array}</script>
+\[\begin{array}{rcl}E = \frac{1}{2}(\text{output} - \text{target})^2\end{array}\]
 
-<p>With an error function in hand, we then aim to find the setting of parameters that minimizes this error function, when aggregated across all the training data<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>. This concept can be interpreted spatially by imagining a “parameter space” whose dimensions are the values of each of the model parameters, and for which the error function will form a surface of varying height depending on its value for each parameter. Model training is thus equivalent to finding point in parameter space that makes the height of the error surface small.</p>
+<p>With an error function in hand, we then aim to find the setting of parameters that minimizes this error function, when aggregated across all the training data<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>. This concept can be interpreted spatially by imagining a “parameter space” whose dimensions are the values of each of the model parameters, and for which the error function will form a surface of varying height depending on its value for each parameter. Model training is thus equivalent to finding point in parameter space that makes the height of the error surface small.</p>
 
 <h1 id="analysis-of-simple-neural-networks">Analysis of simple neural networks</h1>
 
 <h4 id="single-layer-neural-network">Single-layer neural network</h4>
 
-<p>To get a better intuition behind the concept of minimizing the error surface, let’s define a super-simple neural network, one that has a single input and a single output. For further simplicity, we’ll assume the network has no bias term and thus has a single parameter, <script type="math/tex">w_1</script>. We will also assume that the output layer uses the logistic sigmoid activation function. Accordingly, the network will map some input value <script type="math/tex">a_0</script> onto a predicted output <script type="math/tex">a_{\text{out}}</script> via the following function.</p>
+<p>To get a better intuition behind the concept of minimizing the error surface, let’s define a super-simple neural network, one that has a single input and a single output. For further simplicity, we’ll assume the network has no bias term and thus has a single parameter, \(w_1\). We will also assume that the output layer uses the logistic sigmoid activation function. Accordingly, the network will map some input value \(a_0\) onto a predicted output \(a_{\text{out}}\) via the following function.</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
-\end{align} %]]></script>
+\[\begin{align}
+a_{\text{out}} &amp;= g_{\text{logistic}}(a_0w_1)
+\end{align}\]
 
-<p>Now let’s say we want this simple network to learn the identity function: given an input of 1 it should return a target value of 1. Given this target value we can now calculate the value of the error function for each setting of <script type="math/tex">w_1</script>. Varying the value of <script type="math/tex">w_1</script> from -10 to 10 results in the error surface displayed in the right of <strong><em>Figure 4</em></strong>.  We see that the error is small for large positive values of <script type="math/tex">w_1</script>, while the error is large for strongly negative values of <script type="math/tex">w_1</script>. This not surprising, given that the output activation function is the logistic sigmoid, which will map large values onto an output of 1.</p>
+<p>Now let’s say we want this simple network to learn the identity function: given an input of 1 it should return a target value of 1. Given this target value we can now calculate the value of the error function for each setting of \(w_1\). Varying the value of \(w_1\) from -10 to 10 results in the error surface displayed in the right of <strong><em>Figure 4</em></strong>.  We see that the error is small for large positive values of \(w_1\), while the error is large for strongly negative values of \(w_1\). This not surprising, given that the output activation function is the logistic sigmoid, which will map large values onto an output of 1.</p>
 
 <hr />
 <center>
@@ -268,7 +268,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
     </div>
 </center>
 
-<p><strong><em>Figure 4:</em></strong> <em>Dynamics of a simple, single-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface <script type="math/tex">E(\mathbf w)</script> for the task, as a function of the single model parameter, <script type="math/tex">w_1</script> The network’s error is low when <script type="math/tex">w_1</script> large and positive magnitude and high when <script type="math/tex">w_1</script> is negative</em></p>
+<p><strong><em>Figure 4:</em></strong> <em>Dynamics of a simple, single-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface \(E(\mathbf w)\) for the task, as a function of the single model parameter, \(w_1\) The network’s error is low when \(w_1\) large and positive magnitude and high when \(w_1\) is negative</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -347,12 +347,11 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 
 <h4 id="multi-layer-neural-network">Multi-layer neural network</h4>
 
-<p>Things become more interesting when we move from a single-layered network to a multi-layered network. Let’s repeat the above exercise, but include a single hidden node between the input and the output. Again, we will assume no biases, and logistic sigmoid activations for both the hidden and output nodes. Thus the network will have two parameters: <script type="math/tex">(w_1, w_2)</script>. Accordingly the 2-layered network will predict an output with the following function:</p>
+<p>Things become more interesting when we move from a single-layered network to a multi-layered network. Let’s repeat the above exercise, but include a single hidden node between the input and the output. Again, we will assume no biases, and logistic sigmoid activations for both the hidden and output nodes. Thus the network will have two parameters: \((w_1, w_2)\). Accordingly the 2-layered network will predict an output with the following function:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}a_{\text{out}} &= g_{\text{logistic}}(g_{\text{logistic}}(a_0w_1)w_2)\end{align} %]]></script>
+\[\begin{align}a_{\text{out}} &amp;= g_{\text{logistic}}(g_{\text{logistic}}(a_0w_1)w_2)\end{align}\]
 
-<p>Now, if we vary both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script>, we obtain the error surface in right of <strong><em>Figure 5</em></strong>.</p>
+<p>Now, if we vary both \(w_1\) and \(w_2\), we obtain the error surface in right of <strong><em>Figure 5</em></strong>.</p>
 
 <p><br /></p>
 
@@ -364,7 +363,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
     </div>
 </center>
 
-<p><strong><em>Figure 5:</em></strong> <em>Dynamics of a multi-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface <script type="math/tex">E(\mathbf w)</script> for the task, as a function of the model parameters, <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script>. The network’s error is low when both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script> have large positive magnitudes, and and high when the weights are negative.</em></p>
+<p><strong><em>Figure 5:</em></strong> <em>Dynamics of a multi-layer neural network. The network’s task is to learn the identity function, i.e. map the input value of 1 to the output value 1. Left: the graphical diagram for the network architecture. Right: the error surface \(E(\mathbf w)\) for the task, as a function of the model parameters, \(w_1\) and \(w_2\). The network’s error is low when both \(w_1\) and \(w_2\) have large positive magnitudes, and and high when the weights are negative.</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -441,7 +440,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 
 <p><br /></p>
 
-<p>We see that the error function is minimized when both <script type="math/tex">w_1</script> and <script type="math/tex">w_2</script> are large and positive. We also see that the error surface is more complex than for the single-layered model, exhibiting a number of wide plateau regions. It turns out that the error surface gets more and more complicated as you increase the number of layers in the network and the number of units in each hidden layer. Thus, it is important to consider these phenomena when constructing neural network models.</p>
+<p>We see that the error function is minimized when both \(w_1\) and \(w_2\) are large and positive. We also see that the error surface is more complex than for the single-layered model, exhibiting a number of wide plateau regions. It turns out that the error surface gets more and more complicated as you increase the number of layers in the network and the number of units in each hidden layer. Thus, it is important to consider these phenomena when constructing neural network models.</p>
 
 <p>The examples in <strong><em>Figures 4-5</em></strong> gives us a qualitative idea of how to train the parameters of an ANN, but we would like a more automatic way of doing so. Generally this problem is solved using gradient descent. The gradient descent algorithm first calculates the derivative / gradient of the error function with respect  to each of the model parameters. This gradient information will give us the direction in parameter space that decreases the height of the error surface. We then take a step in that direction and repeat, iteratively calculating the gradient and taking steps in parameter space.</p>
 
@@ -469,7 +468,7 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 
 <p><br /></p>
 
-<p><strong><em>Step I</em></strong> of the backpropagation algorithm is to forward-propagate the observed input forward through the network layers in order to provide a prediction for the current target. This first step of the backpropagation algorithm is demonstrated in <strong><em>Figure 6-I</em></strong>. Note that in the figure <script type="math/tex">a_k</script> could be considered network output (for a network with one hidden layer) or the output of a hidden layer that projects the remainder of the network (in the case of a network with more than one hidden layer). For this discussion, however, we assume that the index <script type="math/tex">k</script> is associated with the output layer of the network, and thus each of the network outputs is designated by <script type="math/tex">a_k</script>. Also note that when implementing this forward-propagation step, we should keep track of the feed-forward pre-activations <script type="math/tex">z_l</script> and activations <script type="math/tex">a_l</script> for all layers <script type="math/tex">l</script>, as these can be used to efficiently calculate backpropagated errors and error function gradients.</p>
+<p><strong><em>Step I</em></strong> of the backpropagation algorithm is to forward-propagate the observed input forward through the network layers in order to provide a prediction for the current target. This first step of the backpropagation algorithm is demonstrated in <strong><em>Figure 6-I</em></strong>. Note that in the figure \(a_k\) could be considered network output (for a network with one hidden layer) or the output of a hidden layer that projects the remainder of the network (in the case of a network with more than one hidden layer). For this discussion, however, we assume that the index \(k\) is associated with the output layer of the network, and thus each of the network outputs is designated by \(a_k\). Also note that when implementing this forward-propagation step, we should keep track of the feed-forward pre-activations \(z_l\) and activations \(a_l\) for all layers \(l\), as these can be used to efficiently calculate backpropagated errors and error function gradients.</p>
 
 <details>
   <summary>Python Code</summary>
@@ -492,26 +491,24 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 
 <p><strong><em>Step II</em></strong> of the algorithm is to calculate the network output error and backpropagate it toward the input. For this walkthrough we’ll continue to use the sum of squared differences error function, this time written in a more explicit form than in the <a href="#training-networks-and-gradient-descent">Training neural networks &amp; gradient descent</a> section:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}E(\mathbf{\theta}) &= \frac{1}{2}\sum_{k \in K}(a_k - t_k)^2\end{align} %]]></script>
+\[\begin{align}E(\mathbf{\theta}) &amp;= \frac{1}{2}\sum_{k \in K}(a_k - t_k)^2\end{align}\]
 
-<p>Here we sum over the values of all <script type="math/tex">k</script> output units (one in this example). Note that the model parameters parameters <script type="math/tex">\theta</script> are implicit in the output activations <script type="math/tex">a_k</script>. This error function has the following derivative with respect to the model parameters <script type="math/tex">\theta</script>:</p>
+<p>Here we sum over the values of all \(k\) output units (one in this example). Note that the model parameters parameters \(\theta\) are implicit in the output activations \(a_k\). This error function has the following derivative with respect to the model parameters \(\theta\):</p>
 
-<script type="math/tex; mode=display">E'(\mathbf{\theta}) = (a_k - t_k)</script>
+\[E'(\mathbf{\theta}) = (a_k - t_k)\]
 
-<p>We can now define an “error signal” <script type="math/tex">\delta_k</script> at the output node that will be backpropagated toward the input. The error signal is calculated as follows:</p>
+<p>We can now define an “error signal” \(\delta_k\) at the output node that will be backpropagated toward the input. The error signal is calculated as follows:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\delta_k &= g_k'(z_k)E'(\theta) \\  
-&= g_k'(z_k)(a_k - t_k)
-\end{align} %]]></script>
+\[\begin{align}
+\delta_k &amp;= g_k'(z_k)E'(\theta) \\  
+&amp;= g_k'(z_k)(a_k - t_k)
+\end{align}\]
 
-<p>This error signal essentially weights the gradient of the error function by the gradient of the output activation function. Notice that there is a <script type="math/tex">z_k</script> term is used in the calculation of <script type="math/tex">\delta_k</script>. In order to make learning more efficient, we keep track of the <script type="math/tex">z_k</script> during the forward-propagation step so that it can be used in backpropagation. We can continue backpropagating the error signal toward the input by passing <script type="math/tex">\delta_k</script> through the output layer weights <script type="math/tex">w_{jk}</script>, summing over all output nodes, and passing the result through the gradient of the activation function at the hidden layer <script type="math/tex">g_j'(z_j)</script> (<strong><em>Figure 6-II</em></strong>). Performing these operations results in the backpropagated error signal for the hidden layer, <script type="math/tex">\delta_j</script>:</p>
+<p>This error signal essentially weights the gradient of the error function by the gradient of the output activation function. Notice that there is a \(z_k\) term is used in the calculation of \(\delta_k\). In order to make learning more efficient, we keep track of the \(z_k\) during the forward-propagation step so that it can be used in backpropagation. We can continue backpropagating the error signal toward the input by passing \(\delta_k\) through the output layer weights \(w_{jk}\), summing over all output nodes, and passing the result through the gradient of the activation function at the hidden layer \(g_j'(z_j)\) (<strong><em>Figure 6-II</em></strong>). Performing these operations results in the backpropagated error signal for the hidden layer, \(\delta_j\):</p>
 
-<script type="math/tex; mode=display">\delta_j = g_j'(z_j)\sum_k \delta_k w_{jk}</script>
+\[\delta_j = g_j'(z_j)\sum_k \delta_k w_{jk}\]
 
-<p>For networks that have more than one hidden layer, this error backpropagation procedure can continue for layers <script type="math/tex">j-1, j-2, ...</script>, etc.</p>
+<p>For networks that have more than one hidden layer, this error backpropagation procedure can continue for layers \(j-1, j-2, ...\), etc.</p>
 
 <details>
   <summary>Python Code</summary>
@@ -531,15 +528,15 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 
 <p><b></b></p>
 
-<p><strong><em>Step III</em></strong> of the backpropagation algorithm is to calculate the gradients of the error function with respect to the model parameters at each layer <script type="math/tex">l</script> using the forward signals <script type="math/tex">a_{l-1}</script>, and the backward error signals <script type="math/tex">\delta_l</script> . If one considers the model weights <script type="math/tex">w_{l-1, l}</script> at a layer <script type="math/tex">l</script> as linking the forward signal <script type="math/tex">a_{l-1}</script> to the error signal <script type="math/tex">\delta_l</script> (<strong><em>Figure 6-III</em></strong>), then the gradient of the error function with respect to those weights is:<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup></p>
+<p><strong><em>Step III</em></strong> of the backpropagation algorithm is to calculate the gradients of the error function with respect to the model parameters at each layer \(l\) using the forward signals \(a_{l-1}\), and the backward error signals \(\delta_l\) . If one considers the model weights \(w_{l-1, l}\) at a layer \(l\) as linking the forward signal \(a_{l-1}\) to the error signal \(\delta_l\) (<strong><em>Figure 6-III</em></strong>), then the gradient of the error function with respect to those weights is:<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup></p>
 
-<script type="math/tex; mode=display">\frac{\partial E}{\partial w_{l-1, l}} = a_{l-1}\delta_l</script>
+\[\frac{\partial E}{\partial w_{l-1, l}} = a_{l-1}\delta_l\]
 
 <p>Thus the gradient of the error function with respect to the model weight at each layer can be efficiently calculated by simply keeping track of the forward-propagated activations feeding into that layer from below, and weighting those activations by the backward-propagated error signals feeding into that layer from above!</p>
 
-<p>What about the bias parameters? It turns out that the same gradient rule used for the weight weights applies, except that “feed-forward activations” for biases are always +1 (see <strong><em>Figure 1</em></strong>). Thus the bias gradients for layer <script type="math/tex">l</script> are simply:</p>
+<p>What about the bias parameters? It turns out that the same gradient rule used for the weight weights applies, except that “feed-forward activations” for biases are always +1 (see <strong><em>Figure 1</em></strong>). Thus the bias gradients for layer \(l\) are simply:</p>
 
-<script type="math/tex; mode=display">\frac{\partial E}{\partial b_{l}} = (1)\delta_l = \delta_l</script>
+\[\frac{\partial E}{\partial b_{l}} = (1)\delta_l = \delta_l\]
 
 <details>
   <summary>Python Code</summary>
@@ -562,13 +559,12 @@ a_{\text{out}} &= g_{\text{logistic}}(a_0w_1)
 
 <p><b></b></p>
 
-<p>The <strong><em>fourth and final step</em></strong> of the backpropagation algorithm is to update the model parameters based on the gradients calculated in Step III. Note that the gradients point in the direction in parameter space that will increase the value of the error function. Thus when updating the model parameters we should choose to go in the opposite direction. How far do we travel in that direction? That is generally determined by a user-defined step size–aka learning rate–parameter, <script type="math/tex">\eta</script>. Thus, given the parameter gradients and the step size, the weights and biases for a given layer are updated accordingly:</p>
+<p>The <strong><em>fourth and final step</em></strong> of the backpropagation algorithm is to update the model parameters based on the gradients calculated in Step III. Note that the gradients point in the direction in parameter space that will increase the value of the error function. Thus when updating the model parameters we should choose to go in the opposite direction. How far do we travel in that direction? That is generally determined by a user-defined step size–aka learning rate–parameter, \(\eta\). Thus, given the parameter gradients and the step size, the weights and biases for a given layer are updated accordingly:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-w_{l-1,l} &\leftarrow w_{l-1,l} - \eta \frac{\partial E}{\partial w_{l-1, l}} \\ 
-b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
-\end{align} %]]></script>
+\[\begin{align}
+w_{l-1,l} &amp;\leftarrow w_{l-1,l} - \eta \frac{\partial E}{\partial w_{l-1, l}} \\ 
+b_l &amp;\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
+\end{align}\]
 
 <details>
   <summary>Python Code</summary>
@@ -589,7 +585,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 
 <h1 id="neural-networks-for-classification">Neural Networks for Classification</h1>
 
-<p>Here we go over an example of training a single-layered neural network to perform a classification problem. The network is trained to learn a set of logical operators including the  <code class="language-plaintext highlighter-rouge">AND</code>, <code class="language-plaintext highlighter-rouge">OR</code>, or <code class="language-plaintext highlighter-rouge">XOR</code>. To train the network we first generate training data. The inputs consist of 2-dimensional coordinates that span the input values <script type="math/tex">(x_1, x_2)</script> values for a 2-bit truth table:</p>
+<p>Here we go over an example of training a single-layered neural network to perform a classification problem. The network is trained to learn a set of logical operators including the  <code class="language-plaintext highlighter-rouge">AND</code>, <code class="language-plaintext highlighter-rouge">OR</code>, or <code class="language-plaintext highlighter-rouge">XOR</code>. To train the network we first generate training data. The inputs consist of 2-dimensional coordinates that span the input values \((x_1, x_2)\) values for a 2-bit truth table:</p>
 
 <hr />
 <center>
@@ -676,7 +672,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 </details>
 <p><br /></p>
 
-<p>With training data in hand, we then train the network with the noisy inputs and binary categories targets using the gradient descent / backpropagation algorithm.<sup id="fnref:5"><a href="#fn:5" class="footnote">5</a></sup></p>
+<p>With training data in hand, we then train the network with the noisy inputs and binary categories targets using the gradient descent / backpropagation algorithm.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup></p>
 
 <details>
   <summary>Python Code</summary>
@@ -1066,7 +1062,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 
 <p><strong><em>Figure 11</em></strong> displays the learning process for the 2-layer network on the <code class="language-plaintext highlighter-rouge">XOR</code> dataset. The 2-layer network is easily able to learn the <code class="language-plaintext highlighter-rouge">XOR</code> operator. We see that by adding a hidden layer between the input and output, the ANN is able to learn the nonlinear categorization criterion!</p>
 
-<p><strong><em>Figure 12</em></strong> shows the results for learning a even more difficult nonlinear categorization function: points in and around <script type="math/tex">(x1, x2) = (0.5, 0.5)</script> are categorized as <code class="language-plaintext highlighter-rouge">1</code>, while points in a ring surrounding the <code class="language-plaintext highlighter-rouge">1</code> datapoints are categorized as a <code class="language-plaintext highlighter-rouge">0</code>:</p>
+<p><strong><em>Figure 12</em></strong> shows the results for learning a even more difficult nonlinear categorization function: points in and around \((x1, x2) = (0.5, 0.5)\) are categorized as <code class="language-plaintext highlighter-rouge">1</code>, while points in a ring surrounding the <code class="language-plaintext highlighter-rouge">1</code> datapoints are categorized as a <code class="language-plaintext highlighter-rouge">0</code>:</p>
 
 <p><br /></p>
 
@@ -1109,11 +1105,11 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 
 <p>The previous examples demonstrated how ANNs can be used for classification by using a logistic sigmoid as the output activation function. Here we demonstrate how, by making the output activation function the linear/identity function, the same 2-layer network architecture can be used to implement nonlinear regression.</p>
 
-<p>For this example we define a dataset comprised of 1D inputs, <script type="math/tex">\mathbf{x}</script> that range from <script type="math/tex">(-5, 5)</script>. We then generate noisy targets <script type="math/tex">\mathbf y</script> according to the function:</p>
+<p>For this example we define a dataset comprised of 1D inputs, \(\mathbf{x}\) that range from \((-5, 5)\). We then generate noisy targets \(\mathbf y\) according to the function:</p>
 
-<script type="math/tex; mode=display">\mathbf{y} = f(\mathbf{x}) + \mathbf{\epsilon}</script>
+\[\mathbf{y} = f(\mathbf{x}) + \mathbf{\epsilon}\]
 
-<p>where <script type="math/tex">f(\mathbf{x})</script> is a nonlinear data-generating function and <script type="math/tex">\mathbf \epsilon</script> is Normally-distributed noise. We then construct a two-layered network with <script type="math/tex">\text{tanh}</script> activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.</p>
+<p>where \(f(\mathbf{x})\) is a nonlinear data-generating function and \(\mathbf \epsilon\) is Normally-distributed noise. We then construct a two-layered network with \(\text{tanh}\) activation functions used in the hidden layer and linear outputs. For this example we set the number of hidden units to 3 and train the model as we did for categorization using gradient descent / backpropagation. The results of the example are visualized below.</p>
 
 <details>
   <summary>Python Code</summary>
@@ -1137,13 +1133,13 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     <span class="n">hidden_predictions</span> <span class="o">=</span> <span class="n">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">biases_history</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">hj</span><span class="p">,</span> <span class="n">hidden_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_predictions</span><span class="p">.</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s">'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
 
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Data and Prediction"</span><span class="p">)</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
     <span class="n">loss_line</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">[:</span><span class="n">ii</span><span class="p">],</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Loss Function"</span><span class="p">)</span>
-    <span class="n">suptitle</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">f"Iteration: </span><span class="si">{</span><span class="n">ii</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">suptitle</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s">"Iteration: </span><span class="si">{</span><span class="n">ii</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">ii</span><span class="p">):</span>
         <span class="n">suptitle</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"Iteration: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
@@ -1153,7 +1149,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
         <span class="n">hidden_predictions</span> <span class="o">=</span> <span class="n">get_hidden_unit_predictions</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">weights_history</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">biases_history</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
 
         <span class="k">for</span> <span class="n">hj</span><span class="p">,</span> <span class="n">hidden_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_predictions</span><span class="p">.</span><span class="n">T</span><span class="p">):</span>
-            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">f'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">(</span><span class="n">pred_xx</span><span class="p">,</span> <span class="n">hidden_pred</span><span class="p">,</span> <span class="s">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s">'$a_^</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s">w_ + b_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
 
         <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Data and Prediction"</span><span class="p">)</span>
         <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'upper left'</span><span class="p">)</span>
@@ -1183,7 +1179,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     </div>
 </center>
 
-<p><strong><em>Figure 13:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">sin</code> function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs <script type="math/tex">a_{j}^{(1)}w_{jk} + b_k</script> that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation <script type="math/tex">a^{(l)}</script> to indicate activations in the <script type="math/tex">l</script>-th hidden layer.</em></p>
+<p><strong><em>Figure 13:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">sin</code> function with an additional vertical offset (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs \(a_{j}^{(1)}w_{jk} + b_k\) that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation \(a^{(l)}\) to indicate activations in the \(l\)-th hidden layer.</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -1211,9 +1207,9 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 <hr />
 <p><br /></p>
 
-<p>The training procedure for <script type="math/tex">f(x): \sin(x) + 2.5</script> is visualized in the left plot of <strong><em>Figure 13</em></strong>. Noisy data generated around the function <script type="math/tex">f(x)</script> are plotted in magenta. The output of the network at each training iteration is plotted in solid blue while the output of each of the tanh hidden units is plotted in dashed lines. This visualization demonstrates how multiple nonlinear functions are combined by the ANN to form the complex output target function. The total squared error loss at each iteration is plotted in the right plot of <strong><em>Figure 13</em></strong>.</p>
+<p>The training procedure for \(f(x): \sin(x) + 2.5\) is visualized in the left plot of <strong><em>Figure 13</em></strong>. Noisy data generated around the function \(f(x)\) are plotted in magenta. The output of the network at each training iteration is plotted in solid blue while the output of each of the tanh hidden units is plotted in dashed lines. This visualization demonstrates how multiple nonlinear functions are combined by the ANN to form the complex output target function. The total squared error loss at each iteration is plotted in the right plot of <strong><em>Figure 13</em></strong>.</p>
 
-<p><strong><em>Figure 14</em></strong> visualizes the training procedure for trying to learn a different nonlinear function, namely <script type="math/tex">f(x): \text{abs}(x)</script>. Again, we see how the outputs of the hidden units are combined to fit the desired data-generating function. The total squared error loss again follows an erratic path during learning.</p>
+<p><strong><em>Figure 14</em></strong> visualizes the training procedure for trying to learn a different nonlinear function, namely \(f(x): \text{abs}(x)\). Again, we see how the outputs of the hidden units are combined to fit the desired data-generating function. The total squared error loss again follows an erratic path during learning.</p>
 
 <hr />
 <center>
@@ -1223,7 +1219,7 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
     </div>
 </center>
 
-<p><strong><em>Figure 14:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">abs</code> function (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs <script type="math/tex">a_{j}^{(1)}w_{jk} + b_k</script> that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation <script type="math/tex">a^{(l)}</script> to indicate activations in the <script type="math/tex">l</script>-th hidden layer..</em></p>
+<p><strong><em>Figure 14:</em></strong> <em>Nonlinear regression using a multi-layer ANN. The task is to learn the noisy <code class="language-plaintext highlighter-rouge">abs</code> function (magenta datapoints). Network architecture includes a hidden layer with 3 <code class="language-plaintext highlighter-rouge">tanh</code> units, and a single <code class="language-plaintext highlighter-rouge">linear</code> output unit. (Left subpanel) The weighted hidden unit outputs \(a_{j}^{(1)}w_{jk} + b_k\) that are combined to form the network prediction (in blue) are plotted as dashed lines, where we use the notation \(a^{(l)}\) to indicate activations in the \(l\)-th hidden layer..</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -1275,22 +1271,22 @@ b_l &\leftarrow b_{l} - \eta \frac{\partial E}{\partial b_{l}}
 
 <p><em>This post is a refactor of content with the same title originally posted on <a href="https://theclevermachine.wordpress.com/2014/09/11/a-gentle-introduction-to-artificial-neural-networks/">The Clever Machine</a> Wordpress blog.</em></p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>This property is not reserved for ANNs; kernel methods are also considered “universal approximators”; however, it turns out that neural networks with multiple layers are more efficient at approximating arbitrary functions than other methods. I refer the interested reader to <a href="http://yann.lecun.com/exdb/publis/pdf/bengio-lecun-07.pdf">an in-depth discussion</a> on the topic.) <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>This property is not reserved for ANNs; kernel methods are also considered “universal approximators”; however, it turns out that neural networks with multiple layers are more efficient at approximating arbitrary functions than other methods. I refer the interested reader to <a href="http://yann.lecun.com/exdb/publis/pdf/bengio-lecun-07.pdf">an in-depth discussion</a> on the topic.) <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p>The squared error is not chosen arbitrarily, but has a number of theoretical benefits and considerations. For more detail, see the <a href="/theclevermachine/cutting-your-losses">this post on the matter</a> <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>The squared error is not chosen arbitrarily, but has a number of theoretical benefits and considerations. For more detail, see the <a href="/theclevermachine/cutting-your-losses">this post on the matter</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
-      <p>Aggregating the error across all training observations yields a <em>loss function</em>, which we discuss in depth in <a href="/theclevermachine/cutting-your-losses">this post</a> <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:3" role="doc-endnote">
+      <p>Aggregating the error across all training observations yields a <em>loss function</em>, which we discuss in depth in <a href="/theclevermachine/cutting-your-losses">this post</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4">
-      <p>Note that this result is closely related to the concept of <a href="http://en.wikipedia.org/wiki/Hebbian_theory">Hebbian learning</a> in neuroscience <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:4" role="doc-endnote">
+      <p>Note that this result is closely related to the concept of <a href="http://en.wikipedia.org/wiki/Hebbian_theory">Hebbian learning</a> in neuroscience <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:5">
-      <p>Notice for the implementation, there is an additional step known as <a href="https://en.wikipedia.org/wiki/Simulated_annealing">learning rate annealing</a>. This technique decreases the learning rate after every iteration thus making the algorithm take smaller and smaller steps in parameter space. This technique can be useful when the gradient updates begin oscillating between two or more locations in the parameter space. It is also helpful for influencing the algorithm to settle down into a steady state. <a href="#fnref:5" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:5" role="doc-endnote">
+      <p>Notice for the implementation, there is an additional step known as <a href="https://en.wikipedia.org/wiki/Simulated_annealing">learning rate annealing</a>. This technique decreases the learning rate after every iteration thus making the algorithm take smaller and smaller steps in parameter space. This technique can be useful when the gradient updates begin oscillating between two or more locations in the parameter space. It is also helpful for influencing the algorithm to settle down into a steady state. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

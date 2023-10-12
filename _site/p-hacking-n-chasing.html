@@ -11,21 +11,23 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>p-Hacking 101: N Chasing | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="p-Hacking 101: N Chasing" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="” Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives." />
-<meta property="og:description" content="” Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives." />
+<meta name="description" content="”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives." />
+<meta property="og:description" content="”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives." />
 <link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing" />
 <meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-10-04T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="p-Hacking 101: N Chasing" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing","description":"” Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.","@type":"BlogPosting","headline":"p-Hacking 101: N Chasing","dateModified":"2020-10-04T00:00:00-07:00","datePublished":"2020-10-04T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-10-04T00:00:00-07:00","datePublished":"2020-10-04T00:00:00-07:00","description":"”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.","headline":"p-Hacking 101: N Chasing","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing"},"url":"https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -83,11 +85,11 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>”<script type="math/tex">N</script> Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of <script type="math/tex">N</script> chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate <script type="math/tex">N</script> chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.</p>
+    <p>”\(N\) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of \(N\) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate \(N\) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.</p>
 
 <h1 id="well-behaved-statistical-tests">Well-behaved Statistical Tests</h1>
 
-<p>A well-behaved statistical test should provide uniformly-distributed p-values. This is because the test shouldn’t favor any one portion of the hypothesis space over the others. This is demonstrated in <strong><em>Figure 1</em></strong>, which plots the distribution of <em>p</em>-values that result from running two-sample <em>t</em>-tests on 10,000 simulated datasets (<script type="math/tex">N=10</script>) having no difference between the two samples being tested, i.e. the Null Hypothesis <script type="math/tex">H_0=\text{True}</script>.</p>
+<p>A well-behaved statistical test should provide uniformly-distributed p-values. This is because the test shouldn’t favor any one portion of the hypothesis space over the others. This is demonstrated in <strong><em>Figure 1</em></strong>, which plots the distribution of <em>p</em>-values that result from running two-sample <em>t</em>-tests on 10,000 simulated datasets (\(N=10\)) having no difference between the two samples being tested, i.e. the Null Hypothesis \(H_0=\text{True}\).</p>
 
 <hr />
 <center>
@@ -97,7 +99,7 @@
     </div>
 </center>
 
-<p><strong><em>Figure 1, p-values from a well-behaved statistical test.</em></strong> <em>p-values should be uniformly distributed; here we choose twenty equally-sized bins, corresponding with <script type="math/tex">\alpha=0.05</script>. Even when there is no effect, i.e. <script type="math/tex">H_0=\text{True}</script>, 5% of trials will indicate a “significant” effect by chance (red). Additionally, 5% of trials will be “So close” to showing significance (blue). N chasing is often performed on these “So close” trials by collecting additional data points.</em></p>
+<p><strong><em>Figure 1, p-values from a well-behaved statistical test.</em></strong> <em>p-values should be uniformly distributed; here we choose twenty equally-sized bins, corresponding with \(\alpha=0.05\). Even when there is no effect, i.e. \(H_0=\text{True}\), 5% of trials will indicate a “significant” effect by chance (red). Additionally, 5% of trials will be “So close” to showing significance (blue). N chasing is often performed on these “So close” trials by collecting additional data points.</em></p>
 
 <details>
   <summary><b>Figure 1</b> Python Code</summary>
@@ -137,7 +139,7 @@
 </span><span class="n">expected_type_I</span> <span class="o">=</span> <span class="n">patches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">expected_type_I</span><span class="p">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">COLORS</span><span class="p">.</span><span class="n">red</span><span class="p">)</span>
 <span class="n">expected_type_I_rate</span> <span class="o">=</span> <span class="n">cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">100.</span>
-<span class="n">expected_type_I</span><span class="p">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">f"</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">expected_type_I_rate</span><span class="p">)</span><span class="si">}</span><span class="s">% of Trials are False Positives"</span><span class="p">)</span>
+<span class="n">expected_type_I</span><span class="p">.</span><span class="n">set_label</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">expected_type_I_rate</span><span class="p">)</span><span class="si">}</span><span class="s">% of Trials are False Positives"</span><span class="p">)</span>
 
 <span class="c1">## So close to being "significant" trials
 </span><span class="n">near_type_I</span> <span class="o">=</span> <span class="n">patches</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -154,11 +156,11 @@
 <hr />
 <p><br /></p>
 
-<p>Because the <em>p</em>-vlaues are uniformly distributed, if you histogram the <em>p</em>-values into 20 equally-sized bins, you would expect each bin to be associated with roughly 5% of trials. Consequently, we would expect a default false positive rate <script type="math/tex">\alpha</script> of 0.05. It turns out this resolution of <em>p</em>-value breakdown that is a pretty common scientific standard and is one of the reasons everyone uses an <script type="math/tex">\alpha=0.05</script> in hypothesis tests.</p>
+<p>Because the <em>p</em>-vlaues are uniformly distributed, if you histogram the <em>p</em>-values into 20 equally-sized bins, you would expect each bin to be associated with roughly 5% of trials. Consequently, we would expect a default false positive rate \(\alpha\) of 0.05. It turns out this resolution of <em>p</em>-value breakdown that is a pretty common scientific standard and is one of the reasons everyone uses an \(\alpha=0.05\) in hypothesis tests.</p>
 
 <h1 id="n-chasing"><em>N</em> Chasing</h1>
 
-<p><strong><em>Figure 1</em></strong> also highlights in blue the trials where the <em>p</em>-values are “So close” to exhibiting a significant effect, having magnitudes just above the <script type="math/tex">\alpha=0.05</script> cutoff.</p>
+<p><strong><em>Figure 1</em></strong> also highlights in blue the trials where the <em>p</em>-values are “So close” to exhibiting a significant effect, having magnitudes just above the \(\alpha=0.05\) cutoff.</p>
 
 <p>If you were an experimenter, who is incentivised to find novel, positive effects in your experiment–even though there isn’t one, as is the case here, but you don’t know that–you might be tempted to just extend your experiment <em>juuuust a liiiiittle</em> longer to see if the <em>p</em>-values for those “So close” trials decrease enough to reach statistical significance.</p>
 
@@ -174,7 +176,7 @@
     </div>
 </center>
 
-<p><strong><em>Figure 2, p-Hacking via N Chasing.</em></strong> <em>To simulate N Chasing, we take the “So close” (blue) trials in Figure 1 and add to each trial a single, random data point drawn from <script type="math/tex">H_0</script> (<script type="math/tex">N_{hacked}=11</script>). The resulting distribution of p-values from running two-sample t-tests on the hacked datasets is shown. The distribution is no longer uniform–the sign of a ill-behaved statistical test. Additionally, the Type I error rate is around 25% (red bar), where we would expect false positives in around 5% of trials (dark red line).</em></p>
+<p><strong><em>Figure 2, p-Hacking via N Chasing.</em></strong> <em>To simulate N Chasing, we take the “So close” (blue) trials in Figure 1 and add to each trial a single, random data point drawn from \(H_0\) (\(N_{hacked}=11\)). The resulting distribution of p-values from running two-sample t-tests on the hacked datasets is shown. The distribution is no longer uniform–the sign of a ill-behaved statistical test. Additionally, the Type I error rate is around 25% (red bar), where we would expect false positives in around 5% of trials (dark red line).</em></p>
 
 <details>
   <summary><b>Figure 2</b> Python Code</summary>
@@ -196,28 +198,28 @@
 <span class="n">inflated_type_I</span> <span class="o">=</span> <span class="n">hacked_patches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">inflated_type_I</span><span class="p">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">COLORS</span><span class="p">.</span><span class="n">red</span><span class="p">)</span>
 <span class="n">inflated_type_I_rate</span> <span class="o">=</span> <span class="mf">100.</span> <span class="o">*</span> <span class="n">hacked_cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">inflated_type_I</span><span class="p">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">f"</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">inflated_type_I_rate</span><span class="p">)</span><span class="si">}</span><span class="s">% of Trials are False Positives"</span><span class="p">)</span>
+<span class="n">inflated_type_I</span><span class="p">.</span><span class="n">set_label</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">inflated_type_I_rate</span><span class="p">)</span><span class="si">}</span><span class="s">% of Trials are False Positives"</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">COLORS</span><span class="p">.</span><span class="n">dark_red</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Expected Type I Error Rate'</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'p-values'</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Proportion of Trials'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f"p-values of 'Soo close!' trials after adding </span><span class="si">{</span><span class="n">n_additional_samples</span><span class="si">}</span><span class="s"> additional datapoint(s)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">"p-values of 'Soo close!' trials after adding </span><span class="si">{</span><span class="n">n_additional_samples</span><span class="si">}</span><span class="s"> additional datapoint(s)"</span><span class="p">)</span>
 </code></pre></div>  </div>
 </details>
 
 <hr />
 <p><br /></p>
 
-<p>To demonstrate how hacking <em>p</em>-values via <em>N</em> chasing inflates false positive rates, we take the “So close” (blue) trials from the simulation in <strong><em>Figure 1</em></strong>, and add to each trial a random data point drawn from the <script type="math/tex">H_0</script> distribution. We then re-run our two-sample <em>t</em>-tests and histogram the resulting <em>p</em>-values.</p>
+<p>To demonstrate how hacking <em>p</em>-values via <em>N</em> chasing inflates false positive rates, we take the “So close” (blue) trials from the simulation in <strong><em>Figure 1</em></strong>, and add to each trial a random data point drawn from the \(H_0\) distribution. We then re-run our two-sample <em>t</em>-tests and histogram the resulting <em>p</em>-values.</p>
 
-<p><strong><em>Figure 2</em></strong> shows the resulting distribution of hacked <em>p</em>-values. These trials originally exhibited a False Positive Rate of 0% (i.e. they did not fall into the <script type="math/tex">p \le \alpha = 0.05</script> bin). However, these trials now exhibit a Type I error rate over 25% (red), nearly 5 times the expected false positive rate 5% (dark red line)! Just from adding <strong>a single data point</strong> to those trials!</p>
+<p><strong><em>Figure 2</em></strong> shows the resulting distribution of hacked <em>p</em>-values. These trials originally exhibited a False Positive Rate of 0% (i.e. they did not fall into the \(p \le \alpha = 0.05\) bin). However, these trials now exhibit a Type I error rate over 25% (red), nearly 5 times the expected false positive rate 5% (dark red line)! Just from adding <strong>a single data point</strong> to those trials!</p>
 
 <p>Another piece of evidence suggesting that something has gone awry is that the distribution of <em>p</em>-values on these augmented trials is no longer uniform, but right-skewed. Thus the statistical test on these data is no longer unbiased, instead favoring lower <em>p</em>-values.</p>
 
-<p>The problem here is that we’re adding information into the system by first calculating test statistics/<em>p</em>-values, interpreting the results, then deciding to add more data and testing again. It turns out that this is a flavor of statistical error known as the <em>Multiple Comparisons Problem.</em><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p>The problem here is that we’re adding information into the system by first calculating test statistics/<em>p</em>-values, interpreting the results, then deciding to add more data and testing again. It turns out that this is a flavor of statistical error known as the <em>Multiple Comparisons Problem.</em><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
 
-<p>It’s worth noting that the simulation presented here is based on a pretty small sample size of <script type="math/tex">N=10</script>. Thus, adding a single data point has a much larger effect on Type I error rate than it might for larger sample sizes. However, the effect is consistent on larger <script type="math/tex">N</script> as well if one is adding new samples to the experiment that are in proportion to <script type="math/tex">N</script>.</p>
+<p>It’s worth noting that the simulation presented here is based on a pretty small sample size of \(N=10\). Thus, adding a single data point has a much larger effect on Type I error rate than it might for larger sample sizes. However, the effect is consistent on larger \(N\) as well if one is adding new samples to the experiment that are in proportion to \(N\).</p>
 
 <h1 id="wrapping-up">Wrapping Up</h1>
 
@@ -229,10 +231,10 @@
 <hr />
 <h1 id="references">References</h1>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p><a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01444/full">Szucs, D., A Tutorial on Hunting Statistical Significance by Chasing N (2016)</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2016.01444/full">Szucs, D., A Tutorial on Hunting Statistical Significance by Chasing N (2016)</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

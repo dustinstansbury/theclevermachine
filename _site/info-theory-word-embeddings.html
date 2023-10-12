@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
@@ -24,8 +24,10 @@
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-09-11T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings","description":"Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition.","@type":"BlogPosting","headline":"Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra","dateModified":"2020-09-11T00:00:00-07:00","datePublished":"2020-09-11T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-09-11T00:00:00-07:00","datePublished":"2020-09-11T00:00:00-07:00","description":"Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition.","headline":"Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings"},"url":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -98,15 +100,15 @@
 
 <p>Building computational systems that can interact naturally with humans requires computers to be able to process natural language, i.e. words. Words carry information about real-world, semantic entities, actions, or notions. However, computers do not operate in the space of semantics, but instead employ numerical operations. Therefore in order to build useful computer-human-language interfaces, we need a way of numerically representing words and their semantics.</p>
 
-<p>The classic way of representing a word numerically is to use a “1-of-<script type="math/tex">K</script>” or “one-hot” encoding (<strong><em>Figure 1, Top Left</em></strong>). This encoding uses a sparse vector of length-<script type="math/tex">K</script>, representing each of the words in a length-<script type="math/tex">K</script> vocabulary. The vector is filled with zeros except a single value of one located at the index associated with the represented word. One can think of the 1-of-<script type="math/tex">K</script> encoding acting like a vectorized indicator variable for the presence of a word.</p>
+<p>The classic way of representing a word numerically is to use a “1-of-\(K\)” or “one-hot” encoding (<strong><em>Figure 1, Top Left</em></strong>). This encoding uses a sparse vector of length-\(K\), representing each of the words in a length-\(K\) vocabulary. The vector is filled with zeros except a single value of one located at the index associated with the represented word. One can think of the 1-of-\(K\) encoding acting like a vectorized indicator variable for the presence of a word.</p>
 
-<p>This 1-of-<script type="math/tex">K</script> encoding is simple and provides an orthogonal set of features to represent words. Consequently it has been the backbone of many NLP models for decades. However, 1-of-<script type="math/tex">K</script> encoding can be inefficient in that the cardinality of the feature space can become quite large for large vocabularies, quickly running into the curse of dimensionality that makes so many machine learning problems ill-posed, or require tons of observations to obtain good parameter estimates. Additionally, the 1-of-<script type="math/tex">K</script> encoding carries little semantic information about the vocabulary it represents.</p>
+<p>This 1-of-\(K\) encoding is simple and provides an orthogonal set of features to represent words. Consequently it has been the backbone of many NLP models for decades. However, 1-of-\(K\) encoding can be inefficient in that the cardinality of the feature space can become quite large for large vocabularies, quickly running into the curse of dimensionality that makes so many machine learning problems ill-posed, or require tons of observations to obtain good parameter estimates. Additionally, the 1-of-\(K\) encoding carries little semantic information about the vocabulary it represents.</p>
 
 <h1 id="enter-word-embeddings">Enter Word Embeddings</h1>
 
-<p>In recent years, a more compact alternative to 1-of-<script type="math/tex">K</script> encoding, which carries more semantic information, has been to use word embeddings. Rather than large, sparse vectors, word embeddings provide for each word a <em>dense</em> vector with length that is generally orders of magnitude smaller than the 1-of-<script type="math/tex">K</script> encoding (generally on the order of a few hundred dimensions or less).</p>
+<p>In recent years, a more compact alternative to 1-of-\(K\) encoding, which carries more semantic information, has been to use word embeddings. Rather than large, sparse vectors, word embeddings provide for each word a <em>dense</em> vector with length that is generally orders of magnitude smaller than the 1-of-\(K\) encoding (generally on the order of a few hundred dimensions or less).</p>
 
-<p>There are a number of ways to derive dense word embeddings, but by far most common approach is to use the word2vec algorithm. This post won’t go into the details of word2vec, but basic ideas goes like this: The word2vec algorithm trains a <a href="/theclevermachine/a-gentle-introduction-to-neural-networks">neural network</a> that is optimized on a corpus of sentences.  Given a query word <script type="math/tex">w</script> sampled from one of the corpus sentences, the network’s task is to predict each of the words <script type="math/tex">c</script> that are located within a context window <script type="math/tex">C</script> surrounding the query word (<strong><em>Figure 1, Right</em></strong>). 
+<p>There are a number of ways to derive dense word embeddings, but by far most common approach is to use the word2vec algorithm. This post won’t go into the details of word2vec, but basic ideas goes like this: The word2vec algorithm trains a <a href="/theclevermachine/a-gentle-introduction-to-neural-networks">neural network</a> that is optimized on a corpus of sentences.  Given a query word \(w\) sampled from one of the corpus sentences, the network’s task is to predict each of the words \(c\) that are located within a context window \(C\) surrounding the query word (<strong><em>Figure 1, Right</em></strong>). 
 <br /></p>
 
 <hr />
@@ -117,26 +119,26 @@
     </div>
 </center>
 
-<p><strong><em>Figure 1, Various methods for representing words numerically</em></strong>. <em><strong>Top Left</strong>, “1-of-<script type="math/tex">K</script>” encoding represents each word as a sparse vector of <script type="math/tex">K</script> entries with only a single one-valued entry indicating the presence of a particular word. <strong>Right</strong>, The word2vec algorithm trains a two-layer neural network to predict, given a sentence and a query word from that sentence <script type="math/tex">w</script>, the words <script type="math/tex">c</script> located within a context window <script type="math/tex">C</script> surrounding <script type="math/tex">w</script>. <strong>Bottom Left</strong>, Once the neural network has been optimized, each row of the <script type="math/tex">K \times D</script> weight matrix in the first hidden layer of the neural network <script type="math/tex">\beta_{embedding}</script> provides a dense vector representation for each of the <script type="math/tex">K</script> words in the vocabulary.</em></p>
+<p><strong><em>Figure 1, Various methods for representing words numerically</em></strong>. <em><strong>Top Left</strong>, “1-of-\(K\)” encoding represents each word as a sparse vector of \(K\) entries with only a single one-valued entry indicating the presence of a particular word. <strong>Right</strong>, The word2vec algorithm trains a two-layer neural network to predict, given a sentence and a query word from that sentence \(w\), the words \(c\) located within a context window \(C\) surrounding \(w\). <strong>Bottom Left</strong>, Once the neural network has been optimized, each row of the \(K \times D\) weight matrix in the first hidden layer of the neural network \(\beta_{embedding}\) provides a dense vector representation for each of the \(K\) words in the vocabulary.</em></p>
 
 <hr />
 <p><b></b></p>
 
-<p>The input to the neural network is the 1-of-<script type="math/tex">K</script> representation of the query word and each of the target context words are represented as, you guessed it 1-of-<script type="math/tex">K</script> encodings. For each query word there are <script type="math/tex">\mid C \mid - 1</script> classification targets, one for each context word <script type="math/tex">c</script>. The neural network uses a hidden layer comprised of <script type="math/tex">D</script> units, and thus there is a matrix of parameters <script type="math/tex">\beta_{embedding} \in \mathbb{R}^{K \times D}</script> that linearly maps each word into a latent space of size <script type="math/tex">D \ll K</script>. After the network has converged, each row of the first layer of weights <script type="math/tex">\beta_{embedding}</script> provides for each word a dense embedding vector representation of size <script type="math/tex">D</script>, rather than <script type="math/tex">K</script> (<strong><em>Figure 1, Bottom Left</em></strong>).</p>
+<p>The input to the neural network is the 1-of-\(K\) representation of the query word and each of the target context words are represented as, you guessed it 1-of-\(K\) encodings. For each query word there are \(\mid C \mid - 1\) classification targets, one for each context word \(c\). The neural network uses a hidden layer comprised of \(D\) units, and thus there is a matrix of parameters \(\beta_{embedding} \in \mathbb{R}^{K \times D}\) that linearly maps each word into a latent space of size \(D \ll K\). After the network has converged, each row of the first layer of weights \(\beta_{embedding}\) provides for each word a dense embedding vector representation of size \(D\), rather than \(K\) (<strong><em>Figure 1, Bottom Left</em></strong>).</p>
 
-<p>It turns out that the resulting word embedding vectors capture rich semantic information about the words in the corpus. In particular, words that are semantically similar occupy nearby locations in the <script type="math/tex">D</script>-dimensional space (<strong><em>Figure 1, Bottom Left</em></strong>). Additionally, semantic relationships amongst words are encoded by displacements in the embedding space.</p>
+<p>It turns out that the resulting word embedding vectors capture rich semantic information about the words in the corpus. In particular, words that are semantically similar occupy nearby locations in the \(D\)-dimensional space (<strong><em>Figure 1, Bottom Left</em></strong>). Additionally, semantic relationships amongst words are encoded by displacements in the embedding space.</p>
 
 <h1 id="calculating-information-theoretic-word-embeddings-with-svd">Calculating Information-theoretic Word Embeddings with SVD</h1>
 
-<p>Calculating word embeddings using the word2vec algorithm requires building and training a neural network, which in turn involves a <a href="/theclevermachine/derivation-backpropagation">considerable amount of calculus</a> necessary for gradient-based parameter optimization. It turns out that there is a simpler way to calculate equivalent word vectors using a little information theory and linear algebra.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> Before digging into this method, let’s first introduce a few basic concepts.</p>
+<p>Calculating word embeddings using the word2vec algorithm requires building and training a neural network, which in turn involves a <a href="/theclevermachine/derivation-backpropagation">considerable amount of calculus</a> necessary for gradient-based parameter optimization. It turns out that there is a simpler way to calculate equivalent word vectors using a little information theory and linear algebra.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> Before digging into this method, let’s first introduce a few basic concepts.</p>
 
 <h4 id="marginal-and-joint-probabilities">Marginal and Joint Probabilities</h4>
 
-<p>The foundation of information theory is probability, and specifically relevant for this post, marginal and joint probabilities. The <em>marginal probability</em> of a word <script type="math/tex">p(w_i)</script> within a corpus of text is simply the number of times the word occurs <script type="math/tex">N(w_i)</script> divided by the total number of word occurrences in the corpus <script type="math/tex">\sum_k N(w_k)</script>:</p>
+<p>The foundation of information theory is probability, and specifically relevant for this post, marginal and joint probabilities. The <em>marginal probability</em> of a word \(p(w_i)\) within a corpus of text is simply the number of times the word occurs \(N(w_i)\) divided by the total number of word occurrences in the corpus \(\sum_k N(w_k)\):</p>
 
-<script type="math/tex; mode=display">p(w_i) = \frac{N(w_i)}{\sum_k N(w_k)} \tag{1}</script>
+\[p(w_i) = \frac{N(w_i)}{\sum_k N(w_k)} \tag{1}\]
 
-<p>In this post we refer to <script type="math/tex">N(w_i)</script> as <em>unigram frequency</em>, as it is a count of the number of times a single word, or “unigram”, occurs in the corpus.</p>
+<p>In this post we refer to \(N(w_i)\) as <em>unigram frequency</em>, as it is a count of the number of times a single word, or “unigram”, occurs in the corpus.</p>
 
 <details>
   <summary>Unigram Frequency Python Code</summary>
@@ -163,17 +165,17 @@
             <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">unigram_counts</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">idx_to_token</span><span class="p">[</span><span class="n">item</span><span class="p">]]</span>
-        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">f"type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="si">}</span><span class="s"> not supported"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s">"type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="si">}</span><span class="s"> not supported"</span><span class="p">)</span>
 </code></pre></div>  </div>
 </details>
 
 <p><b></b></p>
 
-<p>The <em>joint probability</em> of word <script type="math/tex">w_i</script> and another word <script type="math/tex">w_j, j\neq i</script> is simply the number of times the words co-occur <script type="math/tex">N(w_i, w_j)</script> divided by the total number of words:</p>
+<p>The <em>joint probability</em> of word \(w_i\) and another word \(w_j, j\neq i\) is simply the number of times the words co-occur \(N(w_i, w_j)\) divided by the total number of words:</p>
 
-<script type="math/tex; mode=display">p(w_i, w_j) = \frac{N(w_i, w_j)}{\sum_k N(w_k)} \tag{2}</script>
+\[p(w_i, w_j) = \frac{N(w_i, w_j)}{\sum_k N(w_k)} \tag{2}\]
 
-<p>There are many possible definitions of co-occurrence, but in this post we’ll use <em>skipgram frequencies</em> to define co-occurrence. Skipgrams define the joint frequency function <script type="math/tex">N(w_i, w_j) = N(w_i, c_{t \pm l})</script> as the number of times the context word <script type="math/tex">c_{q \pm l}</script> occurs within a context window <script type="math/tex">C</script> that surrounds the target/query word <script type="math/tex">w_i</script>; <script type="math/tex">t</script> being the token index of the query word and <script type="math/tex">l</script> being the number of steps preceding or following the query word within the context window (<strong><em>Figure 2, Top Left</em></strong>). This is reminiscent of the context words being individual classification targets in the word2vec approach (<strong><em>Figure 1, Right</em></strong>), but in this case we simply tally up counts of the context words, rather than try to build a classifier to predict the occurrence of the context words.</p>
+<p>There are many possible definitions of co-occurrence, but in this post we’ll use <em>skipgram frequencies</em> to define co-occurrence. Skipgrams define the joint frequency function \(N(w_i, w_j) = N(w_i, c_{t \pm l})\) as the number of times the context word \(c_{q \pm l}\) occurs within a context window \(C\) that surrounds the target/query word \(w_i\); \(t\) being the token index of the query word and \(l\) being the number of steps preceding or following the query word within the context window (<strong><em>Figure 2, Top Left</em></strong>). This is reminiscent of the context words being individual classification targets in the word2vec approach (<strong><em>Figure 1, Right</em></strong>), but in this case we simply tally up counts of the context words, rather than try to build a classifier to predict the occurrence of the context words.</p>
 
 <details>
   <summary>Skipgram Frequency Python Code</summary>
@@ -233,9 +235,9 @@
 
 <h4 id="pointwise-mutual-information">Pointwise Mutual information</h4>
 
-<p>Given the marginal and joint probabilities <script type="math/tex">p(w_i)</script> and <script type="math/tex">p(w_i, w_j)</script>, we can calculate some powerful information-theoretic quantities. Of particular interest is the <a href="https://en.wikipedia.org/wiki/Pointwise_mutual_information">Pointwise Mutual Information (PMI)</a>:</p>
+<p>Given the marginal and joint probabilities \(p(w_i)\) and \(p(w_i, w_j)\), we can calculate some powerful information-theoretic quantities. Of particular interest is the <a href="https://en.wikipedia.org/wiki/Pointwise_mutual_information">Pointwise Mutual Information (PMI)</a>:</p>
 
-<script type="math/tex; mode=display">PMI(w_i, w_j) = \log \frac{p(w_i, w_j)}{p(w_i) p(w_j)} \tag{3}</script>
+\[PMI(w_i, w_j) = \log \frac{p(w_i, w_j)}{p(w_i) p(w_j)} \tag{3}\]
 
 <p>The PMI matrix offers an intuitive and straight-forward means for calculating associations between words in a corpus: each row gives the amount of information shared between a word and all other words in the corpus. Intuitively, the PMI matrix represents <em>the amount of association between two words</em>. If the two words are independent–i.e. not associated–then the PMI is zero.</p>
 
@@ -305,7 +307,7 @@
 
 <h4 id="information-theoretic-word-embeddings">Information-theoretic Word Embeddings</h4>
 
-<p>The PMI matrix is a square, <script type="math/tex">K \times K</script> matrix. Therefore, if we have a large vocabulary, the PMI matrix can be quite large (though likely sparse). We’ve discussed in a <a href="/theclevermachine/svd-data-compression">previous post how Singular Value Decomposition (SVD) can be used to compress large matrices</a>. If we apply SVD to the PMI matrix, using a low-rank approximation with <script type="math/tex">D \ll K</script>, we can compute a compact representation of the word association information captured by the PMI matrix. Specifically, we use the left singular vectors <script type="math/tex">U</script>, rescaled by the square root of the singular values <script type="math/tex">S</script> returned by the SVD (<strong><em>Figure 2, Bottom Row</em></strong>).<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+<p>The PMI matrix is a square, \(K \times K\) matrix. Therefore, if we have a large vocabulary, the PMI matrix can be quite large (though likely sparse). We’ve discussed in a <a href="/theclevermachine/svd-data-compression">previous post how Singular Value Decomposition (SVD) can be used to compress large matrices</a>. If we apply SVD to the PMI matrix, using a low-rank approximation with \(D \ll K\), we can compute a compact representation of the word association information captured by the PMI matrix. Specifically, we use the left singular vectors \(U\), rescaled by the square root of the singular values \(S\) returned by the SVD (<strong><em>Figure 2, Bottom Row</em></strong>).<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
 
 <details>
   <summary>Word Embeddings Python Code</summary>
@@ -345,7 +347,7 @@
     </div>
 </center>
 
-<p><strong><em>Figure 2, Information-theoretic Word Embeddings from PMI and SVD</em></strong>. <em><strong>Top Row</strong>: Unigram frequencies and a <script type="math/tex">K \times K</script> Skipgram frequency matrix are calculated based a corpus of sentences and a predefined context window <script type="math/tex">C</script>. In this example <script type="math/tex">K=9</script> is the size of the vocabulary in the corpus. These frequencies are used to calculate a PMI matrix via <strong>Equation 3. Bottom Row</strong>: Truncated SVD with <script type="math/tex">D \ll K</script> is applied to the PMI matrix, returning low-rank left singular vectors <script type="math/tex">U</script> and singular values <script type="math/tex">S</script>. In this toy example <script type="math/tex">D=3</script>. The low-rank left singular vectors are rescaled by the square root of the singular values to return a compressed representation of the PMI matrix of size <script type="math/tex">K \times D</script>. Each row of this low-rank matrix provides an embedding vector for each of the <script type="math/tex">K</script> words in the vocabulary (Right).</em></p>
+<p><strong><em>Figure 2, Information-theoretic Word Embeddings from PMI and SVD</em></strong>. <em><strong>Top Row</strong>: Unigram frequencies and a \(K \times K\) Skipgram frequency matrix are calculated based a corpus of sentences and a predefined context window \(C\). In this example \(K=9\) is the size of the vocabulary in the corpus. These frequencies are used to calculate a PMI matrix via <strong>Equation 3. Bottom Row</strong>: Truncated SVD with \(D \ll K\) is applied to the PMI matrix, returning low-rank left singular vectors \(U\) and singular values \(S\). In this toy example \(D=3\). The low-rank left singular vectors are rescaled by the square root of the singular values to return a compressed representation of the PMI matrix of size \(K \times D\). Each row of this low-rank matrix provides an embedding vector for each of the \(K\) words in the vocabulary (Right).</em></p>
 
 <details>
   <summary>Python Code Used to Generate Figure 2</summary>
@@ -433,9 +435,9 @@
 
 <p><br /></p>
 
-<p>This information-theoretic/linear algebra method provides word embeddings that are analogous to those calculated using word2vec.<sup id="fnref:1:1"><a href="#fn:1" class="footnote">1</a></sup> Like word2vec embeddings, these information-theoretic embeddings provide a numerical representation that carries semantic information: similar words occupy similar locations in the embedding space, and directionality within the space conveys semantic meaning (<strong><em>Figure 3</em></strong>).</p>
+<p>This information-theoretic/linear algebra method provides word embeddings that are analogous to those calculated using word2vec.<sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> Like word2vec embeddings, these information-theoretic embeddings provide a numerical representation that carries semantic information: similar words occupy similar locations in the embedding space, and directionality within the space conveys semantic meaning (<strong><em>Figure 3</em></strong>).</p>
 
-<p>Note that this idea isn’t all that novel. Similar approaches, for example applying SVD directly to the co-occurrence matrix (rather than the PMI matrix), have been used since the 1990s in algorithms like Latent Semantic Indexing to provide word embeddings.<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup> However, given the current popularity in deep learning and predictive methods, simpler frequency-based and linear algebra-based methods like LSA and the method proposed here have received a lot less attention recently.</p>
+<p>Note that this idea isn’t all that novel. Similar approaches, for example applying SVD directly to the co-occurrence matrix (rather than the PMI matrix), have been used since the 1990s in algorithms like Latent Semantic Indexing to provide word embeddings.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> However, given the current popularity in deep learning and predictive methods, simpler frequency-based and linear algebra-based methods like LSA and the method proposed here have received a lot less attention recently.</p>
 
 <p><b></b></p>
 
@@ -484,7 +486,7 @@
   <li>calculating the associated word embeddings via SVD.</li>
 </ol>
 
-<p>For this example we’ll use an embedding dimensionality of <script type="math/tex">D=256</script>. Notice in the code below that using this dimensionality reduces the PMI matrix from a size of roughly 20k by 20k to a size of 20k by 256, an almost 100x reduction in entries (when in dense format).</p>
+<p>For this example we’ll use an embedding dimensionality of \(D=256\). Notice in the code below that using this dimensionality reduces the PMI matrix from a size of roughly 20k by 20k to a size of 20k by 256, an almost 100x reduction in entries (when in dense format).</p>
 
 <details>
   <summary>Python Code For Calculating 20Newsgroup Word Embeddings</summary>
@@ -616,7 +618,7 @@
     <span class="n">plt</span><span class="p">.</span><span class="n">box</span><span class="p">(</span><span class="s">'on'</span><span class="p">)</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">f'Most similar words for various queries'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s">'Most similar words for various queries'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
 </code></pre></div>  </div>
 </details>
 <hr />
@@ -625,10 +627,10 @@
 
 <p>A common demonstration of how embedding vectors encode semantic information is the “analogy” trick. The idea being that you can apply vector arithmetic to word embeddings to solve analogy tasks such as “King is to Queen as Man is to <strong>__</strong>”. These analogies would be solved by using vector arithmetic like so:</p>
 
-<script type="math/tex; mode=display">\text{embed}["king"] + \text{embed}["man"] = \text{embed}["queen"] + \text{embed}["woman"] \\
-\text{embed}["queen"] = \text{embed}["king"] + \text{embed}["man"] - \text{embed}["woman"]</script>
+\[\text{embed}["king"] + \text{embed}["man"] = \text{embed}["queen"] + \text{embed}["woman"] \\
+\text{embed}["queen"] = \text{embed}["king"] + \text{embed}["man"] - \text{embed}["woman"]\]
 
-<p>I’ve actually never been able to get these analogy tricks to work consistently, and it turns out this isn’t an uncommon experience.<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup> The size and statistical bias of the corpus used to calculate the embeddings will have a strong influence efficacy these vector arithmetic tricks, which require very similar frequency representations of words to derive similar vectors. Unless you get the <em>exact</em> alignments amongst vectors, you’ll likely not get these tricks to work consistently. This may work for some examples and not for others.</p>
+<p>I’ve actually never been able to get these analogy tricks to work consistently, and it turns out this isn’t an uncommon experience.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup> The size and statistical bias of the corpus used to calculate the embeddings will have a strong influence efficacy these vector arithmetic tricks, which require very similar frequency representations of words to derive similar vectors. Unless you get the <em>exact</em> alignments amongst vectors, you’ll likely not get these tricks to work consistently. This may work for some examples and not for others.</p>
 
 <p>We can still demonstrate the general mechanisms used to calculate these analogies, however. <strong><em>Figure 4</em></strong> below plots the words involved in the classic royalty analogy introduced above, along with a similar analogy, comparing “boy” to “man” and “girl” to “woman”. In the 20Newsgroup data set we have many more examples of “boy” and “girl” than “queen” in the corpus so we get more consistent results for those examples (it turns out “king” occurs a lot in the data set because it contains many religious, Christian posts that intermix the notion of kings, gods, etc). Specifically, the vectors encoding the displacement from “boy” to “man” and from “girl” to “woman” are nearly parallel and almost equal in length.</p>
 
@@ -817,19 +819,19 @@
 
 <h1 id="notes-and-references">Notes and References</h1>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>O. Levy and Y. Goldberg. (2014) Neural word embedding as implicit matrix factorization. Advances in Neural Information Processing Systems (27): 2177–2185. <a href="#fnref:1" class="reversefootnote">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote">&#8617;<sup>2</sup></a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>O. Levy and Y. Goldberg. (2014) Neural word embedding as implicit matrix factorization. Advances in Neural Information Processing Systems (27): 2177–2185. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
     </li>
-    <li id="fn:2">
-      <p>These are the eigenvalues associated with the row space of the (unscaled) covariance of PMI matrix <script type="math/tex">(PMI)^T(PMI)</script>. SVD applied to a symmetric matrix <script type="math/tex">M</script> returns in the left singular vectors <script type="math/tex">U</script> the eigenvectors associated with the row space of <script type="math/tex">MM^T = M^TM</script>. Likewise, since the PMI matrix is symmetric, the eigenvalues returned by SVD are also associated with the covariance of the PMI matrix. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>These are the eigenvalues associated with the row space of the (unscaled) covariance of PMI matrix \((PMI)^T(PMI)\). SVD applied to a symmetric matrix \(M\) returns in the left singular vectors \(U\) the eigenvectors associated with the row space of \(MM^T = M^TM\). Likewise, since the PMI matrix is symmetric, the eigenvalues returned by SVD are also associated with the covariance of the PMI matrix. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
-      <p>S. Deerwester, S. T. Dumais, G. W. Furnas, T. K. Landauer, and R. Harshman. (1990). Indexing by Latent Semantic Analysis. Journal of the American Society for Information Science. 41 (6): 391–407. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:3" role="doc-endnote">
+      <p>S. Deerwester, S. T. Dumais, G. W. Furnas, T. K. Landauer, and R. Harshman. (1990). Indexing by Latent Semantic Analysis. Journal of the American Society for Information Science. 41 (6): 391–407. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4">
-      <p><a href="https://hackingsemantics.xyz/2019/analogies/">On word analogies and negative results in NLP (2019), A. Rogers</a> <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:4" role="doc-endnote">
+      <p><a href="https://hackingsemantics.xyz/2019/analogies/">On word analogies and negative results in NLP (2019), A. Rogers</a> <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

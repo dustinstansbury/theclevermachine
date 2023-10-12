@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>The Clever Machine | Musings on data and science</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="The Clever Machine" />
 <meta name="author" content="Dustin Stansbury, PhD" />
 <meta property="og:locale" content="en_US" />
@@ -22,8 +22,11 @@
 <link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/" />
 <meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/" />
 <meta property="og:site_name" content="The Clever Machine" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The Clever Machine" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Dustin Stansbury, PhD"},"url":"https://dustinstansbury.github.io/theclevermachine/","description":"Musings on data and science","@type":"WebSite","headline":"The Clever Machine","name":"The Clever Machine","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Dustin Stansbury, PhD"},"description":"Musings on data and science","headline":"The Clever Machine","name":"The Clever Machine","url":"https://dustinstansbury.github.io/theclevermachine/"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -62,7 +65,7 @@
           <a class="post-link" href="/theclevermachine/p-hacking-n-chasing">
             p-Hacking 101: N Chasing
           </a>
-        </h3><p>”<script type="math/tex">N</script> Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of <script type="math/tex">N</script> chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate <script type="math/tex">N</script> chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.</p>
+        </h3><p>”\(N\) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of \(N\) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate \(N\) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.</p>
 
 </li><li><span class="post-meta">Sep 11, 2020</span>
         <h3>
@@ -90,7 +93,7 @@
           <a class="post-link" href="/theclevermachine/matrix-power-using-diagonalization">
             Efficient Matrix Power Calculation via Diagonalization
           </a>
-        </h3><p>Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time <script type="math/tex">t</script>, or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.</p>
+        </h3><p>Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time \(t\), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.</p>
 
 </li><li><span class="post-meta">Aug 5, 2020</span>
         <h3>
@@ -104,7 +107,7 @@
           <a class="post-link" href="/theclevermachine/derivation-normal-equations">
             Derivation: Ordinary Least Squares Solution and the Normal Equations
           </a>
-        </h3><p>Have you ever performed linear regression involving multiple predictor variables and run into this expression <script type="math/tex">\hat \beta = (X^TX)^{-1}X^Ty</script>? It’s called the OLS solution via Normal Equations. To find out where it comes from, read on!</p>
+        </h3><p>Have you ever performed linear regression involving multiple predictor variables and run into this expression \(\hat \beta = (X^TX)^{-1}X^Ty\)? It’s called the OLS solution via Normal Equations. To find out where it comes from, read on!</p>
 
 </li><li><span class="post-meta">Jul 20, 2020</span>
         <h3>
@@ -146,12 +149,12 @@
           <a class="post-link" href="/theclevermachine/derivation-backpropagation">
             Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks
           </a>
-        </h3><p>Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see <strong><em>Figure 1</em></strong>). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+        </h3><p>Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see <strong><em>Figure 1</em></strong>). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>Though, I guess these days with autograd, who <em>really</em> needs to understand how the calculus for gradient descent works, amiright? (<em>hint</em>: that is a joke) <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>Though, I guess these days with autograd, who <em>really</em> needs to understand how the calculus for gradient descent works, amiright? (<em>hint</em>: that is a joke) <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

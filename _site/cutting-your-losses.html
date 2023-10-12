@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
@@ -24,8 +24,10 @@
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-30T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/cutting-your-losses"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/cutting-your-losses","description":"In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.","@type":"BlogPosting","headline":"Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss","dateModified":"2020-06-30T00:00:00-07:00","datePublished":"2020-06-30T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-06-30T00:00:00-07:00","datePublished":"2020-06-30T00:00:00-07:00","description":"In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.","headline":"Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/cutting-your-losses"},"url":"https://dustinstansbury.github.io/theclevermachine/cutting-your-losses"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -93,15 +95,15 @@
 
 <h1 id="model-estimation-and-loss-functions">Model Estimation and Loss Functions</h1>
 
-<p>Often times, particularly in a regression framework, we are given a set of inputs (independent variables) <script type="math/tex">\bf{x}</script> and a set outputs (dependent variables) <script type="math/tex">\bf{y}</script>, and we want to devise a model function</p>
+<p>Often times, particularly in a regression framework, we are given a set of inputs (independent variables) \(\bf{x}\) and a set outputs (dependent variables) \(\bf{y}\), and we want to devise a model function</p>
 
-<script type="math/tex; mode=display">f(\mathbf{x})=\mathbf{y} \tag{1}</script>
+\[f(\mathbf{x})=\mathbf{y} \tag{1}\]
 
 <p>that predicts the outputs given some inputs as best as possible. By “devise a model,” we generally mean estimating the parameter values of a particular model form (e.g. the weights of each term in a polynomial model, the layer weights in a neural network, etc.). But what does it mean for a model to predict “as best as possible” exactly? In order to make the notion of how good a model is explicit, it is common to adopt a loss function:</p>
 
-<script type="math/tex; mode=display">J(f(\mathbf{x});\mathbf{y}) \tag{2}</script>
+\[J(f(\mathbf{x});\mathbf{y}) \tag{2}\]
 
-<p>The loss function takes <script type="math/tex">M</script> input-output pairs <script type="math/tex">(x_i, y_i), i=1..M</script> and returns a scalar value indicating the overall error or “loss” that results from using the model function <script type="math/tex">f()</script> to predict the outputs <script type="math/tex">y_i</script> from the associated inputs <script type="math/tex">x_i</script>. “Good” models will result in a small loss values. Determining the “best” model is equivalent to finding model function that minimizes the loss function.</p>
+<p>The loss function takes \(M\) input-output pairs \((x_i, y_i), i=1..M\) and returns a scalar value indicating the overall error or “loss” that results from using the model function \(f()\) to predict the outputs \(y_i\) from the associated inputs \(x_i\). “Good” models will result in a small loss values. Determining the “best” model is equivalent to finding model function that minimizes the loss function.</p>
 
 <p>We generally don’t want tweak model parameters by hand, so we rely on computer programs to do the tweaking for us. There are lots of ways we can program a computer to use a loss function to identify good parameters–some examples include <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithms</a>, <a href="https://en.wikipedia.org/wiki/Cuckoo_search">cuckoo search</a>, and the <a href="https://en.wikipedia.org/wiki/MCS_algorithm">MCS algorithm</a>. However, by far the most common class of parameter optimization methods are <a href="https://en.wikipedia.org/wiki/Gradient_descent">gradient descent (GD) methods</a>.</p>
 
@@ -111,27 +113,26 @@
 
 <p>Arguably, the most common loss function used in statistics and machine learning is the <em>sum of squared of the errors (SSE)</em> loss function:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
+\[\begin{align}
 
-J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
-&= \sum_{i=1}^M e_i^2  \tag{3} 
+J_{SSE}(f(\mathbf{x});\mathbf{y}) &amp;= \sum_{i=1}^M (y_i - f(x_i))^2 \\
+&amp;= \sum_{i=1}^M e_i^2  \tag{3} 
 
-\end{align} %]]></script>
+\end{align}\]
 
-<p>This formula for <script type="math/tex">J_{SSE}</script> states that for each output predicted by the model <script type="math/tex">f(x_i)</script>, we determine how “far away” the prediction is from the actual value <script type="math/tex">y_i</script>. Distance is quantified by first taking the difference between the two values and squaring it. The difference between the predicted and actual value is often referred to as the model “error” or “residual” <script type="math/tex">e_i</script> for the datapoint. The semantics here being that small errors correspond to small distances. Each of the <script type="math/tex">M</script> distances are then aggregated across the entire dataset through addition, giving a single number indicating how well (or badly) the current model function captures the structure of the entire dataset. The “best” model will minimize the SSE and is called the <em>least sum of squares (LSS)</em> solution.</p>
+<p>This formula for \(J_{SSE}\) states that for each output predicted by the model \(f(x_i)\), we determine how “far away” the prediction is from the actual value \(y_i\). Distance is quantified by first taking the difference between the two values and squaring it. The difference between the predicted and actual value is often referred to as the model “error” or “residual” \(e_i\) for the datapoint. The semantics here being that small errors correspond to small distances. Each of the \(M\) distances are then aggregated across the entire dataset through addition, giving a single number indicating how well (or badly) the current model function captures the structure of the entire dataset. The “best” model will minimize the SSE and is called the <em>least sum of squares (LSS)</em> solution.</p>
 
-<p>But why use this particular form of loss function in <strong><em>Equation 3</em></strong>? Why <em>square</em> the errors before summing them? At first, these decisions seems somewhat arbitrary. Surely there are other, more straight-forward loss functions we can devise. An initial notion of just adding the errors leads to a dead end because adding many positive and negative errors (i.e. resulting from data located below and above the model function) just cancels out; we want our measure of errors to be cumulative. Another idea would be to just take the absolute value of the errors <script type="math/tex">\mid e_i \mid</script> before summing. It turns out, this is also a common loss function, called the <em>sum of absolute errors (SAE)</em> or <em>sum of absolute deviations (SAD)</em> loss function. Though SAE/SAD is used regularly for parameter estimation, the SSE loss is generally more popular. So, why does SSE make the cut so often? It turns out there are number of interesting theoretical and practical motivations for using the SSE loss over many other losses. In the remainder of the post we’ll dig into a few of these motivations.</p>
+<p>But why use this particular form of loss function in <strong><em>Equation 3</em></strong>? Why <em>square</em> the errors before summing them? At first, these decisions seems somewhat arbitrary. Surely there are other, more straight-forward loss functions we can devise. An initial notion of just adding the errors leads to a dead end because adding many positive and negative errors (i.e. resulting from data located below and above the model function) just cancels out; we want our measure of errors to be cumulative. Another idea would be to just take the absolute value of the errors \(\mid e_i \mid\) before summing. It turns out, this is also a common loss function, called the <em>sum of absolute errors (SAE)</em> or <em>sum of absolute deviations (SAD)</em> loss function. Though SAE/SAD is used regularly for parameter estimation, the SSE loss is generally more popular. So, why does SSE make the cut so often? It turns out there are number of interesting theoretical and practical motivations for using the SSE loss over many other losses. In the remainder of the post we’ll dig into a few of these motivations.</p>
 
 <h1 id="geometric-interpretation-and-linear-regression">Geometric Interpretation and Linear Regression</h1>
 
 <p>One of the reasons that the SSE loss is used so often for parameter estimation is its close relationship to the formulation of one of the pillars of statistical modeling, <em>linear regression</em>.</p>
 
-<p><strong><em>Figure 1</em></strong> plots a set of 2-dimensional data (blue circles). In this case the <script type="math/tex">x_i</script> encode horizontal locations and <script type="math/tex">y_i</script> the vertical locations of the (<script type="math/tex">M=10</script>) points in a 2-dimensional (2D) space. A linear function (black line) of the form</p>
+<p><strong><em>Figure 1</em></strong> plots a set of 2-dimensional data (blue circles). In this case the \(x_i\) encode horizontal locations and \(y_i\) the vertical locations of the (\(M=10\)) points in a 2-dimensional (2D) space. A linear function (black line) of the form</p>
 
-<script type="math/tex; mode=display">f_{lin}(\mathbf x) = \beta_0 + \beta_1 \mathbf x \tag{4}</script>
+\[f_{lin}(\mathbf x) = \beta_0 + \beta_1 \mathbf x \tag{4}\]
 
-<p>has been fit to the data. The model parameters <script type="math/tex">\beta_1</script> (the slope of the line) and <script type="math/tex">\beta_0</script> (the offset of the line from <script type="math/tex">y=0</script>) have been optimized by <a href="/theclevermachine/derivation-ols-normal-equations">minimizing the SSE loss</a>.</p>
+<p>has been fit to the data. The model parameters \(\beta_1\) (the slope of the line) and \(\beta_0\) (the offset of the line from \(y=0\)) have been optimized by <a href="/theclevermachine/derivation-ols-normal-equations">minimizing the SSE loss</a>.</p>
 
 <hr />
 
@@ -185,7 +186,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <hr />
 <p><br /></p>
 
-<p>A helpful interpretation of the SSE loss function is demonstrated in <strong><em>Figure 2</em></strong>. The area of each red square is a <em>literal</em> geometric interpretation of each observation’s contribution to the overall loss. We see that no matter if the errors are positive or negative (i.e. actual <script type="math/tex">y_i</script> are located above or below the black line), the contribution to the loss is always an area, and therefore positive. In this interpretation, <strong>the goal of finding the LSS solution is equivalent to finding the parameters of the line that results in the smallest total red area.</strong></p>
+<p>A helpful interpretation of the SSE loss function is demonstrated in <strong><em>Figure 2</em></strong>. The area of each red square is a <em>literal</em> geometric interpretation of each observation’s contribution to the overall loss. We see that no matter if the errors are positive or negative (i.e. actual \(y_i\) are located above or below the black line), the contribution to the loss is always an area, and therefore positive. In this interpretation, <strong>the goal of finding the LSS solution is equivalent to finding the parameters of the line that results in the smallest total red area.</strong></p>
 
 <hr />
 
@@ -235,7 +236,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">linear_model_function</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
     <span class="n">error_patch</span> <span class="o">=</span> <span class="n">plot_prediction_error</span><span class="p">(</span>
         <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">LINEAR_MODEL_ERROR_COLOR</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">f"RSS: </span><span class="si">{</span><span class="n">RSS</span><span class="si">}</span><span class="s">"</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s">"RSS: </span><span class="si">{</span><span class="n">RSS</span><span class="si">}</span><span class="s">"</span>
     <span class="p">)</span>
 <span class="n">standardize_axis</span><span class="p">()</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">error_patch</span><span class="p">])</span>
@@ -245,20 +246,19 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <hr />
 <p><br /></p>
 
-<h1 id="relation-to-the-coefficient-of-determination-r2">Relation to the Coefficient of Determination <script type="math/tex">R^2</script></h1>
+<h1 id="relation-to-the-coefficient-of-determination-r2">Relation to the Coefficient of Determination \(R^2\)</h1>
 
-<p>The geometric interpretation is also useful for understanding the important regression metric known as the coefficient of determination <script type="math/tex">R^2</script>, which is an indicator of how well a linear function (i.e. <strong><em>Equation 4</em></strong>) models a dataset. First, let’s note that the variance of the model residuals takes following form:</p>
+<p>The geometric interpretation is also useful for understanding the important regression metric known as the coefficient of determination \(R^2\), which is an indicator of how well a linear function (i.e. <strong><em>Equation 4</em></strong>) models a dataset. First, let’s note that the variance of the model residuals takes following form:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\sigma^2_{e} &= \frac{1}{M} \sum_{i=1}^M (e_i - \mu_e)^2 \\
-&= C \sum_{i=1}^M e_i^2 \\
-&=C J_{SSE}(f(\mathbf{x}); \mathbf{y}) \tag{5}
-\end{align} %]]></script>
+\[\begin{align}
+\sigma^2_{e} &amp;= \frac{1}{M} \sum_{i=1}^M (e_i - \mu_e)^2 \\
+&amp;= C \sum_{i=1}^M e_i^2 \\
+&amp;=C J_{SSE}(f(\mathbf{x}); \mathbf{y}) \tag{5}
+\end{align}\]
 
-<p>where we have taken the mean of the residual distribution <script type="math/tex">\mu_e</script> to be zero, as is the case in the <a href="/theclevermachine/derivation-ols-normal-equations">Ordinary Least Squares (OLS) formulation</a>. Therefore, we can think of the SSE loss as the (unscaled) variance of the model errors. Therefore <strong><em>minimizing the SEE loss is equivalent to minimizing the variance of the model residuals.</em></strong> For this reason, the sum of squares loss is often referred to as the <em>Residual Sum of Squares error (RSS)</em> for linear models.</p>
+<p>where we have taken the mean of the residual distribution \(\mu_e\) to be zero, as is the case in the <a href="/theclevermachine/derivation-ols-normal-equations">Ordinary Least Squares (OLS) formulation</a>. Therefore, we can think of the SSE loss as the (unscaled) variance of the model errors. Therefore <strong><em>minimizing the SEE loss is equivalent to minimizing the variance of the model residuals.</em></strong> For this reason, the sum of squares loss is often referred to as the <em>Residual Sum of Squares error (RSS)</em> for linear models.</p>
 
-<p>Now, imagine that instead of modeling the data with the full linear model depicted in <strong><em>Figures 1-2</em></strong>, we instead us a simpler model that has no slope parameter, and only a bias/offset parameter (i.e. <script type="math/tex">\beta_0</script>). In this case the simpler model, shown in <strong><em>Figure 3</em></strong>, only captures the mean value of the data along the y-dimension.</p>
+<p>Now, imagine that instead of modeling the data with the full linear model depicted in <strong><em>Figures 1-2</em></strong>, we instead us a simpler model that has no slope parameter, and only a bias/offset parameter (i.e. \(\beta_0\)). In this case the simpler model, shown in <strong><em>Figure 3</em></strong>, only captures the mean value of the data along the y-dimension.</p>
 
 <hr />
 
@@ -293,7 +293,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
     <span class="n">error_patch</span> <span class="o">=</span> <span class="n">plot_prediction_error</span><span class="p">(</span>
         <span class="o">*</span><span class="n">data</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="n">BIAS_ONLY_MODEL_COLOR</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">f"TSS: </span><span class="si">{</span><span class="n">TSS</span><span class="si">}</span><span class="s">"</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s">"TSS: </span><span class="si">{</span><span class="n">TSS</span><span class="si">}</span><span class="s">"</span>
     <span class="p">)</span>
 <span class="n">standardize_axis_dims</span><span class="p">()</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">error_patch</span><span class="p">])</span>
@@ -306,22 +306,22 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 
 <p>The total squared error in this model corresponds to the (unscaled) variance of the data set itself, and is often referred to as the the <em>Total Sum of Squares (TSS) error</em>.</p>
 
-<p>The metric <script type="math/tex">R^2</script> is defined from the RSS and TSS (total red and green areas, respectively) as follows:</p>
+<p>The metric \(R^2\) is defined from the RSS and TSS (total red and green areas, respectively) as follows:</p>
 
-<script type="math/tex; mode=display">R^2 = 1 - \frac{RSS}{TSS} \tag{5}</script>
+\[R^2 = 1 - \frac{RSS}{TSS} \tag{5}\]
 
-<p>If the linear model is doing a good job of fitting the data, then the variance of the model errors (RSS, red area) will be small compared to the variance of the dataset (TSS, green area), and the <script type="math/tex">R^2 \rightarrow 1</script>. If the model is doing a poor job of fitting the data, then the variance residuals will approach that of the data itself, and  <script type="math/tex">R^2</script> will be close to zero<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>. This is why the <script type="math/tex">R^2</script> metric is often used to describe “the amount of variance in the data accounted for by the linear model.”</p>
+<p>If the linear model is doing a good job of fitting the data, then the variance of the model errors (RSS, red area) will be small compared to the variance of the dataset (TSS, green area), and the \(R^2 \rightarrow 1\). If the model is doing a poor job of fitting the data, then the variance residuals will approach that of the data itself, and  \(R^2\) will be close to zero<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. This is why the \(R^2\) metric is often used to describe “the amount of variance in the data accounted for by the linear model.”</p>
 
-<h1 id="relation-to-the-correlation-coefficient-pearsons-r">Relation to the correlation coefficient, Pearson’s <script type="math/tex">r</script></h1>
+<h1 id="relation-to-the-correlation-coefficient-pearsons-r">Relation to the correlation coefficient, Pearson’s \(r\)</h1>
 
-<p>During the model fitting using <code class="language-plaintext highlighter-rouge">scipy.stats.linregress</code>, we made sure to assign the <code class="language-plaintext highlighter-rouge">correlation_coefficient</code> variable returned from the optimization procedure. This is <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson’s <script type="math/tex">r</script> correlation coefficient (CC)</a>, and is defined as the covariance between two random variables (i.e. two equal-length arrays of numbers) <script type="math/tex">A, B</script>, rescaled by the product of each variable’s standard deviation:</p>
+<p>During the model fitting using <code class="language-plaintext highlighter-rouge">scipy.stats.linregress</code>, we made sure to assign the <code class="language-plaintext highlighter-rouge">correlation_coefficient</code> variable returned from the optimization procedure. This is <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson’s \(r\) correlation coefficient (CC)</a>, and is defined as the covariance between two random variables (i.e. two equal-length arrays of numbers) \(A, B\), rescaled by the product of each variable’s standard deviation:</p>
 
-<script type="math/tex; mode=display">r = \frac{\text{Cov}(A, B)}{\sigma_A \sigma_B} \tag{6}</script>
+\[r = \frac{\text{Cov}(A, B)}{\sigma_A \sigma_B} \tag{6}\]
 
-<p>In the case of linear regression, <script type="math/tex">A=\mathbf y</script> and <script type="math/tex">B=f(\mathbb{x})</script>. In this scenario, it turns out that <script type="math/tex">r = \sqrt{R^2}</script>. Therefore if we calculate <script type="math/tex">\sqrt{1 - \frac{RSS}{TSS}}</script>, we should recover the correlation coefficient. We verify this notion with the results of our simulation in three ways:</p>
+<p>In the case of linear regression, \(A=\mathbf y\) and \(B=f(\mathbb{x})\). In this scenario, it turns out that \(r = \sqrt{R^2}\). Therefore if we calculate \(\sqrt{1 - \frac{RSS}{TSS}}\), we should recover the correlation coefficient. We verify this notion with the results of our simulation in three ways:</p>
 
 <ol>
-  <li>Calculating CC from the <script type="math/tex">R^2</script> derived from the SSE loss function</li>
+  <li>Calculating CC from the \(R^2\) derived from the SSE loss function</li>
   <li>Calculating the CC from raw  data and predictions</li>
   <li>Verifying the CC returned by the scipy fitting procedure</li>
 </ol>
@@ -335,10 +335,10 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">r_squared</span><span class="p">)</span>
 <span class="n">raw_cc</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">linear_model_function</span><span class="p">(</span><span class="n">x</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s">r"0. R^2 derived from loss functions: {:1.3f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">r_squared</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s">f"1. Correlation derived from R^2: </span><span class="si">{</span><span class="n">r</span><span class="p">:</span><span class="mf">1.3</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">f"2. Raw correlation (numpy): </span><span class="si">{</span><span class="n">raw_cc</span><span class="p">:</span><span class="mf">1.3</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">f"3. Correlation returned by model fit: </span><span class="si">{</span><span class="n">correlation_coefficient</span><span class="p">:</span><span class="mf">1.3</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">r</span><span class="s">"0. R^2 derived from loss functions: {:1.3f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">r_squared</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"1. Correlation derived from R^2: </span><span class="si">{</span><span class="n">r</span><span class="p">:</span><span class="mf">1.3</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"2. Raw correlation (numpy): </span><span class="si">{</span><span class="n">raw_cc</span><span class="p">:</span><span class="mf">1.3</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"3. Correlation returned by model fit: </span><span class="si">{</span><span class="n">correlation_coefficient</span><span class="p">:</span><span class="mf">1.3</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 </code></pre></div>  </div>
 </details>
 
@@ -352,7 +352,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 
 <h1 id="physical-interpretation--variable-covariance">Physical Interpretation &amp; Variable Covariance</h1>
 
-<p>We can gain some additional insight to the importance of minimizing the SSE loss by developing concepts within the framework of a physical system, depicted in <strong><em>Figure 4</em></strong>. In this formulation, a set of springs (red, dashed lines, our errors <script type="math/tex">e_i</script>) suspend a bar (black line, our linear function <script type="math/tex">f(\mathbf{x})</script>) to a set of anchors (blue datapoints, our outputs <script type="math/tex">\mathbf{y}</script>). Note that in this formulation, the springs are constrained to operate only along the vertical direction (<script type="math/tex">y</script>-dimension). This constraint is equivalent to saying that there is only error in our measurement of the dependent variables, and is often an assumption made in regression frameworks.</p>
+<p>We can gain some additional insight to the importance of minimizing the SSE loss by developing concepts within the framework of a physical system, depicted in <strong><em>Figure 4</em></strong>. In this formulation, a set of springs (red, dashed lines, our errors \(e_i\)) suspend a bar (black line, our linear function \(f(\mathbf{x})\)) to a set of anchors (blue datapoints, our outputs \(\mathbf{y}\)). Note that in this formulation, the springs are constrained to operate only along the vertical direction (\(y\)-dimension). This constraint is equivalent to saying that there is only error in our measurement of the dependent variables, and is often an assumption made in regression frameworks.</p>
 
 <hr />
 
@@ -363,7 +363,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
     </div>
 </center>
 
-<p><strong><em>Figure 4</em></strong>: <em>Modeling linear regression as a physical system of a bar (linear model function <script type="math/tex">f(\mathbf x)</script>) suspended by the force of multiple springs (model errors <script type="math/tex">\mathbf e</script>)</em></p>
+<p><strong><em>Figure 4</em></strong>: <em>Modeling linear regression as a physical system of a bar (linear model function \(f(\mathbf x)\)) suspended by the force of multiple springs (model errors \(\mathbf e\))</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -389,56 +389,53 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 
 <p>From <a href="https://en.wikipedia.org/wiki/Hooke%27s_law">Hooke’s Law</a>, the force created by each spring on the bar is proportional to the distance (error) from the bar (linear function) to its corresponding anchor (data point):</p>
 
-<script type="math/tex; mode=display">F_i = -ke_i</script>
+\[F_i = -ke_i\]
 
-<p>Further, there is a potential energy <script type="math/tex">U_i</script> associated with each spring (datapoint). The total potential energy for the system is defined as:</p>
+<p>Further, there is a potential energy \(U_i\) associated with each spring (datapoint). The total potential energy for the system is defined as:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\sum_i U_i &= \sum_i \int -k e_i \text{d}e_i \\
-&= \sum_i \frac{1}{2} k e_i^2 \\ 
-&= \sum_i (y_i - f(x_i))^2
-\end{align} %]]></script>
+\[\begin{align}
+\sum_i U_i &amp;= \sum_i \int -k e_i \text{d}e_i \\
+&amp;= \sum_i \frac{1}{2} k e_i^2 \\ 
+&amp;= \sum_i (y_i - f(x_i))^2
+\end{align}\]
 
-<p>(assuming a spring constant of <script type="math/tex">k=2</script>). This demonstrates that the equilibrium state of this system (i.e. the arrangement of the bar that minimizes the potential energy of the system) is analogous to the state that minimizes the sum of the squared error (distance) between the bar (linear function) and the anchors (data points).</p>
+<p>(assuming a spring constant of \(k=2\)). This demonstrates that the equilibrium state of this system (i.e. the arrangement of the bar that minimizes the potential energy of the system) is analogous to the state that minimizes the sum of the squared error (distance) between the bar (linear function) and the anchors (data points).</p>
 
-<p>The physical interpretation can also be used to derive how linear regression solutions are related to the variances of the independent variables <script type="math/tex">\mathbf x</script> and the covariance between <script type="math/tex">\mathbf x</script> and <script type="math/tex">\mathbf y</script>. When the bar is in the equilibrium position, the net force  exerted on the bar is zero. Because <script type="math/tex">\mathbf{\hat y} = \beta_0 + \beta_1 \mathbf x</script>, this first zero-net-force condition is formally described as:</p>
+<p>The physical interpretation can also be used to derive how linear regression solutions are related to the variances of the independent variables \(\mathbf x\) and the covariance between \(\mathbf x\) and \(\mathbf y\). When the bar is in the equilibrium position, the net force  exerted on the bar is zero. Because \(\mathbf{\hat y} = \beta_0 + \beta_1 \mathbf x\), this first zero-net-force condition is formally described as:</p>
 
-<script type="math/tex; mode=display">\sum_i^M y_i - \beta_0 - \beta_1x_i = 0</script>
+\[\sum_i^M y_i - \beta_0 - \beta_1x_i = 0\]
 
-<p>A second condition that is fulfilled during equilibrium is that there are no torquing forces on the bar (i.e. the bar is not rotating about an axis). Because <a href="https://en.wikipedia.org/wiki/Torque">torque created about an axis</a> is the force times distance away from the origin (average <script type="math/tex">x</script>-value; the origin), this second zero-net-torque condition is formally described by:</p>
+<p>A second condition that is fulfilled during equilibrium is that there are no torquing forces on the bar (i.e. the bar is not rotating about an axis). Because <a href="https://en.wikipedia.org/wiki/Torque">torque created about an axis</a> is the force times distance away from the origin (average \(x\)-value; the origin), this second zero-net-torque condition is formally described by:</p>
 
-<script type="math/tex; mode=display">\sum_i^M x_i(y_i - \beta_0 - \beta_1 x_i) = 0</script>
+\[\sum_i^M x_i(y_i - \beta_0 - \beta_1 x_i) = 0\]
 
-<p>From the equation corresponding to the first zero-net-force condition<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>, we can solve for the bias parameter <script type="math/tex">\beta_0</script> of the linear function that describes the orientation of the bar:</p>
+<p>From the equation corresponding to the first zero-net-force condition<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>, we can solve for the bias parameter \(\beta_0\) of the linear function that describes the orientation of the bar:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\beta_0 &=\frac{1}{M}\sum_i (y_i - \beta_1 x_i) \\
-&= \bar y - \beta_1 \bar x
-\end{align} %]]></script>
+\[\begin{align}
+\beta_0 &amp;=\frac{1}{M}\sum_i (y_i - \beta_1 x_i) \\
+&amp;= \bar y - \beta_1 \bar x
+\end{align}\]
 
-<p>Here the <script type="math/tex">\bar \cdot</script> (pronounced “bar”) means the average value. Plugging this expression into the second second zero-net-torque condition equation, we discover that the slope of the line has an interesting interpretation related to the variances of the data:</p>
+<p>Here the \(\bar \cdot\) (pronounced “bar”) means the average value. Plugging this expression into the second second zero-net-torque condition equation, we discover that the slope of the line has an interesting interpretation related to the variances of the data:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\sum_i x_i(y_i - \beta_0 - \beta_1x_i) &= 0 \\
+\[\begin{align}
+\sum_i x_i(y_i - \beta_0 - \beta_1x_i) &amp;= 0 \\
 
-\sum_i x_i(y_i - (\bar y - \beta_1 \bar x) - \beta_1x_i) &= 0 \\
+\sum_i x_i(y_i - (\bar y - \beta_1 \bar x) - \beta_1x_i) &amp;= 0 \\
 
-\sum_i x_i(y_i - \bar y) &= \beta_1 \sum_i x_i(x_i - \bar x) \\
+\sum_i x_i(y_i - \bar y) &amp;= \beta_1 \sum_i x_i(x_i - \bar x) \\
 
-\sum_i (x_i - \bar x)(y_i - \bar y) &= \beta_1 \sum_i (x_i -\bar x)^2 \\
+\sum_i (x_i - \bar x)(y_i - \bar y) &amp;= \beta_1 \sum_i (x_i -\bar x)^2 \\
 
-\beta_1 = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sum_i (x_i -\bar x)^2} &= \frac{\text{cov}(x,y)}{\text{var}(x)} 
+\beta_1 = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sum_i (x_i -\bar x)^2} &amp;= \frac{\text{cov}(x,y)}{\text{var}(x)} 
 
-\end{align} %]]></script>
+\end{align}\]
 
-<p>The expressions for the parameters <script type="math/tex">\beta_0</script> and <script type="math/tex">\beta_1</script> tell us that under least squares linear regression the average of the dependent variables is equal to a scaled version of the average of independent variables plus an offset <script type="math/tex">\beta_0</script>:</p>
+<p>The expressions for the parameters \(\beta_0\) and \(\beta_1\) tell us that under least squares linear regression the average of the dependent variables is equal to a scaled version of the average of independent variables plus an offset \(\beta_0\):</p>
 
-<script type="math/tex; mode=display">\bar y = \beta_0 + \beta_1 \bar x</script>
+\[\bar y = \beta_0 + \beta_1 \bar x\]
 
-<p>Further, the scaling factor <script type="math/tex">\beta_1</script> (the slope) is equal to the ratio of the covariance between the dependent and independent variables to the variance of the independent variable. Therefore if <script type="math/tex">\mathbf x</script> and <script type="math/tex">\mathbf y</script> are positively correlated, the slope will be positive, if they are negatively correlated, the slope will be negative.</p>
+<p>Further, the scaling factor \(\beta_1\) (the slope) is equal to the ratio of the covariance between the dependent and independent variables to the variance of the independent variable. Therefore if \(\mathbf x\) and \(\mathbf y\) are positively correlated, the slope will be positive, if they are negatively correlated, the slope will be negative.</p>
 
 <p>Therefore, the SSE loss function directly relates model residuals to how the independent and dependent variables co-vary. These formal covariance-flavored relationships are not available with other loss functions such as the least absolute deviation.</p>
 
@@ -447,7 +444,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
 <ol>
   <li>The sum of the residuals under the LSS solution is zero (this is equivalent to the zero-net-force condition).</li>
   <li>Because of 1., the average residual of the LSS solution is zero (this was also pointed out in the geometric interpretation above)</li>
-  <li>The covariance between the independent variables and the residuals is zero (because the <a href="/theclevermachine/derivation-ols-normal-equations">residual term in OLS</a> <script type="math/tex">\epsilon \sim N(0, I)</script> is <script type="math/tex">\text{i.i.d.}</script>).</li>
+  <li>The covariance between the independent variables and the residuals is zero (because the <a href="/theclevermachine/derivation-ols-normal-equations">residual term in OLS</a> \(\epsilon \sim N(0, I)\) is \(\text{i.i.d.}\)).</li>
   <li>The LSS solution minimizes the variance of the residuals/model errors (also pointed out in the geometric interpretation).</li>
   <li>The LSS solution always passes through the mean (center of mass) of the sample.</li>
 </ol>
@@ -460,7 +457,7 @@ J_{SSE}(f(\mathbf{x});\mathbf{y}) &= \sum_{i=1}^M (y_i - f(x_i))^2 \\
   <li>The Least Squares solution can be <a href="/theclevermachine/derivation-ols-normal-equations">derived in closed form</a>, allowing simple analytic implementations and fast computation of model parameters.</li>
   <li>Unlike the LAE loss, the SSE loss is differentiable (i.e. it is smooth) everywhere, which allows model parameters to be estimated using straight-forward, gradient-based optimizations</li>
   <li>Squared errors have deep ties in statistics and maximum likelihood estimation methods (as mentioned above), particularly when the errors are distributed according the Normal distribution (as is the case in the OLS formulation)</li>
-  <li>There are a number of geometric and linear algebra theorems that support using least squares. For instance the <a href="http://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem">Gauss-Markov theorem</a> states that if errors of a linear function are distributed Normally about the mean of the line, then the LSS solution gives the best <a href="http://en.wikipedia.org/wiki/Bias_of_an_estimator">unbiased estimator</a> for the parameters <script type="math/tex">\mathbf \beta</script>.</li>
+  <li>There are a number of geometric and linear algebra theorems that support using least squares. For instance the <a href="http://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem">Gauss-Markov theorem</a> states that if errors of a linear function are distributed Normally about the mean of the line, then the LSS solution gives the best <a href="http://en.wikipedia.org/wiki/Bias_of_an_estimator">unbiased estimator</a> for the parameters \(\mathbf \beta\).</li>
   <li>Squared functions have a long history of  facilitating calculus calculations used throughout the physical sciences.
 The SSE loss does have a number of downfalls as well. For instance, because each error is squared, any outliers in the dataset can dominate the parameter estimation process. For this reason, the LSS loss is said to lack robustness. Therefore preprocessing of the the dataset (i.e. removing or thresholding outlier values) may be necessary when using the LSS loss.</li>
 </ol>
@@ -469,13 +466,13 @@ The SSE loss does have a number of downfalls as well. For instance, because each
 <hr />
 <h1 id="notes">Notes</h1>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>Note too that the value of  R<script type="math/tex">^2</script> can take negative values, in the case when the RSS is larger than the TSS, indicating a <em>very</em> poor model. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>Note too that the value of  R\(^2\) can take negative values, in the case when the RSS is larger than the TSS, indicating a <em>very</em> poor model. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p>What’s interesting, is that the two physical constraint equations derived from the physical system are also obtained through other analytic analyses of linear regression including defining the LSS problem using both <a href="http://en.wikipedia.org/wiki/Maximum_likelihood">maximum likelihood estimation</a> and the <a href="http://en.wikipedia.org/wiki/Method_of_moments_(statistics)">method of moments</a>. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>What’s interesting, is that the two physical constraint equations derived from the physical system are also obtained through other analytic analyses of linear regression including defining the LSS problem using both <a href="http://en.wikipedia.org/wiki/Maximum_likelihood">maximum likelihood estimation</a> and the <a href="http://en.wikipedia.org/wiki/Method_of_moments_(statistics)">method of moments</a>. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

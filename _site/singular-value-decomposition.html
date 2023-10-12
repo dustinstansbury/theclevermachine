@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Singular Value Decomposition: The Swiss Army Knife of Linear Algebra | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="Singular Value Decomposition: The Swiss Army Knife of Linear Algebra" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
@@ -24,8 +24,10 @@
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-10T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Singular Value Decomposition: The Swiss Army Knife of Linear Algebra" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition","description":"Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post.","@type":"BlogPosting","headline":"Singular Value Decomposition: The Swiss Army Knife of Linear Algebra","dateModified":"2020-08-10T00:00:00-07:00","datePublished":"2020-08-10T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-08-10T00:00:00-07:00","datePublished":"2020-08-10T00:00:00-07:00","description":"Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post.","headline":"Singular Value Decomposition: The Swiss Army Knife of Linear Algebra","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition"},"url":"https://dustinstansbury.github.io/theclevermachine/singular-value-decomposition"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -89,103 +91,99 @@
 
 <h1 id="matrix-diagonalization"><a name="matrix-diagonalization"></a>Matrix Diagonalization</h1>
 
-<p>Before introducing SVD, let’s first go over matrix diagonalization. Matrix diagonalization is the process of breaking a matrix <script type="math/tex">M</script> into two separate matrices <script type="math/tex">P</script> and <script type="math/tex">D</script>, such that</p>
+<p>Before introducing SVD, let’s first go over matrix diagonalization. Matrix diagonalization is the process of breaking a matrix \(M\) into two separate matrices \(P\) and \(D\), such that</p>
 
-<script type="math/tex; mode=display">M_{m \times m} = P_{m \times m} D_{m \times m} P_{m \times m}^{-1} \tag{1}</script>
+\[M_{m \times m} = P_{m \times m} D_{m \times m} P_{m \times m}^{-1} \tag{1}\]
 
-<p>Where <script type="math/tex">P</script> is an invertible (i.e. square) matrix and <script type="math/tex">D</script> is a diagonal matrix (i.e. containing all zeros, except along the diagonal).</p>
+<p>Where \(P\) is an invertible (i.e. square) matrix and \(D\) is a diagonal matrix (i.e. containing all zeros, except along the diagonal).</p>
 
 <p>Now, why on earth would you want to do something like diagonalization? It turns out that representing a matrix this way has a lot of numerical and computation conveniences. For example, computing matrix inverses or <a href="/theclevermachine//matrix-power-using-diagonalization">matrix powers</a> can be done efficiently for large matrices or exponents when formulated via diagonalization. Diagonalization is also often used to restate mathematical problems in a new, canonical system where certain operations or structures have convenient interpretations (e.g. <a href="https://lpsa.swarthmore.edu/MtrxVibe/EigApp/EigVib.html">finding nodes in a vibrating system</a> or <a href="https://physics.stackexchange.com/a/18052">identifying energy levels in quantum mechanics</a>).</p>
 
 <p>So how does one diagonalize a matrix? There are lots of approaches to diagonalize a matrix, but a common one is to compute the eigenvalue decomposition of the matrix. To understand why this is equivalent to diagonalization, let’s note that</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-M &= P D P^{-1} \\
-M (P) &= P D P^{-1} (P) \\
-M P &= P D .  \tag{2}
-\end{align} %]]></script>
+\[\begin{align}
+M &amp;= P D P^{-1} \\
+M (P) &amp;= P D P^{-1} (P) \\
+M P &amp;= P D .  \tag{2}
+\end{align}\]
 
-<p>Some of you may recognize that the statement given by <strong><em>Equation 2</em></strong> is equivalent to finding the eigenvectors <script type="math/tex">a_i</script> and eigenvalues <script type="math/tex">\lambda_i</script> of the matrix <script type="math/tex">M</script>, where</p>
+<p>Some of you may recognize that the statement given by <strong><em>Equation 2</em></strong> is equivalent to finding the eigenvectors \(a_i\) and eigenvalues \(\lambda_i\) of the matrix \(M\), where</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-P &= \left[a_1, a_2, ... a_m\right] \\
-D &= \begin{bmatrix}
-    \lambda_1 & 0 & \dots & \dots \\
-    0 & \lambda_2 & 0 & \dots \\
-    \vdots & \dots & \ddots & \dots \\
-    0 & \dots & 0 & \lambda_m
+\[\begin{align}
+P &amp;= \left[a_1, a_2, ... a_m\right] \\
+D &amp;= \begin{bmatrix}
+    \lambda_1 &amp; 0 &amp; \dots &amp; \dots \\
+    0 &amp; \lambda_2 &amp; 0 &amp; \dots \\
+    \vdots &amp; \dots &amp; \ddots &amp; \dots \\
+    0 &amp; \dots &amp; 0 &amp; \lambda_m
 \end{bmatrix} \\
 
-PD &= [\lambda_1 a_1, \lambda_2 a_2, ... \lambda_m a_m]
-\end{align} %]]></script>
+PD &amp;= [\lambda_1 a_1, \lambda_2 a_2, ... \lambda_m a_m]
+\end{align}\]
 
-<p>Therefore solving for the eigenvalues/vectors of <script type="math/tex">M</script> provides us with the components to diagonalize <script type="math/tex">M</script> (note we’d still need to calculate the value of <script type="math/tex">P^{-1}</script>).</p>
+<p>Therefore solving for the eigenvalues/vectors of \(M\) provides us with the components to diagonalize \(M\) (note we’d still need to calculate the value of \(P^{-1}\)).</p>
 
 <p>So what is this diagonalization operation doing, exactly? One can think of the diagonalization as performing three steps:</p>
 <ol>
-  <li>Since <script type="math/tex">P</script> is an orthonormal matrix, multiplying a vector by <script type="math/tex">P</script> (or <script type="math/tex">P^{-1}</script>, depending on order of application of <script type="math/tex">M</script>) <strong>rotates</strong> the vector onto a new set of axes that are aligned with the eigenvectors of the matrix.</li>
-  <li>Since <script type="math/tex">D</script> is diagonal, multiplying the results of step 1 by <script type="math/tex">D</script> <strong>scales</strong> the transformed vector along each of new axes.</li>
-  <li>Multiplying by <script type="math/tex">P^{-1}</script> (or <script type="math/tex">P</script>) <strong>reverse rotates</strong> the rescaled vector back onto the original axes.</li>
+  <li>Since \(P\) is an orthonormal matrix, multiplying a vector by \(P\) (or \(P^{-1}\), depending on order of application of \(M\)) <strong>rotates</strong> the vector onto a new set of axes that are aligned with the eigenvectors of the matrix.</li>
+  <li>Since \(D\) is diagonal, multiplying the results of step 1 by \(D\) <strong>scales</strong> the transformed vector along each of new axes.</li>
+  <li>Multiplying by \(P^{-1}\) (or \(P\)) <strong>reverse rotates</strong> the rescaled vector back onto the original axes.</li>
 </ol>
 
 <p>If all of this rotating and scaling business is still unclear, no worries, we’ll demonstrate similar ideas graphically when discussing SVD (see <strong><em>Figure 6</em></strong>).</p>
 
 <h1 id="diagonalization-isnt-for-everyone-luckily-theres-svd">Diagonalization isn’t for everyone: luckily there’s SVD</h1>
 
-<p>Looking at the diagonalization definition in <strong><em>Equation 1</em></strong>, one can infer that in order to be diagonalizable, <script type="math/tex">M</script> must be square and invertible. Although there are a lot of interesting problems that involve only square matrices there are a many, many more scenarios to do not fit this constraint. This is where SVD comes in!</p>
+<p>Looking at the diagonalization definition in <strong><em>Equation 1</em></strong>, one can infer that in order to be diagonalizable, \(M\) must be square and invertible. Although there are a lot of interesting problems that involve only square matrices there are a many, many more scenarios to do not fit this constraint. This is where SVD comes in!</p>
 
 <p>One can think of SVD as a generalization of diagonalization to non-square matrices. In fact it turns out that <em>all</em> matrices have a SVD solution! As we’ll see, this makes SVD a more general tool than other matrix decompositions like eigenvalue decomposition, which requires square, invertible matrices.</p>
 
-<p>The singular value decomposition is based on the notion that for any matrix <script type="math/tex">M</script>, the matrices <script type="math/tex">M^T M</script> and <script type="math/tex">M M^T</script> are symmetric:</p>
+<p>The singular value decomposition is based on the notion that for any matrix \(M\), the matrices \(M^T M\) and \(M M^T\) are symmetric:</p>
 
-<script type="math/tex; mode=display">(M^T M)^T = M^T(M^T)^T = M^T M \\
-(M M^T)^T = (M^T)^T M^T = M M^T</script>
+\[(M^T M)^T = M^T(M^T)^T = M^T M \\
+(M M^T)^T = (M^T)^T M^T = M M^T\]
 
-<p>In addition, SVD takes advantage of the notion that all symmetric matrices like <script type="math/tex">M^T M</script> and <script type="math/tex">M M^T</script> have eigenvalues that form an <a href="https://en.wikipedia.org/wiki/Symmetric_matrix">orthonormal basis</a>. With these two notion in hand, let’s first define the SVD, then we’ll derive its components from the matrices <script type="math/tex">M^T M</script> and <script type="math/tex">M M^T</script>.</p>
+<p>In addition, SVD takes advantage of the notion that all symmetric matrices like \(M^T M\) and \(M M^T\) have eigenvalues that form an <a href="https://en.wikipedia.org/wiki/Symmetric_matrix">orthonormal basis</a>. With these two notion in hand, let’s first define the SVD, then we’ll derive its components from the matrices \(M^T M\) and \(M M^T\).</p>
 
-<p>The singular value decomposition aims to separate an <script type="math/tex">[m \times n]</script> matrix <script type="math/tex">M</script> into three distinct matrices:</p>
+<p>The singular value decomposition aims to separate an \([m \times n]\) matrix \(M\) into three distinct matrices:</p>
 
-<script type="math/tex; mode=display">M_{m \times n} = U_{m \times m} S_{m \times n} V_{n \times n}^T  \tag{3}</script>
+\[M_{m \times n} = U_{m \times m} S_{m \times n} V_{n \times n}^T  \tag{3}\]
 
-<p>Where <script type="math/tex">U</script> is an orthonormal matrix, <script type="math/tex">V</script> is an orthonormal matrix, and <script type="math/tex">S</script> is a diagonal matrix. To derive <script type="math/tex">U,</script> we analyze the symmetric matrix <script type="math/tex">M^T M</script> while utilizing the SVD definition of <script type="math/tex">M</script> in <strong><em>Equation 3</em></strong>:</p>
+<p>Where \(U\) is an orthonormal matrix, \(V\) is an orthonormal matrix, and \(S\) is a diagonal matrix. To derive \(U,\) we analyze the symmetric matrix \(M^T M\) while utilizing the SVD definition of \(M\) in <strong><em>Equation 3</em></strong>:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-M^T M &= (USV^T)^T(USV^T) \\
-&= (VS^TU^T)(USV^T) \\
-&= VS^T I S V^T \text{, since } U \text{ is orthogonal} \\
-&= V S^T S V^T \\
-&= V S^T S V^{-1} \text{, since } V \text{ is orthogonal} \tag{4}
-\end{align} %]]></script>
+\[\begin{align}
+M^T M &amp;= (USV^T)^T(USV^T) \\
+&amp;= (VS^TU^T)(USV^T) \\
+&amp;= VS^T I S V^T \text{, since } U \text{ is orthogonal} \\
+&amp;= V S^T S V^T \\
+&amp;= V S^T S V^{-1} \text{, since } V \text{ is orthogonal} \tag{4}
+\end{align}\]
 
-<p>Look familiar? <strong><em>Equation 4</em></strong> is essentially another diagonalization operation like the one defined in <strong><em>Equation 1</em></strong>, but this time we’re diagonalizing the matrix <script type="math/tex">M^T M</script> instead of <script type="math/tex">M</script>, and have diagonalizing matrix <script type="math/tex">S^TS</script> instead of <script type="math/tex">D</script>. As we showed in <strong><em>Equation 2</em></strong>, this diagonalization can be solved via eigenvalue decomposition, which suggests the two following properties of SVD:</p>
+<p>Look familiar? <strong><em>Equation 4</em></strong> is essentially another diagonalization operation like the one defined in <strong><em>Equation 1</em></strong>, but this time we’re diagonalizing the matrix \(M^T M\) instead of \(M\), and have diagonalizing matrix \(S^TS\) instead of \(D\). As we showed in <strong><em>Equation 2</em></strong>, this diagonalization can be solved via eigenvalue decomposition, which suggests the two following properties of SVD:</p>
 <ul>
-  <li>The columns of matrix <script type="math/tex">V</script> are simply the eigenvectors of <script type="math/tex">M^T M</script>.</li>
-  <li>Since <script type="math/tex">S^T S</script> gives the eigenvalues of <script type="math/tex">M^T M</script> along its diagonal, the diagonal of matrix <script type="math/tex">S</script> contains the square root of these eigenvalues.</li>
+  <li>The columns of matrix \(V\) are simply the eigenvectors of \(M^T M\).</li>
+  <li>Since \(S^T S\) gives the eigenvalues of \(M^T M\) along its diagonal, the diagonal of matrix \(S\) contains the square root of these eigenvalues.</li>
 </ul>
 
-<p>OK, we’ve found <script type="math/tex">V</script> and <script type="math/tex">S</script>, what about <script type="math/tex">U</script>? To derive <script type="math/tex">U</script> we perform analogous computations as for <script type="math/tex">V</script>, but on <script type="math/tex">MM^T</script> instead of <script type="math/tex">M^TM</script>:</p>
+<p>OK, we’ve found \(V\) and \(S\), what about \(U\)? To derive \(U\) we perform analogous computations as for \(V\), but on \(MM^T\) instead of \(M^TM\):</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-MM^T &= (USV^T)(USV^T)^T \\
-&= (USV^T)(VS^TU^T) \\
-&= US^T I S U^T \\
-&= U S^T S U^T \\
-&= U S^T S U^{-1} \tag{5}
-\end{align} %]]></script>
+\[\begin{align}
+MM^T &amp;= (USV^T)(USV^T)^T \\
+&amp;= (USV^T)(VS^TU^T) \\
+&amp;= US^T I S U^T \\
+&amp;= U S^T S U^T \\
+&amp;= U S^T S U^{-1} \tag{5}
+\end{align}\]
 
-<p><strong><em>Equation 5</em></strong> suggests a third property of SVD, namely that the columns of <script type="math/tex">U</script> are the eigenvectors of <script type="math/tex">M M^T.</script> The matrix <script type="math/tex">S</script> has the same interpretation as in <strong><em>Equation 4</em></strong>.</p>
+<p><strong><em>Equation 5</em></strong> suggests a third property of SVD, namely that the columns of \(U\) are the eigenvectors of \(M M^T.\) The matrix \(S\) has the same interpretation as in <strong><em>Equation 4</em></strong>.</p>
 
-<p>Note that when <script type="math/tex">m \neq n</script>, the diagonalizing matrix <script type="math/tex">S</script> is not square as was the case for <script type="math/tex">D</script> when diagonalizing square matrices. Instead <script type="math/tex">S</script> will be padded with zero rows or columns, depending on which dimension is larger. We’ll demonstrate all of this visually shortly.</p>
+<p>Note that when \(m \neq n\), the diagonalizing matrix \(S\) is not square as was the case for \(D\) when diagonalizing square matrices. Instead \(S\) will be padded with zero rows or columns, depending on which dimension is larger. We’ll demonstrate all of this visually shortly.</p>
 
 <p><br /></p>
 
 <h1 id="visualizing-svd">Visualizing SVD</h1>
 
-<p>OK, we’ve written down a bunch of equations that mathematically define the components of SVD and how they related to the input matrix <script type="math/tex">M</script>. Now, let’s make these derived components more tangible with some visualizations and code.</p>
+<p>OK, we’ve written down a bunch of equations that mathematically define the components of SVD and how they related to the input matrix \(M\). Now, let’s make these derived components more tangible with some visualizations and code.</p>
 
 <p><strong><em>Figures 1-3</em></strong> below show examples of what SVD will return for various matrix sizes. SVD and visualization code can be shown/hidden by clicking on the “▶︎ Python Code” button. <strong><em>Figure 1</em></strong> demonstrates the results for a square matrix.</p>
 
@@ -197,7 +195,7 @@ MM^T &= (USV^T)(USV^T)^T \\
     </div>
 </center>
 
-<p><strong><em>Figure 1:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a square matrix <script type="math/tex">M</script>,  where <script type="math/tex">m=n</script></em></p>
+<p><strong><em>Figure 1:</em></strong> <em>Visualization of \(U\), \(S\), and \(V\) for Singular Value Decomposition of a square matrix \(M\),  where \(m=n\)</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -250,7 +248,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$M </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">'$M </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s">'='</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
@@ -258,7 +256,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$U </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">'$U </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(.</span><span class="mi">25</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s">'$</span><span class="se">\\</span><span class="s">times$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
@@ -266,7 +264,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$S </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">'$S </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s">'$</span><span class="se">\\</span><span class="s">times$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
@@ -275,11 +273,11 @@ MM^T &= (USV^T)(USV^T)^T \\
     <span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$V^T </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">'$V^T </span><span class="se">\\</span><span class="s">in </span><span class="se">\\</span><span class="s">mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s"> </span><span class="se">\\</span><span class="s">times </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
-    <span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">f'SVD Components $m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s">'SVD Components $m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">$'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
 
-    <span class="n">fname</span> <span class="o">=</span> <span class="s">f'/tmp/svd-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">.png'</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s">'/tmp/svd-</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">.png'</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s">'tight'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 
@@ -290,9 +288,9 @@ MM^T &= (USV^T)(USV^T)^T \\
 
 <p><br /></p>
 
-<p>For the square matrix, SVD returns three equally-sized square matrices. Note that unlike diagonalization defined in <strong><em>Equation 1</em></strong>, where the first and third matrices in the decomposition are the inverse of one another, for SVD this is generally not the case, i.e. <script type="math/tex">U^{-1} \neq V^T</script>.</p>
+<p>For the square matrix, SVD returns three equally-sized square matrices. Note that unlike diagonalization defined in <strong><em>Equation 1</em></strong>, where the first and third matrices in the decomposition are the inverse of one another, for SVD this is generally not the case, i.e. \(U^{-1} \neq V^T\).</p>
 
-<p>Another interesting thing to notice in <strong><em>Figure 1</em></strong> is that the main diagonal of <script type="math/tex">S</script> has decreasing values. This is because SVD returns the singular vectors in a ranked format, where the vectors associated with largest eigenvalues are in the first columns of <script type="math/tex">U</script> and rows of <script type="math/tex">V^T</script>, respectively. This turns out to be super-convenient when using SVD for applications like compression and dimensionality reduction, as you can simply choose the most “important” dimensions for the matrix representation as the first entries in the left or right singular vector matrices.</p>
+<p>Another interesting thing to notice in <strong><em>Figure 1</em></strong> is that the main diagonal of \(S\) has decreasing values. This is because SVD returns the singular vectors in a ranked format, where the vectors associated with largest eigenvalues are in the first columns of \(U\) and rows of \(V^T\), respectively. This turns out to be super-convenient when using SVD for applications like compression and dimensionality reduction, as you can simply choose the most “important” dimensions for the matrix representation as the first entries in the left or right singular vector matrices.</p>
 
 <p><br /></p>
 
@@ -304,7 +302,7 @@ MM^T &= (USV^T)(USV^T)^T \\
     </div>
 </center>
 
-<p><strong><em>Figure 2:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a tall matrix <script type="math/tex">M</script>, where <script type="math/tex">m>n</script>.</em></p>
+<p><strong><em>Figure 2:</em></strong> <em>Visualization of \(U\), \(S\), and \(V\) for Singular Value Decomposition of a tall matrix \(M\), where \(m&gt;n\).</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -315,7 +313,7 @@ MM^T &= (USV^T)(USV^T)^T \\
 <hr />
 <p><br /></p>
 
-<p><strong><em>Figure 2</em></strong> above shows the results of SVD applied to a “tall” matrix, where <script type="math/tex">m > n</script>. We can see that the singular value matrix <script type="math/tex">S</script>, though having a diagonal component with decreasing values, is no longer square. Instead it is padded with extra the rows in order to handle the extra rows in the matrix <script type="math/tex">M</script>.</p>
+<p><strong><em>Figure 2</em></strong> above shows the results of SVD applied to a “tall” matrix, where \(m &gt; n\). We can see that the singular value matrix \(S\), though having a diagonal component with decreasing values, is no longer square. Instead it is padded with extra the rows in order to handle the extra rows in the matrix \(M\).</p>
 
 <p><br /></p>
 
@@ -327,8 +325,7 @@ MM^T &= (USV^T)(USV^T)^T \\
     </div>
 </center>
 
-<p><strong><em>Figure 3:</em></strong> <em>Visualization of <script type="math/tex">U</script>, <script type="math/tex">S</script>, and <script type="math/tex">V</script> for Singular Value Decomposition of a wide matrix <script type="math/tex">M</script>, where <script type="math/tex">% <![CDATA[
-m<n %]]></script>.</em></p>
+<p><strong><em>Figure 3:</em></strong> <em>Visualization of \(U\), \(S\), and \(V\) for Singular Value Decomposition of a wide matrix \(M\), where \(m&lt;n\).</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -340,14 +337,13 @@ m<n %]]></script>.</em></p>
 
 <p><br /></p>
 
-<p><strong><em>Figure 3</em></strong> shows the results of SVD applied to a “wide” matrix, where <script type="math/tex">% <![CDATA[
-m < n %]]></script>. Similar to the results for the “tall” matrix, we can see that the singular value matrix <script type="math/tex">S</script> also has a diagonal component with decreasing values, but is instead padded with extra columns in order to handle the extra columns in the matrix <script type="math/tex">M</script>.</p>
+<p><strong><em>Figure 3</em></strong> shows the results of SVD applied to a “wide” matrix, where \(m &lt; n\). Similar to the results for the “tall” matrix, we can see that the singular value matrix \(S\) also has a diagonal component with decreasing values, but is instead padded with extra columns in order to handle the extra columns in the matrix \(M\).</p>
 
 <p><br /></p>
 
 <h1 id="properties-of-svd">Properties of SVD</h1>
 
-<p>The formulation of SVD ensures that the columns of <script type="math/tex">U</script> and <script type="math/tex">V</script> form an orthonormal basis. This means that all column vectors in each matrix are orthogonal/perpendicular <em>and</em> each vector has unit length. This is equivalent to saying that the inner product of each matrix with itself will form an identity matrix (orthogonality), and that the <script type="math/tex">L_2</script> norm of each column will be equal to one. <strong><em>Figure 4</em></strong> below demonstrates both of these properties visually for the SVD of a matrix <script type="math/tex">M</script> with dimensionality <script type="math/tex">[10 \times 5]</script>.</p>
+<p>The formulation of SVD ensures that the columns of \(U\) and \(V\) form an orthonormal basis. This means that all column vectors in each matrix are orthogonal/perpendicular <em>and</em> each vector has unit length. This is equivalent to saying that the inner product of each matrix with itself will form an identity matrix (orthogonality), and that the \(L_2\) norm of each column will be equal to one. <strong><em>Figure 4</em></strong> below demonstrates both of these properties visually for the SVD of a matrix \(M\) with dimensionality \([10 \times 5]\).</p>
 
 <p><br /></p>
 
@@ -359,7 +355,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
     </div>
 </center>
 
-<p><strong><em>Figure 4, Singular Vectors provide an orthonormal basis:</em></strong>  <em>The <strong>left column</strong> shows the <script type="math/tex">U</script> and <script type="math/tex">V^T</script> that result from running SVD on a random <script type="math/tex">[m \times n] = [10 \times 5]</script> matrix <script type="math/tex">M</script>. The <strong>middle column</strong> plots the <script type="math/tex">L_2</script> norm calculated along the singular vectors (columns) of each matrix; the singular vectors all exhibit unit norm. The <strong>right column</strong> shows the inner product of each matrix with itself; the inner product is the identity matrix, demonstrating the orthogonality of the singular vectors.</em></p>
+<p><strong><em>Figure 4, Singular Vectors provide an orthonormal basis:</em></strong>  <em>The <strong>left column</strong> shows the \(U\) and \(V^T\) that result from running SVD on a random \([m \times n] = [10 \times 5]\) matrix \(M\). The <strong>middle column</strong> plots the \(L_2\) norm calculated along the singular vectors (columns) of each matrix; the singular vectors all exhibit unit norm. The <strong>right column</strong> shows the inner product of each matrix with itself; the inner product is the identity matrix, demonstrating the orthogonality of the singular vectors.</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -387,7 +383,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <span class="c1">## Matrix U
 </span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$U \in \mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">U</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">'$U \in \mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">U</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
 
 <span class="c1">## L2 norm of U's columns
 </span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
@@ -404,7 +400,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <span class="c1">## Matrix V
 </span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">cax1</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">f'$V^T \in \mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">V</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s">'$V^T \in \mathbb</span><span class="si">{</span><span class="n">R</span><span class="si">}</span><span class="s">^</span><span class="si">{</span><span class="n">V</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="s">$'</span><span class="p">)</span>
 
 <span class="c1">## L2 norm of V^T's columns
 </span><span class="n">plt</span><span class="p">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
@@ -428,17 +424,17 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 
 <p><br /></p>
 
-<p>We can see that indeed the norms of all column vectors of <script type="math/tex">U</script> and <script type="math/tex">V</script> are equal to 1, and that the inner product of each indeed produces <script type="math/tex">[10 \times 10]</script> and <script type="math/tex">[5 \times 5]</script> identity matrices, thus indicating both matrices <script type="math/tex">U</script> and <script type="math/tex">V</script> are orthonormal basis sets.</p>
+<p>We can see that indeed the norms of all column vectors of \(U\) and \(V\) are equal to 1, and that the inner product of each indeed produces \([10 \times 10]\) and \([5 \times 5]\) identity matrices, thus indicating both matrices \(U\) and \(V\) are orthonormal basis sets.</p>
 
 <p>When developing SVD above, we also established three properties relating SVD to eigenvalue decomposition:</p>
 
 <ul>
-  <li><script type="math/tex">U</script> contains the eigenvectors of <script type="math/tex">MM^T</script></li>
-  <li><script type="math/tex">V</script> contains the eigenvectors of <script type="math/tex">M^TM</script></li>
-  <li>The diagonal of <script type="math/tex">S</script> contains the square root of the eigenvalues associated with <script type="math/tex">MM^T</script> and <script type="math/tex">M^TM</script></li>
+  <li>\(U\) contains the eigenvectors of \(MM^T\)</li>
+  <li>\(V\) contains the eigenvectors of \(M^TM\)</li>
+  <li>The diagonal of \(S\) contains the square root of the eigenvalues associated with \(MM^T\) and \(M^TM\)</li>
 </ul>
 
-<p><strong><em>Figure 5</em></strong> below demonstrates the three properties visually for the SVD results calculated / demonstrated in <strong><em>Figure 4</em></strong>.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p><strong><em>Figure 5</em></strong> below demonstrates the three properties visually for the SVD results calculated / demonstrated in <strong><em>Figure 4</em></strong>.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
 
 <p><br /></p>
 
@@ -450,7 +446,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
     </div>
 </center>
 
-<p><strong><em>Figure 5, The relationship between SVD and Eigenvalue Decomposition:</em></strong>  <em>The <strong>top row</strong> demonstrates the equivalence between singular vectors <script type="math/tex">U</script> and the eigenvalues of <script type="math/tex">MM^T</script>. The <strong>middle row</strong> demonstrates the equivalence between singular vectors <script type="math/tex">V</script> and the eigenvalues of <script type="math/tex">M^TM</script>. The <strong>bottom row</strong> demonstrates how the singular values are equivalent to the square root of the eigenvalues of either <script type="math/tex">MM^T</script> or <script type="math/tex">M^TM</script>.</em></p>
+<p><strong><em>Figure 5, The relationship between SVD and Eigenvalue Decomposition:</em></strong>  <em>The <strong>top row</strong> demonstrates the equivalence between singular vectors \(U\) and the eigenvalues of \(MM^T\). The <strong>middle row</strong> demonstrates the equivalence between singular vectors \(V\) and the eigenvalues of \(M^TM\). The <strong>bottom row</strong> demonstrates how the singular values are equivalent to the square root of the eigenvalues of either \(MM^T\) or \(M^TM\).</em></p>
 
 <details>
   <summary>Python Code</summary>
@@ -519,7 +515,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 
 <p>OK, so we’ve been able to derive SVD, and visualize some of the key properties of the component matrices returned by SVD, but what is SVD actually doing? We mentioned above in the <a href="#matrix-diagonalization">Matrix Diagonalization</a> section that the diagonalization process is essentially a rotation, followed by a scaling, followed by a reversal of the original rotation. SVD works in a similar fashion, however, the rotations are not generally the inverses of one another.</p>
 
-<p><strong><em>Figure 6</em></strong> provides a visual breakdown of how the transformation resulting from applying the matrix <script type="math/tex">M</script> to an input matrix of observations <script type="math/tex">X</script> can be broken down into three separate transformation operations, each provided by a component of SVD.</p>
+<p><strong><em>Figure 6</em></strong> provides a visual breakdown of how the transformation resulting from applying the matrix \(M\) to an input matrix of observations \(X\) can be broken down into three separate transformation operations, each provided by a component of SVD.</p>
 
 <p><br /></p>
 
@@ -531,7 +527,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
     </div>
 </center>
 
-<p><strong><em>Figure 6, Visualization of SVD Operations:</em></strong> <strong>Upper Left</strong>: A 2D data set, distributed uniformly between <script type="math/tex">(-.5, .5)</script>. Each data point is colored by its relative horizontal location in the 2D coordinate system. <strong>Center</strong>: The data after being transformed by matrix <script type="math/tex">M</script>. We see that <script type="math/tex">M</script> shears and flips the data about the horizontal axis. <strong>Bottom Left</strong>: The orthogonal matrix <script type="math/tex">V^T</script> <strong>rotates</strong> the original data into a new coordinate system. <strong>Bottom Right</strong>: The diagonal matrix <script type="math/tex">S</script> <strong>stretches</strong> the data along each of the primary axes in the new coordinate system. The amount of stretch is prescribed by the square root of the eigenvalues of <script type="math/tex">M^TM</script> (or alternatively <script type="math/tex">MM^T</script>)). <strong>Upper Right</strong>: The orthogonal matrix <script type="math/tex">U</script> <strong>rotates the data back</strong> into the original coordinate system. We can see that the cascade of operations <script type="math/tex">U S V^T = M</script>.</p>
+<p><strong><em>Figure 6, Visualization of SVD Operations:</em></strong> <strong>Upper Left</strong>: A 2D data set, distributed uniformly between \((-.5, .5)\). Each data point is colored by its relative horizontal location in the 2D coordinate system. <strong>Center</strong>: The data after being transformed by matrix \(M\). We see that \(M\) shears and flips the data about the horizontal axis. <strong>Bottom Left</strong>: The orthogonal matrix \(V^T\) <strong>rotates</strong> the original data into a new coordinate system. <strong>Bottom Right</strong>: The diagonal matrix \(S\) <strong>stretches</strong> the data along each of the primary axes in the new coordinate system. The amount of stretch is prescribed by the square root of the eigenvalues of \(M^TM\) (or alternatively \(MM^T\))). <strong>Upper Right</strong>: The orthogonal matrix \(U\) <strong>rotates the data back</strong> into the original coordinate system. We can see that the cascade of operations \(U S V^T = M\).</p>
 
 <details>
   <summary>Python Code</summary>
@@ -649,7 +645,7 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <hr />
 <p><br /></p>
 
-<p>We can see above that SVD of matrix <script type="math/tex">M</script> breaks down the transformation encapsulated by <script type="math/tex">M</script> into a rotation (<script type="math/tex">V^T</script>), followed by a stretching (<script type="math/tex">S</script>), followed by another rotation (<script type="math/tex">U</script>).</p>
+<p>We can see above that SVD of matrix \(M\) breaks down the transformation encapsulated by \(M\) into a rotation (\(V^T\)), followed by a stretching (\(S\)), followed by another rotation (\(U\)).</p>
 
 <p><br /></p>
 
@@ -660,11 +656,11 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 <ul>
   <li>SVD can be applied to any matrix, not just invertible ones</li>
   <li>SVD is consistent: you get the same results each time</li>
-  <li>SVD gives you ordered components, allowing you to “build up” a lower-dimensinal representation of <script type="math/tex">M</script> that is theoretically optimal.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></li>
-  <li>SVD can be computed efficiently. It turns out that if you don’t require all singular vectors of the decomposition, which is almost always the case in statistics and machine learning, then you can calculate the decomposition much more efficiently, particularly if the desired rank of your approximation is small, i.e. <script type="math/tex">r \ll m, n</script>.</li>
+  <li>SVD gives you ordered components, allowing you to “build up” a lower-dimensinal representation of \(M\) that is theoretically optimal.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></li>
+  <li>SVD can be computed efficiently. It turns out that if you don’t require all singular vectors of the decomposition, which is almost always the case in statistics and machine learning, then you can calculate the decomposition much more efficiently, particularly if the desired rank of your approximation is small, i.e. \(r \ll m, n\).</li>
   <li>SVD can be computed a numerically stable fashion. Decomposing sparse matrices is often numerically unstable for decompositions methods like EVD, but SVD can easily handle sparse matrices, particularly if those matrices have low rank approximations.</li>
-  <li>SVD provides an orthonormal basis for <script type="math/tex">M^TM</script> (through <script type="math/tex">V^T</script>) without explicitly calculating <script type="math/tex">M^TM</script>. Therefore algorithms based on matrix covariance, like Principal Components Analysis, reduce to SVD.</li>
-  <li>The matrix <script type="math/tex">U</script> gives you important/useful vectors that efficiently describe the <em>columns</em> of <script type="math/tex">M</script>, where the rows of <script type="math/tex">V^T</script> gives you important info about the rows of <script type="math/tex">M</script>. Therefore you get <em>joint</em> information about the column and row space of <script type="math/tex">M</script> from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix <script type="math/tex">R</script> into user-based factors (row space of <script type="math/tex">R</script>) and item-based factors (column space <script type="math/tex">R</script>).</li>
+  <li>SVD provides an orthonormal basis for \(M^TM\) (through \(V^T\)) without explicitly calculating \(M^TM\). Therefore algorithms based on matrix covariance, like Principal Components Analysis, reduce to SVD.</li>
+  <li>The matrix \(U\) gives you important/useful vectors that efficiently describe the <em>columns</em> of \(M\), where the rows of \(V^T\) gives you important info about the rows of \(M\). Therefore you get <em>joint</em> information about the column and row space of \(M\) from a single decomposition. This is not the case for eigenvalue decomposition. Having joint information about rows and columns is helpful, particularly when the rows and columns have semantic interpretations. An example would be in collaborative filtering recommendation algorithrhms that decompose a user-item preference matrix \(R\) into user-based factors (row space of \(R\)) and item-based factors (column space \(R\)).</li>
 </ul>
 
 <p>The number of possible applications of SVD is essentially limitless. In future posts I plan to go into some details on how I use SVD to solve a number of problems in statistics, Machine Learning, NLP, and Computer Vision, including:</p>
@@ -693,13 +689,13 @@ m < n %]]></script>. Similar to the results for the “tall” matrix, we can se
 
 <h1 id="notes">Notes</h1>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>Eigenvalue decomposition provides non-unique solutions between calculations, where the solutions may have differently ordered eigenvalues and eigenvectors can have flipped signs. Therefore to compare to SVD, which has a consistent solution, one must perform some sorting and alignment of the eigenvectors. These operations are performed in the <code class="language-plaintext highlighter-rouge">sort_eigs</code> and <code class="language-plaintext highlighter-rouge">align_eigen_vectors</code> helper functions. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>Eigenvalue decomposition provides non-unique solutions between calculations, where the solutions may have differently ordered eigenvalues and eigenvectors can have flipped signs. Therefore to compare to SVD, which has a consistent solution, one must perform some sorting and alignment of the eigenvectors. These operations are performed in the <code class="language-plaintext highlighter-rouge">sort_eigs</code> and <code class="language-plaintext highlighter-rouge">align_eigen_vectors</code> helper functions. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p>In that the rank-<script type="math/tex">r</script> approximation minimizes the Frobenius norm of the difference in actual and approximated matrix. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>In that the rank-\(r\) approximation minimizes the Frobenius norm of the difference in actual and approximated matrix. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

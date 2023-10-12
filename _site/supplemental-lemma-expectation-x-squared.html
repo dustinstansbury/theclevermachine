@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Supplemental Proof: The Expected Value of a Squared Random Variable | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="Supplemental Proof: The Expected Value of a Squared Random Variable" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
@@ -24,8 +24,10 @@
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-07-19T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Supplemental Proof: The Expected Value of a Squared Random Variable" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/supplemental-lemma-expectation-x-squared"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/supplemental-lemma-expectation-x-squared","description":"We want to show the following relationship:","@type":"BlogPosting","headline":"Supplemental Proof: The Expected Value of a Squared Random Variable","dateModified":"2020-07-19T00:00:00-07:00","datePublished":"2020-07-19T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-07-19T00:00:00-07:00","datePublished":"2020-07-19T00:00:00-07:00","description":"We want to show the following relationship:","headline":"Supplemental Proof: The Expected Value of a Squared Random Variable","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/supplemental-lemma-expectation-x-squared"},"url":"https://dustinstansbury.github.io/theclevermachine/supplemental-lemma-expectation-x-squared"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -85,32 +87,29 @@
   <div class="post-content e-content" itemprop="articleBody">
     <p>We want to show the following relationship:</p>
 
-<script type="math/tex; mode=display">\mathbb E[X^2] = \mathbb E[(X - \mathbb E[X])^2] + \mathbb E[X]^2 \tag{1}</script>
+\[\mathbb E[X^2] = \mathbb E[(X - \mathbb E[X])^2] + \mathbb E[X]^2 \tag{1}\]
 
 <p>If we expand the first expression on the right-hand side of <strong><em>Equation 1</em></strong>:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\mathbb E [(X - \mathbb E[X])^2] &= \mathbb E[X^2-2X\mathbb E[X]+\mathbb E [X]^2] \\
-&= \mathbb E[X^2] - 2\mathbb E[X] \mathbb E [\mathbb E [X]] + \mathbb E [\mathbb E [X]^2]. \tag{2}
-\end{align} %]]></script>
+\[\begin{align}
+\mathbb E [(X - \mathbb E[X])^2] &amp;= \mathbb E[X^2-2X\mathbb E[X]+\mathbb E [X]^2] \\
+&amp;= \mathbb E[X^2] - 2\mathbb E[X] \mathbb E [\mathbb E [X]] + \mathbb E [\mathbb E [X]^2]. \tag{2}
+\end{align}\]
 
-<p>If we note that <script type="math/tex">\mathbb E[X]</script> is a constant, then <script type="math/tex">\mathbb E[\mathbb E[X]]</script> is also a constant, namely <script type="math/tex">\mathbb E[X]</script>. Taking this into account <strong><em>Equation 2</em></strong> simplifies to:</p>
+<p>If we note that \(\mathbb E[X]\) is a constant, then \(\mathbb E[\mathbb E[X]]\) is also a constant, namely \(\mathbb E[X]\). Taking this into account <strong><em>Equation 2</em></strong> simplifies to:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\mathbb E[(X - \mathbb E[X])^2] &= \mathbb E[X^2] - 2\mathbb E[X] \mathbb E[X] + \mathbb E[X]^2 \\
-&= \mathbb E[X^2] - 2\mathbb E[X]^2 + \mathbb E[X]^2 \\
-&= \mathbb E[X^2] - \mathbb E[X]^2 \tag{3}
-\end{align} %]]></script>
+\[\begin{align}
+\mathbb E[(X - \mathbb E[X])^2] &amp;= \mathbb E[X^2] - 2\mathbb E[X] \mathbb E[X] + \mathbb E[X]^2 \\
+&amp;= \mathbb E[X^2] - 2\mathbb E[X]^2 + \mathbb E[X]^2 \\
+&amp;= \mathbb E[X^2] - \mathbb E[X]^2 \tag{3}
+\end{align}\]
 
 <p>Plugging <strong><em>Equation 3</em></strong> back into the right-hand side of <strong><em>Equation 1</em></strong> gives</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
-\mathbb E[(X - \mathbb E[X])^2] + \mathbb E[X]^2 &= \mathbb E[X^2] - \mathbb E[X]^2 + \mathbb E[X]^2 \\
-&= \mathbb E[X^2] , \tag{4}
-\end{align} %]]></script>
+\[\begin{align}
+\mathbb E[(X - \mathbb E[X])^2] + \mathbb E[X]^2 &amp;= \mathbb E[X^2] - \mathbb E[X]^2 + \mathbb E[X]^2 \\
+&amp;= \mathbb E[X^2] , \tag{4}
+\end{align}\]
 
 <p>thus giving the desired result.</p>
 

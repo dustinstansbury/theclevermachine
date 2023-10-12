@@ -11,9 +11,9 @@
   </script>
   
   <link rel="stylesheet" href="/theclevermachine/assets/main.css">
-  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <link rel="icon"  type="image/png"    href="icon.png"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Common Linear Algebra Identities | The Clever Machine</title>
-<meta name="generator" content="Jekyll v3.8.7" />
+<meta name="generator" content="Jekyll v3.9.3" />
 <meta property="og:title" content="Common Linear Algebra Identities" />
 <meta name="author" content="Dustin Stansbury" />
 <meta property="og:locale" content="en_US" />
@@ -24,8 +24,10 @@
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-05T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Common Linear Algebra Identities" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/linear-algebra-identities"},"author":{"@type":"Person","name":"Dustin Stansbury"},"url":"https://dustinstansbury.github.io/theclevermachine/linear-algebra-identities","description":"This post provides a convenient reference of Linear Algebra identities used in The Clever Machine Blog.","@type":"BlogPosting","headline":"Common Linear Algebra Identities","dateModified":"2020-08-05T00:00:00-07:00","datePublished":"2020-08-05T00:00:00-07:00","@context":"https://schema.org"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-08-05T00:00:00-07:00","datePublished":"2020-08-05T00:00:00-07:00","description":"This post provides a convenient reference of Linear Algebra identities used in The Clever Machine Blog.","headline":"Common Linear Algebra Identities","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/linear-algebra-identities"},"url":"https://dustinstansbury.github.io/theclevermachine/linear-algebra-identities"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
@@ -87,106 +89,100 @@
 
 <h1 id="notation">Notation</h1>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
+\[\begin{align}
 
-\text{A Scalar:}&\;\;\;a \\
-\text{A Column Vector:}&\;\;\;\mathbf{a} = [a_1, a_2, ...a_n]^T \\
-\text{The } i\text{-th entry of a vector:}&\;\;\;a_i \\
-\text{Vector Inner (Scalar) Product:}&\;\;\;\mathbf{a}^T\mathbf{a} \\
-\text{Vector Outer (Matrix) Product:}&\;\;\;\mathbf{a}\mathbf{a}^T \\
-
-\\
-\text{A Matrix:} &\;\;\;\mathbf{A}& \\
-\text{The } i,j\text{-th entry of a matrix:}&\;\;\;A_{ij} \\
-\text{The Null Matrix (all zero entries):} &\;\;\;\mathbf{0}& \\
-\text{The Identity Matrix:} &\;\;\;\mathbf{I}& \\
-\text{A Diagonal Matrix:} &\;\;\;\mathbf{\Lambda}& \\
-\text{A Positive Definite Matrix:} &\;\;\;\mathbf{\Sigma} \\
-\text{Matrix of size }\mathbf{A}\text{ filled with zeros except a single 1 at } i,j &\;\;\;\mathbf{\Delta}(\mathbf{A})_{ij} \\
+\text{A Scalar:}&amp;\;\;\;a \\
+\text{A Column Vector:}&amp;\;\;\;\mathbf{a} = [a_1, a_2, ...a_n]^T \\
+\text{The } i\text{-th entry of a vector:}&amp;\;\;\;a_i \\
+\text{Vector Inner (Scalar) Product:}&amp;\;\;\;\mathbf{a}^T\mathbf{a} \\
+\text{Vector Outer (Matrix) Product:}&amp;\;\;\;\mathbf{a}\mathbf{a}^T \\
 
 \\
-\text{Matrix Transpose:}&\;\;\;\mathbf{A}^T \\
-\text{Matrix Identity:}&\;\;\;\mathbf{A}^{-1} \\
-\text{Matrix Pseudo Inverse:}&\;\;\;\mathbf{A}^+ \\
-\text{Matrix Square Root:}&\;\;\;\mathbf{A}^{1/2} \\
-\text{Matrix Complex Conjugate:}&\;\;\;\mathbf{A}^* \\
-\text{Hermitian of a Matrix:}&\;\;\;\mathbf{A}^H \\
-\text{Determinant of a Matrix:}&\;\;\;\det(\mathbf{A}) \\
-\text{Trace of a Matrix:}&\;\;\;\text{tr}(\mathbf{A}) \\
-\text{Diagonal Matrix:}&\;\;\;\text{diag}(\mathbf{A}),  \;\;\; (\text{diag}(\mathbf{A}))_{ij} = \delta_{ij}(A)\\
-\text{Eigenvalues of a Matrix:}&\;\;\;\text{eig}(\mathbf{A}) \\
-\text{Norm of a Matrix:}&\;\;\;||\mathbf{A}|| \\ 
-\text{Hadamard (elementwise) product of two Matrices:}&\;\;\;\mathbf{A} \circ \mathbf{B} \\
-\text{Kronecker Product of Two Matrices:}&\;\;\;\mathbf{A} \otimes \mathbf{B} \\
+\text{A Matrix:} &amp;\;\;\;\mathbf{A}&amp; \\
+\text{The } i,j\text{-th entry of a matrix:}&amp;\;\;\;A_{ij} \\
+\text{The Null Matrix (all zero entries):} &amp;\;\;\;\mathbf{0}&amp; \\
+\text{The Identity Matrix:} &amp;\;\;\;\mathbf{I}&amp; \\
+\text{A Diagonal Matrix:} &amp;\;\;\;\mathbf{\Lambda}&amp; \\
+\text{A Positive Definite Matrix:} &amp;\;\;\;\mathbf{\Sigma} \\
+\text{Matrix of size }\mathbf{A}\text{ filled with zeros except a single 1 at } i,j &amp;\;\;\;\mathbf{\Delta}(\mathbf{A})_{ij} \\
+
+\\
+\text{Matrix Transpose:}&amp;\;\;\;\mathbf{A}^T \\
+\text{Matrix Identity:}&amp;\;\;\;\mathbf{A}^{-1} \\
+\text{Matrix Pseudo Inverse:}&amp;\;\;\;\mathbf{A}^+ \\
+\text{Matrix Square Root:}&amp;\;\;\;\mathbf{A}^{1/2} \\
+\text{Matrix Complex Conjugate:}&amp;\;\;\;\mathbf{A}^* \\
+\text{Hermitian of a Matrix:}&amp;\;\;\;\mathbf{A}^H \\
+\text{Determinant of a Matrix:}&amp;\;\;\;\det(\mathbf{A}) \\
+\text{Trace of a Matrix:}&amp;\;\;\;\text{tr}(\mathbf{A}) \\
+\text{Diagonal Matrix:}&amp;\;\;\;\text{diag}(\mathbf{A}),  \;\;\; (\text{diag}(\mathbf{A}))_{ij} = \delta_{ij}(A)\\
+\text{Eigenvalues of a Matrix:}&amp;\;\;\;\text{eig}(\mathbf{A}) \\
+\text{Norm of a Matrix:}&amp;\;\;\;||\mathbf{A}|| \\ 
+\text{Hadamard (elementwise) product of two Matrices:}&amp;\;\;\;\mathbf{A} \circ \mathbf{B} \\
+\text{Kronecker Product of Two Matrices:}&amp;\;\;\;\mathbf{A} \otimes \mathbf{B} \\
 
 
-\end{align} %]]></script>
+\end{align}\]
 
 <h1 id="1-basic-properties">1. Basic Properties</h1>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-\mathbf{A} + \mathbf{B} &=& \mathbf{B} + \mathbf{A} \tag{1.1} \\
-\mathbf{A} + (\mathbf{B} + \mathbf{C}) &=& (\mathbf{A} + \mathbf{B}) + \mathbf{C} \tag{1.2} \\
-\mathbf{A} (\mathbf{B} + \mathbf{C}) &=& (\mathbf{AB} + \mathbf{AC}) \tag{1.3} \\
-a(\mathbf{B} + \mathbf{C}) &=& (a\mathbf{B} + a\mathbf{C}) = (\mathbf{B}a + \mathbf{C}a) \tag{1.4} \\
-\mathbf{AB} &\neq& \mathbf{BA} \tag{1.5} \\
-\mathbf{ABC} &=& (\mathbf{AB})\mathbf{C} = \mathbf{A}(\mathbf{BC}) \tag{1.6} \\
+\[\begin{eqnarray}
+\mathbf{A} + \mathbf{B} &amp;=&amp; \mathbf{B} + \mathbf{A} \tag{1.1} \\
+\mathbf{A} + (\mathbf{B} + \mathbf{C}) &amp;=&amp; (\mathbf{A} + \mathbf{B}) + \mathbf{C} \tag{1.2} \\
+\mathbf{A} (\mathbf{B} + \mathbf{C}) &amp;=&amp; (\mathbf{AB} + \mathbf{AC}) \tag{1.3} \\
+a(\mathbf{B} + \mathbf{C}) &amp;=&amp; (a\mathbf{B} + a\mathbf{C}) = (\mathbf{B}a + \mathbf{C}a) \tag{1.4} \\
+\mathbf{AB} &amp;\neq&amp; \mathbf{BA} \tag{1.5} \\
+\mathbf{ABC} &amp;=&amp; (\mathbf{AB})\mathbf{C} = \mathbf{A}(\mathbf{BC}) \tag{1.6} \\
 
-\end{eqnarray} %]]></script>
+\end{eqnarray}\]
 
 <h1 id="2-transposes">2. Transposes</h1>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-(\mathbf{A}^T)^T &=& \mathbf{A} \tag{2.1} \\
-(\mathbf{AB})^T &=& \mathbf{B}^{T}\mathbf{A}^{T}  \tag{2.2} \\
-(\mathbf{ABC})^T &=& \mathbf{C}^{T}\mathbf{B}^{T}\mathbf{A}^{T} \tag{2.3} \\
-(\mathbf{A} + \mathbf{B})^T &=& (\mathbf{A}^T + \mathbf{B}^T) \tag{2.4} \\
-\end{eqnarray} %]]></script>
+\[\begin{eqnarray}
+(\mathbf{A}^T)^T &amp;=&amp; \mathbf{A} \tag{2.1} \\
+(\mathbf{AB})^T &amp;=&amp; \mathbf{B}^{T}\mathbf{A}^{T}  \tag{2.2} \\
+(\mathbf{ABC})^T &amp;=&amp; \mathbf{C}^{T}\mathbf{B}^{T}\mathbf{A}^{T} \tag{2.3} \\
+(\mathbf{A} + \mathbf{B})^T &amp;=&amp; (\mathbf{A}^T + \mathbf{B}^T) \tag{2.4} \\
+\end{eqnarray}\]
 
 <h1 id="3-inverses-and-identity">3. Inverses and Identity</h1>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-\mathbf{AI} &=& \mathbf{IA} = \mathbf{A}  \tag{3.1} \\
-\mathbf{AA}^{-1} &=& \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}  \tag{3.2} \\
-(\mathbf{A}^{-1})^{-1} &=& \mathbf{A} \tag{3.3} \\
-(\mathbf{AB})^{-1} &=& \mathbf{B}^{-1}\mathbf{A}^{-1}  \tag{3.4} \\
-(\mathbf{ABC})^{-1} &=& \mathbf{C}^{-1}\mathbf{B}^{-1}\mathbf{A}^{-1}  \tag{3.5} \\
-(\mathbf{A}^T)^{-1} &=& (\mathbf{A}^{-1})^T \tag{3.6} \\
-\mathbf{\Lambda}^{-1}&=& \text{diag}([1/\lambda_1, 1/\lambda_2, ... 1/\lambda_n]) \tag{3.7} \\
-\end{eqnarray} %]]></script>
+\[\begin{eqnarray}
+\mathbf{AI} &amp;=&amp; \mathbf{IA} = \mathbf{A}  \tag{3.1} \\
+\mathbf{AA}^{-1} &amp;=&amp; \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}  \tag{3.2} \\
+(\mathbf{A}^{-1})^{-1} &amp;=&amp; \mathbf{A} \tag{3.3} \\
+(\mathbf{AB})^{-1} &amp;=&amp; \mathbf{B}^{-1}\mathbf{A}^{-1}  \tag{3.4} \\
+(\mathbf{ABC})^{-1} &amp;=&amp; \mathbf{C}^{-1}\mathbf{B}^{-1}\mathbf{A}^{-1}  \tag{3.5} \\
+(\mathbf{A}^T)^{-1} &amp;=&amp; (\mathbf{A}^{-1})^T \tag{3.6} \\
+\mathbf{\Lambda}^{-1}&amp;=&amp; \text{diag}([1/\lambda_1, 1/\lambda_2, ... 1/\lambda_n]) \tag{3.7} \\
+\end{eqnarray}\]
 
 <h1 id="4-traces">4. Traces</h1>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-\text{tr}(\mathbf{A}) &=& \sum_i A_{ii} \tag{4.1} \\
-\text{tr}(\mathbf{A}^T) &=& \text{tr}(\mathbf{A}) \tag{4.2} \\
-\text{tr}(\mathbf{AB}) &=& \text{tr}(\mathbf{BA}) \tag{if A & B are the same size,  4.3} \\
-&=& \text{tr}(\mathbf{B}^T\mathbf{A}^T) \tag{if A & B are not the same size,  4.4} \\
-\text{tr}(\mathbf{A} + \mathbf{B}) &=& \text{tr}(\mathbf{A}) + \text{tr}(\mathbf{B}) \tag{4.5} \\
-\text{tr}(\mathbf{ABC}) &=& \text{tr}(\mathbf{BCA}) = \text{tr}(\mathbf{CAB}) \tag{4.6} \\
-\mathbf{a}^T\mathbf{a} &=& \text{tr}(\mathbf{aa}^T) \tag{4.7} \\
-\text{tr}(\mathbf{A}) &=& \sum_i \lambda_{i}, \;\;\; \lambda_i = \text{eig}(\mathbf{A})_i \tag{4.8} \\
-\end{eqnarray} %]]></script>
+\[\begin{eqnarray}
+\text{tr}(\mathbf{A}) &amp;=&amp; \sum_i A_{ii} \tag{4.1} \\
+\text{tr}(\mathbf{A}^T) &amp;=&amp; \text{tr}(\mathbf{A}) \tag{4.2} \\
+\text{tr}(\mathbf{AB}) &amp;=&amp; \text{tr}(\mathbf{BA}) \tag{if A &amp; B are the same size,  4.3} \\
+&amp;=&amp; \text{tr}(\mathbf{B}^T\mathbf{A}^T) \tag{if A &amp; B are not the same size,  4.4} \\
+\text{tr}(\mathbf{A} + \mathbf{B}) &amp;=&amp; \text{tr}(\mathbf{A}) + \text{tr}(\mathbf{B}) \tag{4.5} \\
+\text{tr}(\mathbf{ABC}) &amp;=&amp; \text{tr}(\mathbf{BCA}) = \text{tr}(\mathbf{CAB}) \tag{4.6} \\
+\mathbf{a}^T\mathbf{a} &amp;=&amp; \text{tr}(\mathbf{aa}^T) \tag{4.7} \\
+\text{tr}(\mathbf{A}) &amp;=&amp; \sum_i \lambda_{i}, \;\;\; \lambda_i = \text{eig}(\mathbf{A})_i \tag{4.8} \\
+\end{eqnarray}\]
 
 <h1 id="5-determinants">5. Determinants</h1>
 
-<p>For a square matrix <script type="math/tex">\mathbf A</script> of dimension <script type="math/tex">n \times n</script></p>
+<p>For a square matrix \(\mathbf A\) of dimension \(n \times n\)</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-\det(\mathbf{A}) &=& \prod_i \lambda_{i}, \;\;\; \lambda_i = \text{eig}(\mathbf{A})_i \tag{5.1} \\
-\det(\mathbf{A}^T) &=& \det(\mathbf{A}) \tag{5.2} \\
-\det(\mathbf{AB}) &=& \det(\mathbf{A})\det(\mathbf{B}) \tag{5.3} \\
-\det(\mathbf{A}^{-1}) &=& \frac{1}{\det(\mathbf{A})} \tag{5.4} \\
-\det(\mathbf{A}^n) &=& \det(\mathbf{A})^n \tag{5.5} \\
-\det(c\mathbf{A}) &=& c^n \det(\mathbf{A}), \;\;\;  \text{given }  \mathbf{A} \in \mathbb{R}^{n \times n} \tag{5.6} \\
+\[\begin{eqnarray}
+\det(\mathbf{A}) &amp;=&amp; \prod_i \lambda_{i}, \;\;\; \lambda_i = \text{eig}(\mathbf{A})_i \tag{5.1} \\
+\det(\mathbf{A}^T) &amp;=&amp; \det(\mathbf{A}) \tag{5.2} \\
+\det(\mathbf{AB}) &amp;=&amp; \det(\mathbf{A})\det(\mathbf{B}) \tag{5.3} \\
+\det(\mathbf{A}^{-1}) &amp;=&amp; \frac{1}{\det(\mathbf{A})} \tag{5.4} \\
+\det(\mathbf{A}^n) &amp;=&amp; \det(\mathbf{A})^n \tag{5.5} \\
+\det(c\mathbf{A}) &amp;=&amp; c^n \det(\mathbf{A}), \;\;\;  \text{given }  \mathbf{A} \in \mathbb{R}^{n \times n} \tag{5.6} \\
 
-\end{eqnarray} %]]></script>
+\end{eqnarray}\]
 
 <h1 id="6-derivatives">6. Derivatives</h1>
 
@@ -194,12 +190,11 @@ a(\mathbf{B} + \mathbf{C}) &=& (a\mathbf{B} + a\mathbf{C}) = (\mathbf{B}a + \mat
 
 <h5 id="611-scalar-valued-objectives">6.1.1 Scalar-valued Objectives</h5>
 
-<p>For scalar function <script type="math/tex">y = \mathbf{\beta x} = \beta_1 x_1 + \beta_2 x_2 + ... \beta_n x_n</script></p>
+<p>For scalar function \(y = \mathbf{\beta x} = \beta_1 x_1 + \beta_2 x_2 + ... \beta_n x_n\)</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
+\[\begin{align}
 
-\frac{\partial y}{\partial \mathbf{x}} &= 
+\frac{\partial y}{\partial \mathbf{x}} &amp;= 
 \begin{bmatrix}
     \frac{\partial y}{\partial x_1} \\
     \frac{\partial y}{\partial x_2} \\
@@ -224,14 +219,13 @@ a(\mathbf{B} + \mathbf{C}) &=& (a\mathbf{B} + a\mathbf{C}) = (\mathbf{B}a + \mat
 
 \end{bmatrix} \tag{6.1.1}
 
-\end{align} %]]></script>
+\end{align}\]
 
 <h5 id="612-vector-valued-objectives">6.1.2 Vector-valued Objectives</h5>
 
 <p>For a vector-valued function</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
+\[\begin{eqnarray}
 
 \mathbf{y} = 
 \begin{bmatrix}
@@ -252,10 +246,10 @@ a(\mathbf{B} + \mathbf{C}) &=& (a\mathbf{B} + a\mathbf{C}) = (\mathbf{B}a + \mat
 \frac{\partial \mathbf{y}}{\partial \mathbf{x}} =
 
 \begin{bmatrix}
-    \frac{\partial y_1}{\partial x_1} & \frac{\partial y_2}{\partial x_1} & \dots  & \frac{\partial y_m}{\partial x_1} \\
-    \frac{\partial y_1}{\partial x_2} & \frac{\partial y_2}{\partial x_2} & \dots  & \frac{\partial y_m}{\partial x_2} \\
-    \vdots & \vdots  &  \ddots  &  \vdots \\
-    \frac{\partial y_1}{\partial x_n} & \frac{\partial y_2}{\partial x_n} & \dots  & \frac{\partial y_m}{\partial x_n} \\
+    \frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_2}{\partial x_1} &amp; \dots  &amp; \frac{\partial y_m}{\partial x_1} \\
+    \frac{\partial y_1}{\partial x_2} &amp; \frac{\partial y_2}{\partial x_2} &amp; \dots  &amp; \frac{\partial y_m}{\partial x_2} \\
+    \vdots &amp; \vdots  &amp;  \ddots  &amp;  \vdots \\
+    \frac{\partial y_1}{\partial x_n} &amp; \frac{\partial y_2}{\partial x_n} &amp; \dots  &amp; \frac{\partial y_m}{\partial x_n} \\
 \end{bmatrix}  
 
 = 
@@ -265,39 +259,37 @@ a(\mathbf{B} + \mathbf{C}) &=& (a\mathbf{B} + a\mathbf{C}) = (\mathbf{B}a + \mat
 = 
 
 \begin{bmatrix}
-    a_{11} & a_{21} & \dots & a_{m1} \\
-    a_{12} & a_{22} & \dots & a_{m2} \\
-    \vdots & \vdots & \ddots &  \vdots \\
-    a_{1n} & a_{2n} & \dots  & a_{mn} \\
+    a_{11} &amp; a_{21} &amp; \dots &amp; a_{m1} \\
+    a_{12} &amp; a_{22} &amp; \dots &amp; a_{m2} \\
+    \vdots &amp; \vdots &amp; \ddots &amp;  \vdots \\
+    a_{1n} &amp; a_{2n} &amp; \dots  &amp; a_{mn} \\
 \end{bmatrix}
 = \mathbf{A}^T  \tag{6.1.2}
 
-\end{eqnarray} %]]></script>
+\end{eqnarray}\]
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-\frac{\partial \mathbf{x}^T\mathbf{A}}{\partial \mathbf{x}} &=& \mathbf{A} \tag{6.1.3} \\
-\frac{\partial \mathbf{x}^T\mathbf{a}}{\partial \mathbf{x}} &=& \frac{\partial \mathbf{a}^T\mathbf{x}}{\partial \mathbf{x}} = \mathbf{a} \tag{6.1.3} \\
-\frac{\partial \mathbf{y}^T \mathbf{Ax}}{\partial \mathbf{x}} &=&  \mathbf{A}^T \mathbf{y} \tag{6.1.4} \\
-\frac{\partial \mathbf{y}^T \mathbf{Ax}}{\partial \mathbf{y}} &=&  \mathbf{A} \mathbf{x} \tag{6.1.5} \\
-\frac{\partial \mathbf{x}^T\mathbf{x}}{\partial \mathbf{x}} &=&  2\mathbf{x} \tag{6.1.6} \\
-\frac{\partial \mathbf{x}^T\mathbf{Ax}}{\partial \mathbf{x}} &=&  (\mathbf{A} + \mathbf{A}^T)\mathbf{x} \tag{6.1.7} \\
-&=&2 \mathbf{Ax} \tag{if A is symmetric, 6.1.8} \\
+\[\begin{eqnarray}
+\frac{\partial \mathbf{x}^T\mathbf{A}}{\partial \mathbf{x}} &amp;=&amp; \mathbf{A} \tag{6.1.3} \\
+\frac{\partial \mathbf{x}^T\mathbf{a}}{\partial \mathbf{x}} &amp;=&amp; \frac{\partial \mathbf{a}^T\mathbf{x}}{\partial \mathbf{x}} = \mathbf{a} \tag{6.1.3} \\
+\frac{\partial \mathbf{y}^T \mathbf{Ax}}{\partial \mathbf{x}} &amp;=&amp;  \mathbf{A}^T \mathbf{y} \tag{6.1.4} \\
+\frac{\partial \mathbf{y}^T \mathbf{Ax}}{\partial \mathbf{y}} &amp;=&amp;  \mathbf{A} \mathbf{x} \tag{6.1.5} \\
+\frac{\partial \mathbf{x}^T\mathbf{x}}{\partial \mathbf{x}} &amp;=&amp;  2\mathbf{x} \tag{6.1.6} \\
+\frac{\partial \mathbf{x}^T\mathbf{Ax}}{\partial \mathbf{x}} &amp;=&amp;  (\mathbf{A} + \mathbf{A}^T)\mathbf{x} \tag{6.1.7} \\
+&amp;=&amp;2 \mathbf{Ax} \tag{if A is symmetric, 6.1.8} \\
 
-\frac{\partial \mathbf{Ax}}{\partial \mathbf{z}} &=& \frac{\partial \mathbf{x}}{\partial \mathbf{z}} \mathbf{A}^T \tag{6.1.9} \\
-\end{eqnarray} %]]></script>
+\frac{\partial \mathbf{Ax}}{\partial \mathbf{z}} &amp;=&amp; \frac{\partial \mathbf{x}}{\partial \mathbf{z}} \mathbf{A}^T \tag{6.1.9} \\
+\end{eqnarray}\]
 
 <h4 id="62-matrix-derivatives">6.2 Matrix Derivatives</h4>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{eqnarray}
-\frac{\partial \mathbf{X}}{\partial X_{ij}} &=& \mathbf{\Delta}(\mathbf{X})_{ij} \tag{6.2.1}  \\
-\frac{\partial \mathbf{a}^T\mathbf{X} \mathbf{a}}{\partial \mathbf{X}} &=& \frac{\partial \mathbf{a}^T\mathbf{X}^T \mathbf{a}}{\partial \mathbf{X}} = \mathbf{a}\mathbf{a}^T \tag{6.2.2} \\
-\frac{\partial \mathbf{a}^T\mathbf{X} \mathbf{b}}{\partial \mathbf{X}} &=& \mathbf{a}\mathbf{b}^T \tag{6.2.3} \\
-\frac{\partial \mathbf{a}^T\mathbf{X}^T \mathbf{b}}{\partial \mathbf{X}} &=& \mathbf{b}\mathbf{a}^T \tag{6.2.4} \\
-\frac{\partial \mathbf{X}^T \mathbf{BX}}{\partial \mathbf{X}} &=& (\mathbf{B} + \mathbf{B}^T)\mathbf{X} \tag{6.2.5}  \\
+\[\begin{eqnarray}
+\frac{\partial \mathbf{X}}{\partial X_{ij}} &amp;=&amp; \mathbf{\Delta}(\mathbf{X})_{ij} \tag{6.2.1}  \\
+\frac{\partial \mathbf{a}^T\mathbf{X} \mathbf{a}}{\partial \mathbf{X}} &amp;=&amp; \frac{\partial \mathbf{a}^T\mathbf{X}^T \mathbf{a}}{\partial \mathbf{X}} = \mathbf{a}\mathbf{a}^T \tag{6.2.2} \\
+\frac{\partial \mathbf{a}^T\mathbf{X} \mathbf{b}}{\partial \mathbf{X}} &amp;=&amp; \mathbf{a}\mathbf{b}^T \tag{6.2.3} \\
+\frac{\partial \mathbf{a}^T\mathbf{X}^T \mathbf{b}}{\partial \mathbf{X}} &amp;=&amp; \mathbf{b}\mathbf{a}^T \tag{6.2.4} \\
+\frac{\partial \mathbf{X}^T \mathbf{BX}}{\partial \mathbf{X}} &amp;=&amp; (\mathbf{B} + \mathbf{B}^T)\mathbf{X} \tag{6.2.5}  \\
 
-\end{eqnarray} %]]></script>
+\end{eqnarray}\]
 
 <h1 id="references">References</h1>
 <ul>
