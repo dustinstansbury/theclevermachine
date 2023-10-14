@@ -7,25 +7,20 @@ layout: default
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        {{ page.date | date: date_format }}
+        {%- assign date_format = site.minima.date_format | default: '%b %-d, %Y' -%}
+
+        {%- if page.last_modified_date -%}
+        Updated on: {{ page.last_modified_date | date: date_format }}<br>
+        First published: {{ page.date | date: date_format }}
+        {%- else -%}
+        Published on: {{ page.date | date: date_format }}
+        {%- endif -%}
       </time>
-
-      {%- if page.author -%}
-      • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
-          itemprop="name">By {{ page.author }} </span></span>
-      {%- endif -%}
       <br>
-      {%- if page.tags -%}
-      <span itemprop="tags">
-        {% capture tagscommas %}
-        {% for tag in page.tags %}
-        <a href="{{site.baseurl}}/{{site.topic_page_dir}}/{{tag}}.html">{{tag}}</a>
-        {% unless forloop.last %}, {% endunless %}
-        {% endfor %}
-        {% endcapture %}
-        {{tagscommas}}
-
+      {%- if page.author -%}
+      Author: <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">{{ page.author | escape }}
+        </span>
       </span>
       {%- endif -%}
     </p>
