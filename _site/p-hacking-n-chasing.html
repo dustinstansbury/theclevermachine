@@ -19,17 +19,25 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives." />
 <meta property="og:description" content="”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives." />
-<link rel="canonical" href="http://localhost:4000/theclevermachine/p-hacking-n-chasing" />
-<meta property="og:url" content="http://localhost:4000/theclevermachine/p-hacking-n-chasing" />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-10-04T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="p-Hacking 101: N Chasing" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-10-04T00:00:00-07:00","datePublished":"2020-10-04T00:00:00-07:00","description":"”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.","headline":"p-Hacking 101: N Chasing","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/p-hacking-n-chasing"},"url":"http://localhost:4000/theclevermachine/p-hacking-n-chasing"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-10-04T00:00:00-07:00","datePublished":"2020-10-04T00:00:00-07:00","description":"”(N) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of (N) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate (N) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.","headline":"p-Hacking 101: N Chasing","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing"},"url":"https://dustinstansbury.github.io/theclevermachine/p-hacking-n-chasing"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
 
   
 
@@ -56,23 +64,10 @@
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">p-Hacking 101: N Chasing</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2020-10-04T00:00:00-07:00" itemprop="datePublished">Oct 4, 2020
-      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
-          itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
-        
-        
-        
-        <a href="/theclevermachine/topics/statistics.html">statistics</a>
-        , 
-        
-        <a href="/theclevermachine/topics/hypothesis-testing.html">hypothesis-testing</a>
-        , 
-        
-        <a href="/theclevermachine/topics/p-hacking.html">p-hacking</a>
-        
-        
-        
-
+      <time class="dt-published" datetime="2020-10-04T00:00:00-07:00" itemprop="datePublished">Published on: Oct 4, 2020</time>
+      <br>Author: <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">Dustin Stansbury
+        </span>
       </span></p>
 
   </header>

@@ -19,16 +19,24 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Musings on data and science" />
 <meta property="og:description" content="Musings on data and science" />
-<link rel="canonical" href="http://localhost:4000/theclevermachine/" />
-<meta property="og:url" content="http://localhost:4000/theclevermachine/" />
+<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/" />
+<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="The Clever Machine" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Dustin Stansbury, PhD"},"description":"Musings on data and science","headline":"The Clever Machine","name":"The Clever Machine","url":"http://localhost:4000/theclevermachine/"}</script>
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Dustin Stansbury, PhD"},"description":"Musings on data and science","headline":"The Clever Machine","name":"The Clever Machine","url":"https://dustinstansbury.github.io/theclevermachine/"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
+<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-171913050-1');
+</script>
 
   
 
@@ -52,103 +60,96 @@
       <div class="wrapper">
         <div class="home">
 <h2 class="post-list-heading">Posts</h2>
-    <ul class="post-list"><li><span class="post-meta">Jun 28, 2023</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/testing-1-2-3">
-            Testing, 1, 2, 3
-          </a>
-        </h3><p>Just a sample post to test that all of my local configurations work on github pages</p>
+  <ul class="post-list"><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/p-hacking-n-chasing">
+          p-Hacking 101: N Chasing
+        </a><span class="post-meta">✺ Oct 4, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>”\(N\) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of \(N\) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate \(N\) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.</p>
 
-</li><li><span class="post-meta">Oct 4, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/p-hacking-n-chasing">
-            p-Hacking 101: N Chasing
-          </a>
-        </h3><p>”\(N\) Chasing,” or adding new observations to an already-analyzed experiment can increase your experiment’s false positive rate. As an experimenter or analyst, you may have heard of the dangers of \(N\) chasing, but may not have an intuition as to why or how it increases Type I Error. In this post we’ll demonstrate \(N\) chasing using some simulations, and show that, under certain settings, adding just a single data point to your experiment can dramatically increase false positives.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/info-theory-word-embeddings">
+          Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra
+        </a><span class="post-meta">✺ Sep 11, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like <a href="https://en.wikipedia.org/wiki/Word2vec">word2vec</a>, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, <a href="/theclevermachine/singular-value-decomposition">Singular Value Decomposition</a>.</p>
 
-</li><li><span class="post-meta">Sep 11, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/info-theory-word-embeddings">
-            Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra
-          </a>
-        </h3><p>Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like <a href="https://en.wikipedia.org/wiki/Word2vec">word2vec</a>, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, <a href="/theclevermachine/singular-value-decomposition">Singular Value Decomposition</a>.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/svd-data-compression">
+          SVD and Data Compression Using Low-rank Matrix Approximation
+        </a><span class="post-meta">✺ Aug 16, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>In a <a href="/theclevermachine/singular-value-decomposition">previous post</a> we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.</p>
 
-</li><li><span class="post-meta">Aug 16, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/svd-data-compression">
-            SVD and Data Compression Using Low-rank Matrix Approximation
-          </a>
-        </h3><p>In a <a href="/theclevermachine/singular-value-decomposition">previous post</a> we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/singular-value-decomposition">
+          Singular Value Decomposition: The Swiss Army Knife of Linear Algebra
+        </a><span class="post-meta">✺ Aug 10, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post.</p>
 
-</li><li><span class="post-meta">Aug 10, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/singular-value-decomposition">
-            Singular Value Decomposition: The Swiss Army Knife of Linear Algebra
-          </a>
-        </h3><p>Linear algebra provides a number powerful computational methods that are used throughout the sciences. However, I would say that hands-down the most versatile of these methods is singular value decomposition, or SVD. In this post we’ll dive into a little theory behind matrix diagonalization and show how SVD generalizes matrix diagonalization. Then we’ll go into a few of the properties of SVD and cover a few (of many!) cool and useful applications of SVD in the real world. In addition, each application will have its own dedicated post.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/matrix-power-using-diagonalization">
+          Efficient Matrix Power Calculation via Diagonalization
+        </a><span class="post-meta">✺ Aug 8, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time \(t\), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.</p>
 
-</li><li><span class="post-meta">Aug 8, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/matrix-power-using-diagonalization">
-            Efficient Matrix Power Calculation via Diagonalization
-          </a>
-        </h3><p>Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time \(t\), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/linear-algebra-identities">
+          Common Linear Algebra Identities
+        </a><span class="post-meta">✺ Aug 5, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>This post provides a convenient reference of Linear Algebra identities used in The Clever Machine Blog.</p>
 
-</li><li><span class="post-meta">Aug 5, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/linear-algebra-identities">
-            Common Linear Algebra Identities
-          </a>
-        </h3><p>This post provides a convenient reference of Linear Algebra identities used in The Clever Machine Blog.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/derivation-normal-equations">
+          Derivation: Ordinary Least Squares Solution and the Normal Equations
+        </a><span class="post-meta">✺ Jul 23, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>Have you ever performed linear regression involving multiple predictor variables and run into this expression \(\hat \beta = (X^TX)^{-1}X^Ty\)? It’s called the OLS solution via Normal Equations. To find out where it comes from, read on!</p>
 
-</li><li><span class="post-meta">Jul 23, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/derivation-normal-equations">
-            Derivation: Ordinary Least Squares Solution and the Normal Equations
-          </a>
-        </h3><p>Have you ever performed linear regression involving multiple predictor variables and run into this expression \(\hat \beta = (X^TX)^{-1}X^Ty\)? It’s called the OLS solution via Normal Equations. To find out where it comes from, read on!</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/bias-variance-tradeoff">
+          Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff
+        </a><span class="post-meta">✺ Jul 20, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets.</p>
 
-</li><li><span class="post-meta">Jul 20, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/bias-variance-tradeoff">
-            Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff
-          </a>
-        </h3><p>In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/supplemental-lemma-expectation-x-squared">
+          Supplemental Proof: The Expected Value of a Squared Random Variable
+        </a><span class="post-meta">✺ Jul 19, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>We want to show the following relationship:</p>
 
-</li><li><span class="post-meta">Jul 19, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/supplemental-lemma-expectation-x-squared">
-            Supplemental Proof: The Expected Value of a Squared Random Variable
-          </a>
-        </h3><p>We want to show the following relationship:</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/a-gentle-introduction-to-neural-networks">
+          A Gentle Introduction to Artificial Neural Networks
+        </a><span class="post-meta">✺ Jul 13, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.</p>
 
-</li><li><span class="post-meta">Jul 13, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/a-gentle-introduction-to-neural-networks">
-            A Gentle Introduction to Artificial Neural Networks
-          </a>
-        </h3><p>Though many phenomena in the world can be well-modeled using basic linear regression or classification, there are also many interesting phenomena that are nonlinear in nature. In order to deal with nonlinear phenomena, there have been a diversity of nonlinear models developed.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/cutting-your-losses">
+          Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss
+        </a><span class="post-meta">✺ Jun 30, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.</p>
 
-</li><li><span class="post-meta">Jun 30, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/cutting-your-losses">
-            Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss
-          </a>
-        </h3><p>In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/derivation-common-neural-network-activation-functions">
+          Derivation: Derivatives for Common Neural Network Activation Functions
+        </a><span class="post-meta">✺ Jun 29, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.</p>
 
-</li><li><span class="post-meta">Jun 29, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/derivation-common-neural-network-activation-functions">
-            Derivation: Derivatives for Common Neural Network Activation Functions
-          </a>
-        </h3><p>When constructing Artificial Neural Network (ANN) models, one of the primary considerations is choosing activation functions for hidden and output layers that are differentiable. This is because calculating the backpropagated error signal that is used to determine ANN parameter updates requires the gradient of the activation function gradient . Three of the most commonly-used activation functions used in ANNs are the identity function, the logistic sigmoid function, and the hyperbolic tangent function. Examples of these functions and their associated gradients (derivatives in 1D) are plotted in Figure 1.</p>
-
-</li><li><span class="post-meta">Jun 29, 2020</span>
-        <h3>
-          <a class="post-link" href="/theclevermachine/derivation-backpropagation">
-            Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks
-          </a>
-        </h3><p>Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see <strong><em>Figure 1</em></strong>). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+</li><li>
+      <h3>
+        <a class="post-link" href="/theclevermachine/derivation-backpropagation">
+          Derivation: Error Backpropagation &amp; Gradient Descent for Neural Networks
+        </a><span class="post-meta">✺ Jun 29, 2020 ✎ Dustin Stansbury </span>
+      </h3><p>Artificial neural networks (ANNs) are a powerful class of models used for nonlinear regression and classification tasks that are motivated by biological neural computation. The general idea behind ANNs is pretty straightforward: map some input onto a desired target value using a distributed cascade of nonlinear transformations (see <strong><em>Figure 1</em></strong>). However, for many, myself included, the learning algorithm used to train ANNs can be difficult to get your head around at first. In this post I give a step-by-step walkthrough of the derivation of the gradient descent algorithm commonly used to train ANNs–aka the “backpropagation” algorithm. Along the way, I’ll also try to provide some high-level insights into the computations being performed during learning<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
@@ -159,8 +160,7 @@
 </div>
 </li></ul>
 
-    <p class="rss-subscribe">subscribe <a href="/theclevermachine/feed.xml">via RSS</a></p></div>
-
+  <p class="rss-subscribe">subscribe <a href="/theclevermachine/%20/feed.xml">via RSS</a></p></div>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/theclevermachine/"></data>
