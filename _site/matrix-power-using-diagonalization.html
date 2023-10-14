@@ -19,25 +19,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time (t), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix." />
 <meta property="og:description" content="Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time (t), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix." />
-<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization" />
-<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization" />
+<link rel="canonical" href="http://localhost:4000/theclevermachine/matrix-power-using-diagonalization" />
+<meta property="og:url" content="http://localhost:4000/theclevermachine/matrix-power-using-diagonalization" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-08T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Efficient Matrix Power Calculation via Diagonalization" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-08-08T00:00:00-07:00","datePublished":"2020-08-08T00:00:00-07:00","description":"Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time (t), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.","headline":"Efficient Matrix Power Calculation via Diagonalization","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization"},"url":"https://dustinstansbury.github.io/theclevermachine/matrix-power-using-diagonalization"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-08-08T00:00:00-07:00","datePublished":"2020-08-08T00:00:00-07:00","description":"Taking the power of a matrix is an important operation with applications in statistics, machine learning, and engineering. For example, solving linear ordinary differential equations, identifying the state of a Markov chain at time (t), or identifying the number of paths between nodes in a graph can all be solved using powers of matrices. In this quick post we’ll show how Matrix Diagonalization can be used to efficiently compute the power of a matrix.","headline":"Efficient Matrix Power Calculation via Diagonalization","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/matrix-power-using-diagonalization"},"url":"http://localhost:4000/theclevermachine/matrix-power-using-diagonalization"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171913050-1');
-</script>
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
 
   
 
@@ -54,7 +46,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a><a class="page-link" href="/theclevermachine/topics/">Topics</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -65,16 +57,17 @@
     <h1 class="post-title p-name" itemprop="name headline">Efficient Matrix Power Calculation via Diagonalization</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2020-08-08T00:00:00-07:00" itemprop="datePublished">Aug 8, 2020
-      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
         
         
-          
-              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
-              , 
-          
-              <a href="/theclevermachine/tags/matrix-diagonalization.html">matrix-diagonalization</a>
-              
-          
+        
+        <a href="/theclevermachine/topics/linear-algebra.html">linear-algebra</a>
+        , 
+        
+        <a href="/theclevermachine/topics/matrix-diagonalization.html">matrix-diagonalization</a>
+        
+        
         
 
       </span></p>
@@ -158,7 +151,6 @@ D^k &amp;= \begin{bmatrix}
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/matrix-power-using-diagonalization" hidden></a>
 </article>
-
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/theclevermachine/"></data>

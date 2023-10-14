@@ -19,25 +19,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice." />
 <meta property="og:description" content="In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice." />
-<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/cutting-your-losses" />
-<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/cutting-your-losses" />
+<link rel="canonical" href="http://localhost:4000/theclevermachine/cutting-your-losses" />
+<meta property="og:url" content="http://localhost:4000/theclevermachine/cutting-your-losses" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-30T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-06-30T00:00:00-07:00","datePublished":"2020-06-30T00:00:00-07:00","description":"In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.","headline":"Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/cutting-your-losses"},"url":"https://dustinstansbury.github.io/theclevermachine/cutting-your-losses"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-06-30T00:00:00-07:00","datePublished":"2020-06-30T00:00:00-07:00","description":"In this post we’ll introduce the notion of the loss function and its role in model parameter estimation. We’ll then focus in on a common loss function–the sum of squared errors (SSE) loss–and give some motivations and intuitions as to why this particular loss function works so well in practice.","headline":"Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/cutting-your-losses"},"url":"http://localhost:4000/theclevermachine/cutting-your-losses"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171913050-1');
-</script>
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
 
   
 
@@ -54,7 +46,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a><a class="page-link" href="/theclevermachine/topics/">Topics</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -65,25 +57,26 @@
     <h1 class="post-title p-name" itemprop="name headline">Cutting Your Losses: Loss Functions &amp; the Sum of Squared Errors Loss</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2020-06-30T00:00:00-07:00" itemprop="datePublished">Jun 30, 2020
-      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
         
         
-          
-              <a href="/theclevermachine/tags/statistics.html">statistics</a>
-              , 
-          
-              <a href="/theclevermachine/tags/least-squares-regression.html">least-squares-regression</a>
-              , 
-          
-              <a href="/theclevermachine/tags/loss-functions.html">loss-functions</a>
-              , 
-          
-              <a href="/theclevermachine/tags/parameter-optimization.html">parameter-optimization</a>
-              , 
-          
-              <a href="/theclevermachine/tags/r-squared.html">r-squared</a>
-              
-          
+        
+        <a href="/theclevermachine/topics/statistics.html">statistics</a>
+        , 
+        
+        <a href="/theclevermachine/topics/least-squares-regression.html">least-squares-regression</a>
+        , 
+        
+        <a href="/theclevermachine/topics/loss-functions.html">loss-functions</a>
+        , 
+        
+        <a href="/theclevermachine/topics/parameter-optimization.html">parameter-optimization</a>
+        , 
+        
+        <a href="/theclevermachine/topics/r-squared.html">r-squared</a>
+        
+        
         
 
       </span></p>
@@ -490,7 +483,6 @@ The SSE loss does have a number of downfalls as well. For instance, because each
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/cutting-your-losses" hidden></a>
 </article>
-
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/theclevermachine/"></data>

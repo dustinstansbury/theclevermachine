@@ -19,25 +19,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA." />
 <meta property="og:description" content="In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA." />
-<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/svd-data-compression" />
-<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/svd-data-compression" />
+<link rel="canonical" href="http://localhost:4000/theclevermachine/svd-data-compression" />
+<meta property="og:url" content="http://localhost:4000/theclevermachine/svd-data-compression" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-16T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="SVD and Data Compression Using Low-rank Matrix Approximation" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-08-16T00:00:00-07:00","datePublished":"2020-08-16T00:00:00-07:00","description":"In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.","headline":"SVD and Data Compression Using Low-rank Matrix Approximation","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/svd-data-compression"},"url":"https://dustinstansbury.github.io/theclevermachine/svd-data-compression"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-08-16T00:00:00-07:00","datePublished":"2020-08-16T00:00:00-07:00","description":"In a previous post we introduced the Singular Value Decomposition (SVD) and its many advantages and applications. In this post, we’ll discuss one of my favorite applications of SVD: data compression using low-rank matrix approximation (LRA). We’ll start off with a quick introduction to LRA and how it relates to data compression. Then we’ll demonstrate how SVD provides a convenient and intuitive method for image compression using a LRA.","headline":"SVD and Data Compression Using Low-rank Matrix Approximation","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/svd-data-compression"},"url":"http://localhost:4000/theclevermachine/svd-data-compression"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171913050-1');
-</script>
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
 
   
 
@@ -54,7 +46,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a><a class="page-link" href="/theclevermachine/topics/">Topics</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -65,25 +57,26 @@
     <h1 class="post-title p-name" itemprop="name headline">SVD and Data Compression Using Low-rank Matrix Approximation</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2020-08-16T00:00:00-07:00" itemprop="datePublished">Aug 16, 2020
-      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
         
         
-          
-              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
-              , 
-          
-              <a href="/theclevermachine/tags/singular-value-decomposition.html">singular-value-decomposition</a>
-              , 
-          
-              <a href="/theclevermachine/tags/low-rank-approximation.html">low-rank-approximation</a>
-              , 
-          
-              <a href="/theclevermachine/tags/data-compression.html">data-compression</a>
-              , 
-          
-              <a href="/theclevermachine/tags/image-compression.html">image-compression</a>
-              
-          
+        
+        <a href="/theclevermachine/topics/linear-algebra.html">linear-algebra</a>
+        , 
+        
+        <a href="/theclevermachine/topics/singular-value-decomposition.html">singular-value-decomposition</a>
+        , 
+        
+        <a href="/theclevermachine/topics/low-rank-approximation.html">low-rank-approximation</a>
+        , 
+        
+        <a href="/theclevermachine/topics/data-compression.html">data-compression</a>
+        , 
+        
+        <a href="/theclevermachine/topics/image-compression.html">image-compression</a>
+        
+        
         
 
       </span></p>
@@ -419,7 +412,6 @@ M &amp;\approx U_kS_kV_k^T \\
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/svd-data-compression" hidden></a>
 </article>
-
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/theclevermachine/"></data>

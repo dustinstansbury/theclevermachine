@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+<div class="post">
+  <h1 class="tag-title">Topic: {{ page.topic }}</h1>
+  <ul>
+    {% for post in site.tags[page.topic] %}
+    {% if post.lang %}
+    <li lang="{{ post.lang }}">
+      {% else %}
+    <li>
+      {% endif %}
+      <a href="{{ site.baseurl }}/{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+      {{ post.description }}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<hr>
+
+{% include topic_archive.html %}

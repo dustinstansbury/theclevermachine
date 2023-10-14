@@ -8,7 +8,7 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 #
-# If you need help with YAML syntax, here are some quick references for you: 
+# If you need help with YAML syntax, here are some quick references for you:
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 #
@@ -28,7 +28,7 @@ description: Musings on data and science
 baseurl: "/theclevermachine" # the subpath of your site, e.g. /blog
 url: "https://dustinstansbury.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: corrcoef
-github_username:  dustinstansbury
+github_username: dustinstansbury
 
 # Build settings
 theme: minima
@@ -50,15 +50,16 @@ kramdown:
   math_engine: mathjax
   parse_block_html: true
 
-# Tags
-tag_page_layout: tag_page
-tag_page_dir: tags
+# Topics/Tags
+topic_page_layout: topic_page
+topic_page_dir: topics
 
-tag_feed_layout: tag_feed
-tag_feed_dir: tags
+topic_feed_layout: topic_feed
+topc_feed_dir: topics
 
 header_pages:
-- about.md
+  - about.md
+  - topics.md
 
 google_analytics: UA-171913050-1
 
@@ -80,7 +81,7 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
-  - generate_tag_pages
+  - generate_topic_pages
   - serve_site
   - build_site
   - notebooks

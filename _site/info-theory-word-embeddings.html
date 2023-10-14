@@ -19,25 +19,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition." />
 <meta property="og:description" content="Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition." />
-<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings" />
-<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings" />
+<link rel="canonical" href="http://localhost:4000/theclevermachine/info-theory-word-embeddings" />
+<meta property="og:url" content="http://localhost:4000/theclevermachine/info-theory-word-embeddings" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-09-11T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-09-11T00:00:00-07:00","datePublished":"2020-09-11T00:00:00-07:00","description":"Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition.","headline":"Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings"},"url":"https://dustinstansbury.github.io/theclevermachine/info-theory-word-embeddings"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-09-11T00:00:00-07:00","datePublished":"2020-09-11T00:00:00-07:00","description":"Word embeddings provide numerical representations of words that carry useful semantic information about natural language. This has made word embeddings an integral part of modern Natural Language Processing (NLP) pipelines and language understanding models. Common methods used to compute word embeddings, like word2vec, employ predictive, neural network frameworks. However, as we’ll show in this post, we can also compute word embeddings using a some basic frequency statistics, a little information theory, and our good old friend from linear algebra, Singular Value Decomposition.","headline":"Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/info-theory-word-embeddings"},"url":"http://localhost:4000/theclevermachine/info-theory-word-embeddings"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171913050-1');
-</script>
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
 
   
 
@@ -54,7 +46,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a><a class="page-link" href="/theclevermachine/topics/">Topics</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -65,28 +57,29 @@
     <h1 class="post-title p-name" itemprop="name headline">Who Needs Backpropagation? Computing Word Embeddings with Linear Algebra</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2020-09-11T00:00:00-07:00" itemprop="datePublished">Sep 11, 2020
-      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
         
         
-          
-              <a href="/theclevermachine/tags/natural-language-processing.html">natural-language-processing</a>
-              , 
-          
-              <a href="/theclevermachine/tags/word-embeddings.html">word-embeddings</a>
-              , 
-          
-              <a href="/theclevermachine/tags/information-theory.html">information-theory</a>
-              , 
-          
-              <a href="/theclevermachine/tags/pointwise-mutual-information.html">pointwise-mutual-information</a>
-              , 
-          
-              <a href="/theclevermachine/tags/linear-algebra.html">linear-algebra</a>
-              , 
-          
-              <a href="/theclevermachine/tags/singular-value-decomposition.html">singular-value-decomposition</a>
-              
-          
+        
+        <a href="/theclevermachine/topics/natural-language-processing.html">natural-language-processing</a>
+        , 
+        
+        <a href="/theclevermachine/topics/word-embeddings.html">word-embeddings</a>
+        , 
+        
+        <a href="/theclevermachine/topics/information-theory.html">information-theory</a>
+        , 
+        
+        <a href="/theclevermachine/topics/pointwise-mutual-information.html">pointwise-mutual-information</a>
+        , 
+        
+        <a href="/theclevermachine/topics/linear-algebra.html">linear-algebra</a>
+        , 
+        
+        <a href="/theclevermachine/topics/singular-value-decomposition.html">singular-value-decomposition</a>
+        
+        
         
 
       </span></p>
@@ -849,7 +842,6 @@
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/info-theory-word-embeddings" hidden></a>
 </article>
-
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/theclevermachine/"></data>

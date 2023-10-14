@@ -19,25 +19,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets." />
 <meta property="og:description" content="In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets." />
-<link rel="canonical" href="https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff" />
-<meta property="og:url" content="https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff" />
+<link rel="canonical" href="http://localhost:4000/theclevermachine/bias-variance-tradeoff" />
+<meta property="og:url" content="http://localhost:4000/theclevermachine/bias-variance-tradeoff" />
 <meta property="og:site_name" content="The Clever Machine" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-07-20T00:00:00-07:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-07-20T00:00:00-07:00","datePublished":"2020-07-20T00:00:00-07:00","description":"In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets.","headline":"Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff","mainEntityOfPage":{"@type":"WebPage","@id":"https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff"},"url":"https://dustinstansbury.github.io/theclevermachine/bias-variance-tradeoff"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Dustin Stansbury"},"dateModified":"2020-07-20T00:00:00-07:00","datePublished":"2020-07-20T00:00:00-07:00","description":"In machine learning and pattern recognition, there are many ways (an infinite number, really) of solving any one problem. Thus it is important to have an objective criterion for assessing the accuracy of candidate approaches and for selecting the right model for a data set at hand. In this post we’ll discuss the concepts of under- and overfitting and how these phenomena are related to the statistical quantities bias and variance. Finally, we will discuss how these concepts can be applied to select a model that will accurately generalize to novel scenarios/data sets.","headline":"Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/theclevermachine/bias-variance-tradeoff"},"url":"http://localhost:4000/theclevermachine/bias-variance-tradeoff"}</script>
 <!-- End Jekyll SEO tag -->
-<link type="application/atom+xml" rel="alternate" href="https://dustinstansbury.github.io/theclevermachine/feed.xml" title="The Clever Machine" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171913050-1');
-</script>
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/theclevermachine/feed.xml" title="The Clever Machine" />
 
   
 
@@ -54,7 +46,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/theclevermachine/about/">About</a><a class="page-link" href="/theclevermachine/topics/">Topics</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -65,25 +57,26 @@
     <h1 class="post-title p-name" itemprop="name headline">Model Selection: Underfitting, Overfitting, and the Bias-Variance Tradeoff</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2020-07-20T00:00:00-07:00" itemprop="datePublished">Jul 20, 2020
-      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card"
+          itemprop="name">By Dustin Stansbury </span></span><br><span itemprop="tags">
         
         
-          
-              <a href="/theclevermachine/tags/statistics.html">statistics</a>
-              , 
-          
-              <a href="/theclevermachine/tags/classification.html">classification</a>
-              , 
-          
-              <a href="/theclevermachine/tags/regression.html">regression</a>
-              , 
-          
-              <a href="/theclevermachine/tags/bias-variance-tradeoff.html">bias-variance-tradeoff</a>
-              , 
-          
-              <a href="/theclevermachine/tags/model-selection.html">model-selection</a>
-              
-          
+        
+        <a href="/theclevermachine/topics/statistics.html">statistics</a>
+        , 
+        
+        <a href="/theclevermachine/topics/classification.html">classification</a>
+        , 
+        
+        <a href="/theclevermachine/topics/regression.html">regression</a>
+        , 
+        
+        <a href="/theclevermachine/topics/bias-variance-tradeoff.html">bias-variance-tradeoff</a>
+        , 
+        
+        <a href="/theclevermachine/topics/model-selection.html">model-selection</a>
+        
+        
         
 
       </span></p>
@@ -551,7 +544,6 @@
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="u-url" href="/theclevermachine/bias-variance-tradeoff" hidden></a>
 </article>
-
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/theclevermachine/"></data>

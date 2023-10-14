@@ -1,0 +1,91 @@
+#!/usr/bin/env python
+
+"""
+generate_topics_pages.py
+
+Adapted from `generate_tags` https://longqian.me/2017/02/09/github-jekyll-tag/
+"""
+
+import glob
+import os
+import yaml
+
+TOPIC_PAGE_DIR_CONFIG = "topic_page_dir"
+DEFAULT_TOPICS_DIR = "topics"
+
+
+def extract_post_topics(post_file, all_topics):
+    with open(post_file, "r", encoding="utf8") as f:
+        crawl = False
+        for line in f:
+            if crawl:
+                current_topics = line.strip().split()
+                if current_topics[0] == "tags:":
+                    all_topics.extend(current_topics[1:])
+                    crawl = False
+                    break
+            if line.strip() == "---":
+                if not crawl:
+                    crawl = True
+                else:
+                    crawl = False
+                    break
+    return all_topics
+
+
+with open("_config.yml") as f:
+    config = yaml.safe_load(f)
+
+TOPICS_DIR = config.get(TOPIC_PAGE_DIR_CONFIG, DEFAULT_TOPICS_DIR)
+
+if not os.path.exists(TOPICS_DIR):
+    os.makedirs(TOPICS_DIR)
+
+post_files = glob.glob("_posts/*md")
+
+# extract topics from posts
+all_topics = []
+for post_file in post_files:
+    all_topics = extract_post_topics(post_file, all_topics)
+
+all_topics = sorted(set(all_topics))
+
+# regenerate topic pages
+print(f"Generating pages for {len(all_topics)} topics...")
+current_topic_files = glob.glob(os.path.join(TOPICS_DIR, "*.md"))
+for topic_file in current_topic_files:
+    os.remove(topic_file)
+
+# Write individual topic pages
+for topic in all_topics:
+    topic_filename = os.path.join(TOPICS_DIR, topic + ".md")
+    with open(topic_filename, "a") as f:
+        topic_page_frontmatter = (
+            '---\nlayout: topic_page\ntitle: "Topic: '
+            + topic
+            + '"\ntopic: '
+            + topic
+            + "\nrobots: noindex\n---\n"
+        )
+        f.write(topic_page_frontmatter)
+
+# Create topics index
+print(f"Generating topics index page...")
+topics_index_file = "topics.md"
+if os.path.exists(topics_index_file):
+    os.remove(topics_index_file)
+
+with open(topics_index_file, "a") as f:
+    topic_index_page_frontmatter = """---
+layout: page
+title: Topics
+permalink: /topics/
+include_in_header: true
+---
+
+"""
+    f.write(topic_index_page_frontmatter)
+    for topic in all_topics:
+        topic_filename = os.path.join(topic + ".html")
+        topic_link = f"- [{topic}]({topic_filename})\n"
+        f.write(topic_link)
