@@ -3,7 +3,8 @@ layout: post
 title: "p-Hacking 101: N Chasing"
 author: Dustin Stansbury
 date: 2020-10-04
-tags: statistics hypothesis-testing p-hacking
+last_modified_date: 2023-12-03
+tags: statistics hypothesis-testing ab-testing false-positive type-I-error p-hacking
 permalink: /p-hacking-n-chasing
 ---
 
