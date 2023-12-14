@@ -1,11 +1,12 @@
+import os
 import numpy as np
 from scipy import stats
 from matplotlib import pyplot as plt
-from pandas import DataFrame
 
 
 NPTS = 100
 LABEL_Y_OFFSET_FACTOR = 30.0
+FIGS_DIR = "../assets/images/"
 
 
 class COLORS:
@@ -278,3 +279,12 @@ def lower_y(ax, baseline=None):
 
     ax.set_ylim(baseline, ylims[1])
     return ax
+
+
+def save_figure(post_name: str, fig_name: str):
+    """Save figure in the current notebook cell"""
+    fig_dir = os.path.join(FIGS_DIR, post_name)
+    if not os.path.isdir(fig_dir):
+        os.makedirs(fig_dir)
+    fig_file = os.path.join(fig_dir, fig_name + ".png")
+    plt.savefig(fig_file, dpi=300)
