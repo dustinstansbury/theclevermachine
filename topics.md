@@ -5,6 +5,7 @@ permalink: /topics/
 include_in_header: true
 ---
 
+- [ab-testing](ab-testing.html)
 - [backpropagation](backpropagation.html)
 - [bias-variance-tradeoff](bias-variance-tradeoff.html)
 - [classification](classification.html)
@@ -12,6 +13,7 @@ include_in_header: true
 - [deep-learning](deep-learning.html)
 - [derivation](derivation.html)
 - [expected-value](expected-value.html)
+- [false-positive](false-positive.html)
 - [gradient-descent](gradient-descent.html)
 - [hypothesis-testing](hypothesis-testing.html)
 - [image-compression](image-compression.html)
@@ -34,4 +36,5 @@ include_in_header: true
 - [regression](regression.html)
 - [singular-value-decomposition](singular-value-decomposition.html)
 - [statistics](statistics.html)
+- [type-I-error](type-I-error.html)
 - [word-embeddings](word-embeddings.html)

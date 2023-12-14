@@ -53,6 +53,13 @@
 <lastmod>2020-10-04T00:00:00-07:00</lastmod>
 </url>
 <url>
+<loc>https://dustinstansbury.github.io/theclevermachine/p-hacking-data-peeking</loc>
+<lastmod>2023-12-13T00:00:00-08:00</lastmod>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/topics/ab-testing.html</loc>
+</url>
+<url>
 <loc>https://dustinstansbury.github.io/theclevermachine/about/</loc>
 </url>
 <url>
@@ -75,6 +82,9 @@
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/topics/expected-value.html</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/topics/false-positive.html</loc>
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/topics/gradient-descent.html</loc>
@@ -147,6 +157,9 @@
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/topics/</loc>
+</url>
+<url>
+<loc>https://dustinstansbury.github.io/theclevermachine/topics/type-I-error.html</loc>
 </url>
 <url>
 <loc>https://dustinstansbury.github.io/theclevermachine/topics/word-embeddings.html</loc>
